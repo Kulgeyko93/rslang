@@ -14,7 +14,6 @@ const App = (): JSX.Element => (
         <Route exact path="/counter" component={Counter} />
       </Switch>
     </main>
-
   </div>
 );
 

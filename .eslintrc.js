@@ -6,9 +6,11 @@ module.exports = {
   extends: ['plugin:@typescript-eslint/recommended', 'airbnb-typescript'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.eslint.json',
   },
   rules: {
+    'import/no-cycle': 'off',
+    'no-param-reassign': ['error', { props: false }],
     'implicit-arrow-linebreak': 'off',
     'react/jsx-curly-newline': 'off',
     'no-plusplus': 'off',
@@ -34,6 +36,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'jsx-a11y/click-events-have-key-events': 0,
     'react/jsx-one-expression-per-line': 'off',
+    'react/button-has-type': 'off',
   },
   plugins: ['react', '@typescript-eslint'],
   settings: {

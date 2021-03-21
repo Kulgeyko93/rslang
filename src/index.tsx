@@ -2,10 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import axios from 'axios';
 import './index.css';
 import App from './App';
 import { store } from './app/store';
 import * as serviceWorker from './serviceWorker';
+
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 ReactDOM.render(
   <React.StrictMode>

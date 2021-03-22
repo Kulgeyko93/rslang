@@ -5,6 +5,8 @@ import Main from './pages/Main/Main';
 import { Counter } from './features/counter/Counter';
 import { Words } from './features/words/Words';
 import './App.css';
+import About from './pages/About/About';
+import NotFound from './pages/NotFound/NotFound';
 
 const App = (): JSX.Element => (
   <div className="App">
@@ -12,8 +14,10 @@ const App = (): JSX.Element => (
     <main className="main">
       <Switch>
         <Route exact path="/" component={Main} />
+        <Route exact path="/about" component={About} />
         <Route exact path="/counter" component={Counter} />
         <Route exact path="/words" component={Words} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </main>
   </div>

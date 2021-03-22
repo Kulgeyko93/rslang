@@ -1,0 +1,25 @@
+.video {
+  margin: 0 auto;
+  max-width: 70vw;
+  height: 500px;
+}
+@media (max-width: 1200px) {
+  .video {
+    height: 400px;
+  }
+}
+@media (max-width: 992px) {
+  .video {
+    height: 300px;
+  }
+}
+@media (max-width: 768px) {
+  .video {
+    height: 200px;
+  }
+}
+@media (max-width: 400px) {
+  .video {
+    height: 150px;
+  }
+}

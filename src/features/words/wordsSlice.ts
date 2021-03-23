@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../app/store';
-import { Status, ItemListState } from '../types';
+import { Status, EntityState } from '../types';
 
 interface Word {
   id: string;
@@ -20,7 +20,7 @@ interface Word {
   wordTranslate: string;
 }
 
-type WordsState = ItemListState<Word>;
+type WordsState = EntityState<Word[]>;
 
 const initialState: WordsState = {
   status: Status.Idle,

@@ -5,8 +5,8 @@ export enum Status {
   Failed = 'FAILED',
 }
 
-export interface ItemListState<T> {
+export interface EntityState<T> {
   status: Status;
-  data: T[] | null;
+  data: T | null;
   error: string | undefined;
 }

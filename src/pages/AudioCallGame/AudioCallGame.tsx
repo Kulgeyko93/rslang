@@ -127,6 +127,8 @@ const AudioCallGame = (): JSX.Element => (
         </Col>
         <Col lg={12}>
           <Button variant="outline-dark">Не знаю</Button>
+        </Col>
+        <Col lg={12}>
           <Button variant="outline-dark">Далее</Button>
         </Col>
       </Row>

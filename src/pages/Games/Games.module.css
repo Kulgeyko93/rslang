@@ -35,6 +35,9 @@
   max-width: 35px;
   margin: 0 auto;
 }
+.play_img:focus {
+  outline: none;
+}
 .play_img img {
   cursor: pointer;
 }

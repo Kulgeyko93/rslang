@@ -22,9 +22,6 @@
   font-size: 1.1rem;
   font-weight: 600;
 }
-.color {
-  color: #888;
-}
 .words {
   margin: 0 auto;
   max-width: 80%;
@@ -33,9 +30,11 @@
   margin-bottom: 2rem;
   align-items: flex-start;
 }
-.word {
-  flex: 1 1 19%;
-  padding: 1rem 0;
+.img {
+  cursor: pointer;
+}
+.img:hover {
+  transform: scale(1.05);
 }
 @media (max-width: 1200px) {
   .words {
@@ -46,18 +45,10 @@
   .container {
     height: auto;
   }
-  .word {
-    flex: 1 1 50%;
-  }
 }
 @media (max-width: 575px) {
   .left,
   .right {
     text-align: center;
-  }
-}
-@media (max-width: 400px) {
-  .word {
-    flex: 1 1 100%;
   }
 }

@@ -1,3 +1,4 @@
+import { Word } from '../features/types';
 import { getRandom } from './getRandom';
 
 const createIndiciesArrayWithPlayWordIndex = (arrayOfIndices: Array<number>, playWordIndex: number): Array<number> => {
@@ -9,12 +10,12 @@ const createIndiciesArrayWithPlayWordIndex = (arrayOfIndices: Array<number>, pla
 };
 
 export const createWordsArray = (
-  originArray: Array<any>,
+  originArray: Array<Word>,
   arrayOfIndices: Array<number>,
   playWordIndex: number,
-): Array<any> => {
+): Array<Word> => {
   createIndiciesArrayWithPlayWordIndex(arrayOfIndices, playWordIndex);
-  return arrayOfIndices.reduce((resultArray: Array<any>, indexNumber) => {
+  return arrayOfIndices.reduce((resultArray: Array<Word>, indexNumber) => {
     resultArray.push(originArray[indexNumber]);
     return resultArray;
   }, []);

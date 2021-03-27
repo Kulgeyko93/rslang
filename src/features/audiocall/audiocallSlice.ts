@@ -1,50 +1,98 @@
+// import axios from 'axios';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getRandomArray } from '../../utils/getRandomArray';
+import { createWordsArray } from '../../utils/createWordsArray';
 import { AppThunk, RootState } from '../../app/store';
+import { getRandom } from '../../utils/getRandom';
+import { Word } from '../types';
+import { countPagesInGroup, wordsPerPage, wordsFromServer } from '../../const/games';
+// import { countPagesInGroup, wordsPerPage } from '../../const/games';
 
-interface CounterState {
-  value: number;
+interface AudiocallState {
+  isGameOpenFromTextBook: boolean;
+  currentLevel: string;
+  originWordsArray: Array<Word>;
+  currentWordIndex: number;
+  currentWord: Word | null;
+  playWordsArray: Array<Word>;
+  isPlaying: boolean;
+  wrongAnswers: Array<Word>;
+  correctAnswers: Array<Word>;
 }
 
-const initialState: CounterState = {
-  value: 0,
+const initialState: AudiocallState = {
+  isGameOpenFromTextBook: false,
+  currentLevel: '',
+  originWordsArray: [],
+  currentWordIndex: 0,
+  currentWord: null,
+  playWordsArray: [],
+  isPlaying: false,
+  wrongAnswers: [],
+  correctAnswers: [],
 };
 
-export const counterSlice = createSlice({
-  name: 'counter',
+export const audiocallSlice = createSlice({
+  name: 'audiocall',
   initialState,
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1;
+    setOriginWordsArray: (state, action: PayloadAction<Array<Word>>) => {
+      state.originWordsArray = action.payload;
     },
-    decrement: (state) => {
-      state.value -= 1;
+    setPlayWordsArray: (state, action: PayloadAction<Array<Word>>) => {
+      const data = action.payload;
+      const newArrayOfIndices = getRandomArray(data.length, wordsPerPage);
+      const newPlayWordsArray = createWordsArray(data, newArrayOfIndices, state.currentWordIndex);
+      state.playWordsArray = newPlayWordsArray;
     },
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    setCurrentWord: (state) => {
+      if (state.originWordsArray !== []) {
+        const index = state.currentWordIndex;
+        state.currentWord = state.originWordsArray[index];
+      }
+    },
+    setIsPlaying: (state, action: PayloadAction<boolean>) => {
+      state.isPlaying = action.payload;
+    },
+    pushCorrectAnswers: (state, action: PayloadAction<Word>) => {
+      state.correctAnswers.unshift(action.payload);
+    },
+    pushWrongAnswers: (state, action: PayloadAction<Word>) => {
+      state.wrongAnswers.unshift(action.payload);
     },
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const {
+  setOriginWordsArray,
+  setPlayWordsArray,
+  setCurrentWord,
+  setIsPlaying,
+  pushCorrectAnswers,
+  pushWrongAnswers,
+} = audiocallSlice.actions;
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched
-export const incrementAsync = (amount: number): AppThunk => (dispatch) => {
-  setTimeout(() => {
-    dispatch(incrementByAmount(amount));
-  }, 1000);
+export const fetchWords = (group: string): AppThunk => async (dispatch) => {
+  const randomPage = getRandom(countPagesInGroup);
+  try {
+    // const { data } = await axios.get(`/words?page=${randomPage}&group=${group}`);
+    const data = wordsFromServer;
+    console.log(group, randomPage);
+    dispatch(setOriginWordsArray(data));
+    console.log(data);
+    dispatch(setPlayWordsArray(data));
+    dispatch(setCurrentWord());
+    dispatch(setIsPlaying(true));
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    // eslint-disable-next-line no-alert
+    alert('Сервер недоступен! Попробуйте позже');
+  }
 };
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectCount = (state: RootState): number => state.counter.value;
+export const playWords = (state: RootState): Array<Word> => state.audiocall.playWordsArray;
+export const playWord = (state: RootState): Word | null => state.audiocall.currentWord;
+export const isPlaying = (state: RootState): boolean => state.audiocall.isPlaying;
 
-export default counterSlice.reducer;
+export default audiocallSlice.reducer;

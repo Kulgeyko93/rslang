@@ -8,6 +8,7 @@ export const sound: Sound = {
   playSound(path, volume) {
     const audio = new Audio(path);
     audio.volume = volume;
+    audio.play();
     if (this.audio && audio.onended) {
       this.audio.pause();
     }

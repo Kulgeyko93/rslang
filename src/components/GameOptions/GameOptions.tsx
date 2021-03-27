@@ -1,15 +1,21 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import { groups } from '../../const/games';
 import styles from './GameOptions.module.css';
 
-const GameOptions = (): JSX.Element => {
-  const [level, setLevel] = React.useState('1');
+type PropsType = {
+  setLevelAudioCall: any;
+  gameName: string;
+};
 
-  const options = [0, 1, 2, 3, 4, 5];
+const GameOptions = ({ gameName, setLevelAudioCall }: PropsType): JSX.Element => {
+  const [level, setLevel] = React.useState(groups[0]);
 
   const handlerOnChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setLevel(event.target.value as string);
-    console.log(event.target.value);
+    if (gameName === 'Аудиовызов') {
+      setLevelAudioCall(event.target.value as string);
+    }
   };
 
   return (
@@ -24,8 +30,8 @@ const GameOptions = (): JSX.Element => {
             as="select"
             custom
           >
-            {options &&
-              options.map((item, index) => (
+            {groups &&
+              groups.map((item, index) => (
                 <option className={styles.option} key={item} value={index}>
                   Уровень сложности {index}
                 </option>

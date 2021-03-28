@@ -12,6 +12,7 @@ import { Words } from './features/words/Words';
 import './App.css';
 import { loginUser, selectAuthData, setAuthData } from './features/auth/authSlice';
 import { STORAGE_KEYS } from './constants';
+import Games from './pages/Games/Games';
 
 const App = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ const App = (): JSX.Element => {
           <Route exact path="/about" component={About} />
           <Route exact path="/counter" component={Counter} />
           <Route exact path="/words" component={Words} />
+          <Route exact path="/games" component={Games} />
           <Route path="/sprinter" component={Sprinter} />
           <Route path="*" component={NotFound} />
         </Switch>

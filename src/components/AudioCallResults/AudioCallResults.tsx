@@ -7,7 +7,7 @@ import Image from 'react-bootstrap/Image';
 import closeImg from '../../assets/icons/close.svg';
 import styles from './AudioCallResults.module.css';
 import AudioCallResultsItem from '../AudioCallResultsItem/audioCallResultsItem';
-import { setInitSettings, setIsGameEnd, setIsPlaying } from '../../features/audioCall/audioCallSlice';
+import { setInitSettings, setIsGameEnd, setIsPlaying } from '../../features/audiocall/audiocallSlice';
 import { Word } from '../../features/types';
 // import {
 //   isGameEnd,

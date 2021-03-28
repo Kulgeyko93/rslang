@@ -10,23 +10,28 @@
 .red {
   background-color: #ffb5d8;
 }
+.yellow,
+.green,
+.blue,
+.red {
+  height: 100vh;
+}
 .container {
+  top: 30%;
   padding: 2rem;
-}
-.left {
-  text-align: start;
-}
-.right {
-  display: flex;
-  justify-content: flex-end;
+  background-color: #ffffff;
+  border: 1px solid #000;
+  position: relative;
 }
 .img {
-  width: 20px;
+  position: absolute;
+  top: -1rem;
+  right: 1rem;
   cursor: pointer;
 }
 .img:hover,
 .img:active,
 .img:focus {
-  transform: scale(1.1);
+  transform: scale(1.2);
   outline: none;
 }

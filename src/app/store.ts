@@ -3,6 +3,7 @@ import counterReducer from '../features/counter/counterSlice';
 import wordsReducer from '../features/words/wordsSlice';
 import authReducer from '../features/auth/authSlice';
 import audiocallReducer from '../features/audioCall/audioCallSlice';
+import gamesReducer from '../features/games/gamesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     words: wordsReducer,
     auth: authReducer,
     audiocall: audiocallReducer,
+    games: gamesReducer,
   },
 });
 

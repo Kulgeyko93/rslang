@@ -6,7 +6,6 @@ import noImg from '../../assets/icons/no.svg';
 import styles from './PossibleAnswerOfAudioCall.module.css';
 import { pushWrongAnswers, pushCorrectAnswers } from '../../features/audioCall/audioCallSlice';
 import { sound } from '../../utils/sound';
-import { volume } from '../../const/games';
 import { Word } from '../../features/types';
 
 const correctSound = 'assets/sounds/correct.mp3';
@@ -18,6 +17,11 @@ type PropsType = {
   index: number;
   isShowAnswer: boolean;
   setIsShowAnswer: any;
+  isNewGame: boolean;
+  setIsNewGame: any;
+  isFirstClick: boolean;
+  setIsFirstClick: any;
+  soundVolume: number;
 };
 
 const PossibleAnswerOfAudioCall = ({
@@ -26,6 +30,11 @@ const PossibleAnswerOfAudioCall = ({
   index,
   isShowAnswer,
   setIsShowAnswer,
+  isNewGame,
+  setIsNewGame,
+  isFirstClick,
+  setIsFirstClick,
+  soundVolume,
 }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -33,16 +42,20 @@ const PossibleAnswerOfAudioCall = ({
   const [isWrongAnswer, setIsWrongAnswer] = React.useState(false);
 
   const onSomeWordClick = () => {
-    if (currentWord) {
+    if (currentWord && isFirstClick) {
       if (word.word === currentWord.word) {
+        setIsNewGame(false);
         setIsShowAnswer(true);
         setIsCorrectAnswer(true);
-        sound.playSound(correctSound, volume);
+        setIsFirstClick(false);
+        sound.playSound(correctSound, soundVolume);
         dispatch(pushCorrectAnswers(currentWord));
       } else {
+        setIsNewGame(false);
         setIsShowAnswer(true);
         setIsWrongAnswer(true);
-        sound.playSound(wrongSound, volume);
+        setIsFirstClick(false);
+        sound.playSound(wrongSound, soundVolume);
         dispatch(pushWrongAnswers(currentWord));
       }
     }
@@ -58,8 +71,8 @@ const PossibleAnswerOfAudioCall = ({
         tabIndex={0}
         onClick={onSomeWordClick}
       >
-        {isWrongAnswer && <Image width="10" height="auto" src={noImg} />}
-        {isCorrectAnswer && <Image width="20" height="auto" src={yesImg} />}
+        {!isNewGame && isShowAnswer && isWrongAnswer && <Image width="10" height="auto" src={noImg} />}
+        {!isNewGame && isShowAnswer && isCorrectAnswer && <Image width="20" height="auto" src={yesImg} />}
         <span className={styles.color}>{index + 1}</span> {word.wordTranslate}
       </span>
     </div>

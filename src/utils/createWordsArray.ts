@@ -20,3 +20,10 @@ export const createWordsArray = (
     return resultArray;
   }, []);
 };
+
+// eslint-disable-next-line max-len
+export const createGameArray = (originArray: Array<Word>, arrayOfIndices: Array<number>): Array<Word> =>
+  arrayOfIndices.reduce((resultArray: Array<Word>, indexNumber) => {
+    resultArray.push(originArray[indexNumber]);
+    return resultArray;
+  }, []);

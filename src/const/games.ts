@@ -1,7 +1,7 @@
 export const games = [
   { name: 'Аудиовызов', description: 'Игра улучшает восприятие речи на слух', color: 'yellow' },
-  { name: 'Саванна', description: 'Игра улучшает восприятие речи на слух', color: 'green' },
-  { name: 'Спринт', description: 'Игра улучшает восприятие речи на слух', color: 'blue' },
+  { name: 'Спринт', description: 'Игра улучшает восприятие речи на слух', color: 'green' },
+  { name: 'Саванна', description: 'Игра улучшает восприятие речи на слух', color: 'blue' },
   { name: 'Своя игра', description: 'Игра улучшает восприятие речи на слух', color: 'red' },
 ];
 
@@ -12,6 +12,11 @@ export const groups = ['0', '1', '2', '3', '4', '5'];
 export const countPagesInGroup = 30; // from 0 to 29
 
 export const wordsPerPage = 5;
+
+export const endGame = {
+  messageIfNoErrors: 'Поздравляем, отличный результат!',
+  messageIfErrors: 'В этот раз не получилось, но продолжай тренироваться!',
+};
 
 export const playWordsFromConsts = [
   {

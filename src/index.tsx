@@ -8,6 +8,7 @@ import App from './App';
 import { store } from './app/store';
 import * as serviceWorker from './serviceWorker';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 

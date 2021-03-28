@@ -1,0 +1,29 @@
+.img {
+  max-width: 60px;
+}
+.link,
+.link:hover {
+  color: #000;
+}
+.bold {
+  font-weight: 700;
+}
+.flex {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+}
+.right {
+  align-self: flex-end;
+}
+.color {
+  background-color: rgb(190, 190, 190);
+}
+@media (max-width: 575px) {
+  .flex {
+    text-align: center;
+  }
+  .right {
+    align-self: center;
+  }
+}

@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import Sprinter from './components/Sprinter/Sprinter';
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import Main from './pages/Main/Main';
 import About from './pages/About/About';
 import NotFound from './pages/NotFound/NotFound';
@@ -46,16 +48,18 @@ const App = (): JSX.Element => {
   return (
     <div className="App">
       <Header />
-      <main className="main">
+      <main>
         <Switch>
           <Route exact path="/" component={Main} />
           <Route exact path="/about" component={About} />
           <Route exact path="/counter" component={Counter} />
           <Route exact path="/words" component={Words} />
           <Route exact path="/games" component={Games} />
+          <Route path="/sprinter" component={Sprinter} />
           <Route path="*" component={NotFound} />
         </Switch>
       </main>
+      <Footer />
     </div>
   );
 };

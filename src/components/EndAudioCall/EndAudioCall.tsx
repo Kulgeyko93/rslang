@@ -15,7 +15,7 @@ import {
   setIsGameEnd,
   setIsPlaying,
   wrongAnswers,
-} from '../../features/audioCall/audioCallSlice';
+} from '../../features/audiocall/audiocallSlice';
 
 type PropsType = {
   color: string;

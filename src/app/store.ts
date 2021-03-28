@@ -2,7 +2,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import wordsReducer from '../features/words/wordsSlice';
 import authReducer from '../features/auth/authSlice';
-import audiocallReducer from '../features/audioCall/audioCallSlice';
+import audiocallReducer from '../features/audiocall/audiocallSlice';
 import gamesReducer from '../features/games/gamesSlice';
 
 export const store = configureStore({

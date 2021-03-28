@@ -9,9 +9,9 @@ import playImg from '../../assets/icons/play.svg';
 import { games, groups, volume } from '../../const/games';
 import GameOptions from '../../components/GameOptions/GameOptions';
 import styles from './Games.module.css';
-import { fetchWords, isLoading, isPlaying } from '../../features/audioCall/audioCallSlice';
+import { fetchWords, isLoading, isPlaying } from '../../features/audiocall/audiocallSlice';
 import { setSoundsVolume } from '../../features/games/gamesSlice';
-import AudioCallGame from '../AudioCallGame/AudioCallGame';
+import AudioCallGame from '../../components/AudioCallGame/AudioCallGame';
 
 const Games = (): JSX.Element => {
   const [levelAudioCall, setLevelAudioCall] = React.useState(groups[0]);

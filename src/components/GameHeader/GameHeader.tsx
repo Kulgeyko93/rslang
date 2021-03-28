@@ -10,7 +10,7 @@ import fullscreenImg from '../../assets/icons/fullscreen.svg';
 import notfullscreenImg from '../../assets/icons/notfullscreen.svg';
 import closeImg from '../../assets/icons/close.svg';
 import styles from './GameHeader.module.css';
-import { setInitSettings, setIsPlaying } from '../../features/audioCall/audioCallSlice';
+import { setInitSettings, setIsPlaying } from '../../features/audiocall/audiocallSlice';
 import { setSoundsVolume } from '../../features/games/gamesSlice';
 import { volume } from '../../const/games';
 

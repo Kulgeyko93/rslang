@@ -16,13 +16,13 @@ import {
   setCurrentWord,
   setCurrentWordIndex,
   setPlayWordsArray,
-} from '../../features/audioCall/audioCallSlice';
+} from '../../features/audiocall/audiocallSlice';
 import { sound } from '../../utils/sound';
 import { volume } from '../../const/games';
-import PossibleAnswerOfAudioCall from '../../components/PossibleAnswerOfAudioCall/PossibleAnswerOfAudioCall';
-import EndAudioCall from '../../components/EndAudioCall/EndAudioCall';
+import PossibleAnswerOfAudioCall from '../PossibleAnswerOfAudioCall/PossibleAnswerOfAudioCall';
+import EndAudioCall from '../EndAudioCall/EndAudioCall';
 import { soundsVolume } from '../../features/games/gamesSlice';
-import GameHeader from '../../components/GameHeader/GameHeader';
+import GameHeader from '../GameHeader/GameHeader';
 
 const wrongSound = 'assets/sounds/wrong.mp3';
 

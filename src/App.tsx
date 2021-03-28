@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Sprinter from './components/Sprinter/Sprinter';
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import Main from './pages/Main/Main';
 import About from './pages/About/About';
 import NotFound from './pages/NotFound/NotFound';
@@ -56,6 +57,7 @@ const App = (): JSX.Element => {
           <Route path="*" component={NotFound} />
         </Switch>
       </main>
+      <Footer />
     </div>
   );
 };

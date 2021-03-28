@@ -7,8 +7,32 @@
 .sprinter{
   @include flex-center;
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   background-color: rgb(255, 255, 255);
+
+  @keyframes borderTrue{
+    0%{
+      border: none;
+    }
+    50%{
+      border: 5px solid rgb(58, 252, 67)
+    }
+    100%{
+      border: none;
+    }
+  }
+  
+  @keyframes borderFalse{
+    0%{
+      border: none;
+    }
+    50%{
+      border: 5px solid rgb(255, 39, 39)
+    }
+    100%{
+      border: none;
+    }
+  }
 
   .container{
     display: flex;
@@ -18,8 +42,9 @@
     align-items: center;
     width: 90%;
     height: 90%;
-    border: 5px solid red;
+    border: 5px solid rgb(211, 211, 211);
     border-radius: 15px;
+    animation: none;
   }
 }
 
@@ -27,17 +52,23 @@
   width: 100%;
   height: 30%;
 
-  .value {
-    font-size: 40px;
-  }
+
   .score {
     @include flex-center;
+    flex-direction: column;
     width: 100%;
     height: 90%;
     border-radius: 15px 15px 0 0;
-    background-color: rgb(17, 232, 17);
+    // background-color: rgb(17, 232, 17);
     font-size: 1.7em;
+    .value {
+      font-size: 1.8em;
+    }
   }
+  .multipilier{
+    font-size: 1.4em;
+  }
+
   .visualTimer {
     height: 10%;
   }
@@ -55,7 +86,7 @@
 
   .pointsWords{
     width: 100%;
-    height: 40%;
+    height: 20%;
 
     img{
       height: 100px;
@@ -78,9 +109,30 @@
   }
 }
 
+@keyframes opacityToggle{
+  0%{
+    opacity: 0;
+  }
+  25%{
+    opacity: 0.5;
+  }
+  50%{
+    opacity: 1;
+  }
+  75%{
+    opacity: 0.5;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
 .iconWord{
   @include flex-center;
   height: 10%;
+  opacity: 0;
+
+  // animation: opacityToggle 1s ;
   .iconTrue{
     width: 30px;
     height: 30px;
@@ -93,6 +145,13 @@
   }
 }
 
+.active{
+  // animation: opacityToggle 1s !important;
+  opacity: 1;
+  color: blue
+}
+
+
 .answerBtn{
   @include flex-center;
   height: 20%;
@@ -102,3 +161,4 @@
     margin: 0 25px;
   }
 }
+

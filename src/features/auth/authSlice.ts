@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../app/store';
-import { EntityState, Status } from '../types';
+import { EntityState, Status } from '../../types';
 
 export interface Auth {
   token: string;

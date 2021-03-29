@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWords, selectWordsStatus, selectWordsData, selectWordsError } from './wordsSlice';
-import { Status } from '../types';
+import { Status } from '../../types';
 
 export function Words(): JSX.Element {
   const dispatch = useDispatch();

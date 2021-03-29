@@ -15,6 +15,7 @@ const Main = (): JSX.Element => (
   <div className={styles.main}>
     <Container fluid>
       <img className={styles.mainScreenImg} src={mainScreenImg} alt="Английский - это легко с RS LANG" />
+      <hr className={styles.color} />
       <h5>Посмотри видео, чтобы узнать, как работает приложение</h5>
       <Video />
       <h5>Учи английский с RS LANG</h5>

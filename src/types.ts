@@ -22,7 +22,7 @@ export interface Word {
   audioExample: string;
   textMeaning: string;
   textExample: string;
-  transcriptions: string;
+  transcription: string;
   textExampleTranslate: string;
   textMeaningTranslate: string;
   wordTranslate: string;

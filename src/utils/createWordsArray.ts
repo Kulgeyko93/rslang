@@ -1,4 +1,4 @@
-import { Word } from '../features/types';
+import { Word } from '../types';
 import { getRandom } from './getRandom';
 
 const createIndiciesArrayWithPlayWordIndex = (arrayOfIndices: Array<number>, playWordIndex: number): Array<number> => {

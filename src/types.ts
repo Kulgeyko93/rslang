@@ -11,7 +11,7 @@ export interface EntityState<T> {
   error: string | undefined;
 }
 
-export type Word = {
+export interface Word {
   id: string;
   group: number;
   page: number;
@@ -26,4 +26,4 @@ export type Word = {
   textExampleTranslate: string;
   textMeaningTranslate: string;
   wordTranslate: string;
-};
+}

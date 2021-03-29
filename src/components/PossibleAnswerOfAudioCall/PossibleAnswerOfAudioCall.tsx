@@ -6,7 +6,7 @@ import noImg from '../../assets/icons/no.svg';
 import styles from './PossibleAnswerOfAudioCall.module.css';
 import { pushWrongAnswers, pushCorrectAnswers } from '../../features/audiocall/audiocallSlice';
 import { sound } from '../../utils/sound';
-import { Word } from '../../features/types';
+import { Word } from '../../types';
 
 const correctSound = 'assets/sounds/correct.mp3';
 const wrongSound = 'assets/sounds/wrong.mp3';

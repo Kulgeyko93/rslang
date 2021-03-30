@@ -39,7 +39,7 @@ const Games = (): JSX.Element => {
   };
 
   return (
-    <>
+    <div>
       {isDataLoading ? (
         <Spinner animation="border" className={styles.spinner} />
       ) : (
@@ -74,7 +74,7 @@ const Games = (): JSX.Element => {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,14 +1,12 @@
-:fullscreen.fullscreen {
-  width: 100%;
-  height: 100%;
+.gameField:focus {
+  outline: none;
+  cursor: default;
 }
 .container {
-  background-color: #fdff95;
-  padding: 3rem;
-  height: 100vh;
+  padding: 0 3rem 3rem;
 }
-.height {
-  height: 40%;
+.heightWordImg {
+  height: 150px;
 }
 .flex {
   display: flex;
@@ -25,11 +23,10 @@
   margin-bottom: 2rem;
 }
 .words {
-  margin: 0 auto;
+  margin: 2rem auto;
   max-width: 80%;
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
   align-items: flex-start;
 }
 .img {
@@ -43,12 +40,28 @@
     max-width: 100%;
   }
 }
-@media (max-width: 992px) {
+@media (max-width: 991px) {
   .container {
+    padding: 1rem;
+  }
+  .heightWordImg {
+    height: 130px;
+  }
+}
+@media (max-width: 800px) {
+  .words {
+    margin: 1rem 0;
+  }
+}
+@media (max-height: 767px) {
+  .root {
     height: auto;
   }
 }
 @media (max-width: 575px) {
+  .heightWordImg {
+    height: auto;
+  }
   .left,
   .right {
     text-align: center;

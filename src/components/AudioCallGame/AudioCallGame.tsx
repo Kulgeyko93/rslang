@@ -18,11 +18,12 @@ import {
   setPlayWordsArray,
 } from '../../features/audiocall/audiocallSlice';
 import { sound } from '../../utils/sound';
-import { volume } from '../../const/games';
+import { ARROW_CODE, ENTER_CODE, games, PLUS_CODE, volume } from '../../const/games';
 import PossibleAnswerOfAudioCall from '../PossibleAnswerOfAudioCall/PossibleAnswerOfAudioCall';
 import EndAudioCall from '../EndAudioCall/EndAudioCall';
 import { soundsVolume } from '../../features/games/gamesSlice';
 import GameHeader from '../GameHeader/GameHeader';
+import DescriptionAudioCall from '../DescriptionAudioCall/DescriptionAudioCall';
 
 const wrongSound = 'assets/sounds/wrong.mp3';
 
@@ -31,8 +32,17 @@ const text = {
   fontSize: '1.1rem',
   fontWeight: 600,
 };
+const gameField = {
+  cursor: 'default',
+  backgroundColor: '#fdff95',
+};
+const root = {
+  padding: 0,
+};
 
 const AudioCallGame = (): JSX.Element => {
+  const gameRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+
   const words = useSelector(playWords);
   const currentWord = useSelector(playWord);
   const isAudioCallGameEnd = useSelector(isGameEnd);
@@ -43,6 +53,7 @@ const AudioCallGame = (): JSX.Element => {
   const [isShowAnswer, setIsShowAnswer] = React.useState(false);
   const [isNewGame, setIsNewGame] = React.useState(false);
   const [isFirstClick, setIsFirstClick] = React.useState(true);
+  const [pressedKeyboardKey, setPressedKeyboardKey] = React.useState('');
 
   React.useEffect(() => {
     if (currentWord && !isAudioCallGameEnd) {
@@ -50,6 +61,7 @@ const AudioCallGame = (): JSX.Element => {
       sound.playSound(soundUrl, volume);
     }
   }, [currentWord]);
+
   const onSoundImgClick = () => {
     if (currentWord) {
       const soundUrl = `${process.env.REACT_APP_BASE_URL}/${currentWord.audio}`;
@@ -76,21 +88,41 @@ const AudioCallGame = (): JSX.Element => {
     setIsFirstClick(true);
   };
 
+  const handlerOnKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (gameRef) {
+      setPressedKeyboardKey(event.key);
+      if (event.key === ENTER_CODE && !isShowAnswer) {
+        onDontKnowBtnClick();
+      } else if (event.key === ARROW_CODE && isShowAnswer) {
+        onNextBtnClick();
+      } else if (event.key === PLUS_CODE) {
+        onSoundImgClick();
+      }
+    }
+  };
+
   return (
-    <>
+    <Container fluid style={root}>
       {!isAudioCallGameEnd && (
-        <div className={styles.fullscreen}>
-          <GameHeader color="yellow" soundVolume={soundVolume} />
+        <div
+          ref={gameRef}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => handlerOnKeyDown(event)}
+          className={styles.gameField}
+          style={gameField}
+        >
+          <GameHeader color={games[0].color} soundVolume={soundVolume} gameRef={gameRef} />
           <Container fluid className={styles.container}>
             {!isShowAnswer && (
-              <Row className={styles.height}>
+              <Row className={styles.heightWordImg}>
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <Image className={styles.img} width="60" height="auto" src={volumeImg} onClick={onSoundImgClick} />
                 </Col>
               </Row>
             )}
             {isShowAnswer && currentWord && (
-              <Row className={styles.height}>
+              <Row className={styles.heightWordImg}>
                 <Col className={styles.left} lg={6} md={6} sm={6} xs={12}>
                   <Image className={styles.img} width="50" height="auto" src={volumeImg} onClick={onSoundImgClick} />
                 </Col>
@@ -123,6 +155,7 @@ const AudioCallGame = (): JSX.Element => {
                       isFirstClick={isFirstClick}
                       setIsFirstClick={setIsFirstClick}
                       soundVolume={soundVolume}
+                      pressedKeyboardKey={pressedKeyboardKey}
                     />
                   ))}
               </Col>
@@ -143,11 +176,12 @@ const AudioCallGame = (): JSX.Element => {
                 </Col>
               )}
             </Row>
+            <DescriptionAudioCall />
           </Container>
         </div>
       )}
       {isAudioCallGameEnd && <EndAudioCall color="yellow" />}
-    </>
+    </Container>
   );
 };
 

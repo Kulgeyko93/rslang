@@ -7,6 +7,7 @@ import styles from './PossibleAnswerOfAudioCall.module.css';
 import { pushWrongAnswers, pushCorrectAnswers } from '../../features/audiocall/audiocallSlice';
 import { sound } from '../../utils/sound';
 import { Word } from '../../features/types';
+import { GAME_ANSWERS_CODES } from '../../const/games';
 
 const correctSound = 'assets/sounds/correct.mp3';
 const wrongSound = 'assets/sounds/wrong.mp3';
@@ -22,6 +23,7 @@ type PropsType = {
   isFirstClick: boolean;
   setIsFirstClick: any;
   soundVolume: number;
+  pressedKeyboardKey: string;
 };
 
 const PossibleAnswerOfAudioCall = ({
@@ -35,9 +37,9 @@ const PossibleAnswerOfAudioCall = ({
   isFirstClick,
   setIsFirstClick,
   soundVolume,
+  pressedKeyboardKey,
 }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
-
   const [isCorrectAnswer, setIsCorrectAnswer] = React.useState(false);
   const [isWrongAnswer, setIsWrongAnswer] = React.useState(false);
 
@@ -60,6 +62,12 @@ const PossibleAnswerOfAudioCall = ({
       }
     }
   };
+
+  React.useEffect(() => {
+    if (!isShowAnswer && GAME_ANSWERS_CODES.includes(pressedKeyboardKey) && +pressedKeyboardKey === index + 1) {
+      onSomeWordClick();
+    }
+  }, [pressedKeyboardKey]);
 
   return (
     <div className={styles.word}>

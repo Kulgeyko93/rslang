@@ -106,7 +106,7 @@ export const fetchWords = (group: string): AppThunk => async (dispatch) => {
   dispatch(setIsLoading(true));
   const randomPage = getRandom(countPagesInGroup);
   try {
-    // const { data } = await axios.get(`/words?page=${randomPage}&group=${group}`);
+    // const { data } = await axios.get(`words?page=${randomPage}&group=${group}`);
     const data = wordsFromServer;
     console.log(group, randomPage);
     dispatch(setOriginWordsArray(data));

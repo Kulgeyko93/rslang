@@ -16,18 +16,29 @@ const option = {
 };
 
 type PropsType = {
-  setLevelAudioCall: any;
   gameName: string;
 };
 
-const GameOptions = ({ gameName, setLevelAudioCall }: PropsType): JSX.Element => {
+const GameOptions = ({ gameName }: PropsType): JSX.Element => {
   const [level, setLevel] = React.useState(groups[0]);
+
+  React.useEffect(() => {
+    if (window.localStorage.getItem(gameName) !== null) {
+      const newValue = window.localStorage.getItem(gameName);
+      if (newValue !== null) {
+        setLevel(newValue);
+      }
+    } else {
+      window.localStorage.setItem(gameName, level);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    window.localStorage.setItem(gameName, level);
+  }, [gameName, level]);
 
   const handlerOnChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setLevel(event.target.value as string);
-    if (gameName === 'Аудиовызов') {
-      setLevelAudioCall(event.target.value as string);
-    }
   };
 
   return (

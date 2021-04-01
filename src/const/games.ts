@@ -1,8 +1,8 @@
 export const games = [
-  { name: 'Аудиовызов', description: 'Игра улучшает восприятие речи на слух', color: 'yellow' },
-  { name: 'Спринт', description: 'Игра улучшает восприятие речи на слух', color: 'green' },
-  { name: 'Саванна', description: 'Игра улучшает восприятие речи на слух', color: 'blue' },
-  { name: 'Своя игра', description: 'Игра улучшает восприятие речи на слух', color: 'red' },
+  { name: 'audiocall', nameRU: 'Аудиовызов', description: 'Игра улучшает восприятие речи на слух', color: 'yellow' },
+  { name: 'sprint', nameRU: 'Спринт', description: 'Игра улучшает восприятие речи на слух', color: 'green' },
+  { name: 'savannah', nameRU: 'Саванна', description: 'Игра улучшает восприятие речи на слух', color: 'blue' },
+  { name: 'newgame', nameRU: 'Своя игра', description: 'Игра улучшает восприятие речи на слух', color: 'red' },
 ];
 
 export const volume = 0.5;
@@ -14,8 +14,8 @@ export const countPagesInGroup = 30; // from 0 to 29
 export const wordsPerPage = 5;
 
 export const endGame = {
-  messageIfNoErrors: 'Поздравляем, отличный результат!',
-  messageIfErrors: 'В этот раз не получилось, но продолжай тренироваться!',
+  messageIfNoErrors: 'Поздравляю, отличный результат!',
+  messageIfErrors: 'В этот раз без ошибок не получилось, но продолжай тренироваться!',
 };
 
 export const ENTER_CODE = 'Enter';

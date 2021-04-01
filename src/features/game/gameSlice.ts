@@ -8,7 +8,7 @@ import { Word } from '../types';
 import { countPagesInGroup, wordsPerPage, wordsFromServer } from '../../const/games';
 // import { countPagesInGroup, wordsPerPage } from '../../const/games';
 
-interface AudiocallState {
+interface GameState {
   isGameOpenFromTextBook: boolean;
   currentLevel: string;
   originWordsArray: Array<Word>;
@@ -20,11 +20,12 @@ interface AudiocallState {
   correctAnswers: Array<Word>;
   isGameEnd: boolean;
   isLoading: boolean;
+  attempts: Array<number>;
 }
 
-const initialState: AudiocallState = {
+const initialState: GameState = {
   isGameOpenFromTextBook: false,
-  currentLevel: '',
+  currentLevel: '0',
   originWordsArray: [],
   currentWordIndex: 0,
   currentWord: null,
@@ -34,10 +35,11 @@ const initialState: AudiocallState = {
   correctAnswers: [],
   isGameEnd: false,
   isLoading: false,
+  attempts: [1, 2, 3, 4, 5],
 };
 
-export const audiocallSlice = createSlice({
-  name: 'audiocall',
+export const gameSlice = createSlice({
+  name: 'game',
   initialState,
   reducers: {
     setOriginWordsArray: (state, action: PayloadAction<Array<Word>>) => {
@@ -70,21 +72,36 @@ export const audiocallSlice = createSlice({
       state.isPlaying = action.payload;
     },
     pushCorrectAnswers: (state, action: PayloadAction<Word>) => {
-      state.correctAnswers.unshift(action.payload);
+      state.correctAnswers.push(action.payload);
     },
     pushWrongAnswers: (state, action: PayloadAction<Word>) => {
-      state.wrongAnswers.unshift(action.payload);
+      state.wrongAnswers.push(action.payload);
+      state.attempts.pop();
     },
     setIsGameEnd: (state, action: PayloadAction<boolean>) => {
       state.isGameEnd = action.payload;
     },
     setInitSettings: (state) => {
+      // state = initialState;
+      state.isGameOpenFromTextBook = false;
+      state.currentLevel = '0';
+      state.originWordsArray = [];
       state.currentWordIndex = 0;
+      state.currentWord = null;
+      state.playWordsArray = [];
+      state.isPlaying = false;
       state.wrongAnswers = [];
       state.correctAnswers = [];
+      state.isGameEnd = false;
+      state.isLoading = false;
+      state.attempts = [1, 2, 3, 4, 5];
+      // state.gameName = '';
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
+    },
+    setCurrentLevel: (state, action: PayloadAction<string>) => {
+      state.currentLevel = action.payload;
     },
   },
 });
@@ -100,7 +117,8 @@ export const {
   pushWrongAnswers,
   setInitSettings,
   setIsLoading,
-} = audiocallSlice.actions;
+  setCurrentLevel,
+} = gameSlice.actions;
 
 export const fetchWords = (group: string): AppThunk => async (dispatch) => {
   dispatch(setIsLoading(true));
@@ -122,12 +140,15 @@ export const fetchWords = (group: string): AppThunk => async (dispatch) => {
   dispatch(setIsLoading(false));
 };
 
-export const playWords = (state: RootState): Array<Word> => state.audiocall.playWordsArray;
-export const playWord = (state: RootState): Word | null => state.audiocall.currentWord;
-export const isPlaying = (state: RootState): boolean => state.audiocall.isPlaying;
-export const isGameEnd = (state: RootState): boolean => state.audiocall.isGameEnd;
-export const wrongAnswers = (state: RootState): Array<Word> => state.audiocall.wrongAnswers;
-export const correctAnswers = (state: RootState): Array<Word> => state.audiocall.correctAnswers;
-export const isLoading = (state: RootState): boolean => state.audiocall.isLoading;
+export const playWords = (state: RootState): Array<Word> => state.game.playWordsArray;
+export const playWord = (state: RootState): Word | null => state.game.currentWord;
+export const isPlaying = (state: RootState): boolean => state.game.isPlaying;
+export const isGameEnd = (state: RootState): boolean => state.game.isGameEnd;
+export const wrongAnswers = (state: RootState): Array<Word> => state.game.wrongAnswers;
+export const correctAnswers = (state: RootState): Array<Word> => state.game.correctAnswers;
+export const isLoading = (state: RootState): boolean => state.game.isLoading;
+export const currentLevel = (state: RootState): string => state.game.currentLevel;
+export const isGameOpenFromTextBook = (state: RootState): boolean => state.game.isGameOpenFromTextBook;
+export const attempts = (state: RootState): Array<number> => state.game.attempts;
 
-export default audiocallSlice.reducer;
+export default gameSlice.reducer;

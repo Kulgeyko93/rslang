@@ -7,6 +7,7 @@ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Figure from 'react-bootstrap/Figure';
 import volumeImg from '../../assets/icons/volume.svg';
+import Progress from '../Progress/Progress';
 import {
   isGameEnd,
   playWord,
@@ -24,7 +25,7 @@ import GameDescription from '../GameDescription/GameDescription';
 import EndGame from '../EndGame/EndGame';
 import PossibleAnswer from '../PossibleAnswer/PossibleAnswer';
 import ScrollToTopOnMount from '../ScrollToTopOnMount/ScrollToTopOnMount';
-import styles from './AudioCallGame.module.css';
+import styles from './savannah.module.css';
 
 const wrongSound = 'assets/sounds/wrong.mp3';
 
@@ -35,18 +36,18 @@ const text = {
 };
 const gameField = {
   cursor: 'default',
-  backgroundColor: '#fdff95',
+  backgroundColor: '#a6fff5',
 };
 const root = {
   padding: 0,
 };
 
-const AudioCallGame = (): JSX.Element => {
+const Savannah = (): JSX.Element => {
   const gameRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
   const words = useSelector(playWords);
   const currentWord = useSelector(playWord);
-  const isAudioCallGameEnd = useSelector(isGameEnd);
+  const isSavannahGameEnd = useSelector(isGameEnd);
   const soundVolume = useSelector(soundsVolume);
 
   const dispatch = useDispatch();
@@ -56,13 +57,6 @@ const AudioCallGame = (): JSX.Element => {
   const [isFirstClick, setIsFirstClick] = React.useState(true);
   const [pressedKeyboardKey, setPressedKeyboardKey] = React.useState('');
   const [isKeyboardActive, setIsKeyboardActive] = React.useState(false);
-
-  React.useEffect(() => {
-    if (currentWord && !isAudioCallGameEnd) {
-      const soundUrl = `${process.env.REACT_APP_BASE_URL}/${currentWord.audio}`;
-      sound.playSound(soundUrl, volume);
-    }
-  }, [currentWord]);
 
   const onSoundImgClick = () => {
     if (currentWord) {
@@ -112,7 +106,7 @@ const AudioCallGame = (): JSX.Element => {
   return (
     <Container fluid style={root}>
       <ScrollToTopOnMount />
-      {!isAudioCallGameEnd && (
+      {!isSavannahGameEnd && (
         <div
           ref={gameRef}
           role="button"
@@ -124,16 +118,19 @@ const AudioCallGame = (): JSX.Element => {
           onBlur={handlerOnBlur}
         >
           <GameHeader
-            color={games[0].color}
+            color={games[2].color}
             soundVolume={soundVolume}
             gameRef={gameRef}
             isKeyboardActive={isKeyboardActive}
           />
           <Container fluid className={styles.container}>
-            {!isShowAnswer && (
+            {!isShowAnswer && currentWord && (
               <Row className={styles.heightWordImg}>
                 <Col lg={12} md={12} sm={12} xs={12}>
-                  <Image className={styles.img} width="60" height="auto" src={volumeImg} onClick={onSoundImgClick} />
+                  <Progress now={7} max={7} className={styles.visualTimer} stopGame={onDontKnowBtnClick} />
+                </Col>
+                <Col style={text} lg={12} md={12} sm={12} xs={12}>
+                  {currentWord.word}
                 </Col>
               </Row>
             )}
@@ -196,9 +193,9 @@ const AudioCallGame = (): JSX.Element => {
           </Container>
         </div>
       )}
-      {isAudioCallGameEnd && <EndGame color={games[0].color} />}
+      {isSavannahGameEnd && <EndGame color={games[2].color} />}
     </Container>
   );
 };
 
-export default AudioCallGame;
+export default Savannah;

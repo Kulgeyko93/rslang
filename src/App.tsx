@@ -13,12 +13,12 @@ import './App.css';
 import { loginUser, selectAuthData, setAuthData } from './features/auth/authSlice';
 import { STORAGE_KEYS } from './constants';
 import Games from './pages/Games/Games';
-import { isPlaying } from './features/audiocall/audiocallSlice';
+import { isPlaying } from './features/game/gameSlice';
 
 const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const authData = useSelector(selectAuthData);
-  const isAudioCall = useSelector(isPlaying);
+  const isGamePlaying = useSelector(isPlaying);
 
   useEffect(() => {
     const storedAuth = localStorage.getItem(STORAGE_KEYS.AUTH);
@@ -49,7 +49,7 @@ const App = (): JSX.Element => {
 
   return (
     <div className="App">
-      {!isAudioCall && <Header />}
+      {!isGamePlaying && <Header />}
       <main>
         <Switch>
           <Route exact path="/" component={Main} />
@@ -61,7 +61,7 @@ const App = (): JSX.Element => {
           <Route path="*" component={NotFound} />
         </Switch>
       </main>
-      {!isAudioCall && <Footer />}
+      {!isGamePlaying && <Footer />}
     </div>
   );
 };

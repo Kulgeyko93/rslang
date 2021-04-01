@@ -21,6 +21,9 @@
   display: flex;
   justify-content: flex-end;
 }
+.center {
+  display: flex;
+}
 .img {
   width: 20px;
   cursor: pointer;

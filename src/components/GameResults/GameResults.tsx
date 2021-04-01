@@ -5,27 +5,17 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import closeImg from '../../assets/icons/close.svg';
-import styles from './AudioCallResults.module.css';
-import AudioCallResultsItem from '../AudioCallResultsItem/audioCallResultsItem';
-import { setInitSettings, setIsGameEnd, setIsPlaying } from '../../features/audiocall/audiocallSlice';
+import { setInitSettings, setIsGameEnd, setIsPlaying } from '../../features/game/gameSlice';
 import { Word } from '../../features/types';
-// import {
-//   isGameEnd,
-//   playWord,
-//   playWords,
-//   pushWrongAnswers,
-//   setCurrentWord,
-//   setCurrentWordIndex,
-//   setPlayWordsArray,
-// } from '../../features/audioCall/audioCallSlice';
-// import { volume } from '../../const/games';
+import GameResultsItem from '../GameResultsItem/GameResultsItem';
+import styles from './gameResults.module.css';
 
 type PropsType = {
   correctAnswersArray: Array<Word>;
   wrongAnswersArray: Array<Word>;
 };
 
-const AudioCallResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType): JSX.Element => {
+const GameResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
 
   const onCloseBtnClick = () => {
@@ -54,7 +44,7 @@ const AudioCallResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType)
         <Row>
           <Col>
             {wrongAnswersArray.length !== 0 &&
-              wrongAnswersArray.map((answer) => <AudioCallResultsItem key={answer.id} answer={answer} />)}
+              wrongAnswersArray.map((answer) => <GameResultsItem key={answer.id} answer={answer} />)}
           </Col>
         </Row>
         <Row>
@@ -67,7 +57,7 @@ const AudioCallResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType)
         <Row>
           <Col>
             {correctAnswersArray.length !== 0 &&
-              correctAnswersArray.map((answer) => <AudioCallResultsItem key={answer.id} answer={answer} />)}
+              correctAnswersArray.map((answer) => <GameResultsItem key={answer.id} answer={answer} />)}
           </Col>
         </Row>
       </Container>
@@ -75,4 +65,4 @@ const AudioCallResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType)
   );
 };
 
-export default AudioCallResults;
+export default GameResults;

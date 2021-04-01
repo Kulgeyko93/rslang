@@ -10,16 +10,3 @@
   top: 1rem;
   cursor: pointer;
 }
-.outline,
-.outline:active,
-.outline:focus {
-  outline: none;
-  box-shadow: none;
-  border-color: #000;
-}
-.outline {
-  background-color: transparent;
-}
-.option {
-  background-color: rgba(253, 253, 255, 0.4);
-}

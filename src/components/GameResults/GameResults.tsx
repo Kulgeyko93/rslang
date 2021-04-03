@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import closeImg from '../../assets/icons/close.svg';
-import { setInitSettings, setIsGameEnd, setIsPlaying } from '../../features/game/gameSlice';
+import { setInitSettings } from '../../features/game/gameSlice';
 import { Word } from '../../features/types';
 import GameResultsItem from '../GameResultsItem/GameResultsItem';
 import styles from './gameResults.module.css';
@@ -19,8 +19,6 @@ const GameResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType): JSX
   const dispatch = useDispatch();
 
   const onCloseBtnClick = () => {
-    dispatch(setIsPlaying(false));
-    dispatch(setIsGameEnd(false));
     dispatch(setInitSettings());
   };
 

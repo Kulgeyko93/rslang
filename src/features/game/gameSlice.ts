@@ -21,6 +21,7 @@ interface GameState {
   isGameEnd: boolean;
   isLoading: boolean;
   attempts: Array<number>;
+  currentGame: string;
 }
 
 const initialState: GameState = {
@@ -36,6 +37,7 @@ const initialState: GameState = {
   isGameEnd: false,
   isLoading: false,
   attempts: [1, 2, 3, 4, 5],
+  currentGame: '',
 };
 
 export const gameSlice = createSlice({
@@ -95,13 +97,16 @@ export const gameSlice = createSlice({
       state.isGameEnd = false;
       state.isLoading = false;
       state.attempts = [1, 2, 3, 4, 5];
-      // state.gameName = '';
+      state.currentGame = '';
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
     setCurrentLevel: (state, action: PayloadAction<string>) => {
       state.currentLevel = action.payload;
+    },
+    setCurrentGame: (state, action: PayloadAction<string>) => {
+      state.currentGame = action.payload;
     },
   },
 });
@@ -118,6 +123,7 @@ export const {
   setInitSettings,
   setIsLoading,
   setCurrentLevel,
+  setCurrentGame,
 } = gameSlice.actions;
 
 export const fetchWords = (group: string): AppThunk => async (dispatch) => {
@@ -150,5 +156,6 @@ export const isLoading = (state: RootState): boolean => state.game.isLoading;
 export const currentLevel = (state: RootState): string => state.game.currentLevel;
 export const isGameOpenFromTextBook = (state: RootState): boolean => state.game.isGameOpenFromTextBook;
 export const attempts = (state: RootState): Array<number> => state.game.attempts;
+export const currentGame = (state: RootState): string => state.game.currentGame;
 
 export default gameSlice.reducer;

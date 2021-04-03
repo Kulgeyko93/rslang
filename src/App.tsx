@@ -14,6 +14,7 @@ import { loginUser, selectAuthData, setAuthData } from './features/auth/authSlic
 import { STORAGE_KEYS } from './constants';
 import Games from './pages/Games/Games';
 import { isPlaying } from './features/game/gameSlice';
+import Statistics from './pages/Statistics/Statistics';
 
 const App = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const App = (): JSX.Element => {
           <Route exact path="/words" component={Words} />
           <Route exact path="/games" component={Games} />
           <Route path="/sprinter" component={Sprinter} />
+          <Route exact path="/statistics" component={Statistics} />
           <Route path="*" component={NotFound} />
         </Switch>
       </main>

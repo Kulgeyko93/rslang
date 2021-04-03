@@ -17,8 +17,11 @@ import {
   currentLevel,
   isGameOpenFromTextBook,
   setIsPlaying,
+  currentGame,
+  setCurrentGame,
 } from '../../features/game/gameSlice';
-import { setSoundsVolume, currentGame, setCurrentGame } from '../../features/games/gamesSlice';
+// import { setSoundsVolume, currentGame, setCurrentGame } from '../../features/games/gamesSlice';
+import { setSoundsVolume } from '../../features/games/gamesSlice';
 import AudioCallGame from '../../components/AudioCallGame/AudioCallGame';
 import Savannah from '../../components/Savannah/Savannah';
 
@@ -70,6 +73,7 @@ const Games = (): JSX.Element => {
           {isGamePlaying && currentGameName === games[2].name && <Savannah />}
           {!isGamePlaying && (
             <Container>
+              <h4 className={styles.margin}>Игры</h4>
               <Row>
                 {games &&
                   games.map((game) => (

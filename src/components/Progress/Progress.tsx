@@ -13,23 +13,27 @@ const Progress = ({ now, max, className, stopGame }: PropsType): JSX.Element => 
   const [color, setColor] = useState<string>('success');
 
   useEffect(() => {
-    if (time >= 0) {
-      setTimeout(() => setTime(time - 0.125), 125);
-    }
-    if (time > 10 && time <= 20) {
+    const interval = setTimeout(() => setTime(time - 0.125), 125);
+
+    const timeWarning = 0.66 * now;
+    const timeDanger = 0.33 * now;
+
+    if (time > timeDanger && time <= timeWarning) {
       setColor('warning');
     }
-    if (time >= 0 && time <= 10) {
+    if (time >= 0 && time <= timeDanger) {
       setColor('danger');
     }
     if (time === 0) {
       stopGame();
     }
+
+    return () => {
+      clearTimeout(interval);
+    };
   }, [time]);
 
-  return (
-    <ProgressBar now={time} max={max} className={className} variant={color} />
-  );
+  return <ProgressBar now={time} max={max} className={className} variant={color} />;
 };
 
 export default Progress;

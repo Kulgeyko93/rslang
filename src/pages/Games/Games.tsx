@@ -24,6 +24,7 @@ import {
 import { setSoundsVolume } from '../../features/games/gamesSlice';
 import AudioCallGame from '../../components/AudioCallGame/AudioCallGame';
 import Savannah from '../../components/Savannah/Savannah';
+import Sprinter from '../../components/Sprinter/Sprinter';
 
 const Games = (): JSX.Element => {
   const currentGameName = useSelector(currentGame);
@@ -70,6 +71,7 @@ const Games = (): JSX.Element => {
       ) : (
         <div>
           {isGamePlaying && currentGameName === games[0].name && <AudioCallGame />}
+          {isGamePlaying && currentGameName === games[1].name && <Sprinter />}
           {isGamePlaying && currentGameName === games[2].name && <Savannah />}
           {!isGamePlaying && (
             <Container>

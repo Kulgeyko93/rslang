@@ -1,10 +1,13 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Container, Row, Col } from 'react-bootstrap';
+import { VolumeUpFill, ExclamationTriangle, X } from 'react-bootstrap-icons';
 import './style.scss';
 import { Status, Word } from '../../types';
 import { useRequest } from '../../hooks';
+import { sound } from '../../utils/sound';
+import { volume } from '../../const/games';
 
 interface MatchParams {
   groupId: string;
@@ -32,31 +35,118 @@ export default function Group(props: Props): JSX.Element {
   switch (status) {
     case Status.Idle:
     case Status.Loading: {
-      content = 'Loading';
+      content = 'Загрузка';
       break;
     }
 
     case Status.Succeeded: {
       if (data) {
-        const wordFields = data.reduce((wordsAcc: JSX.Element[], wordData) => {
-          const { id, image } = wordData;
-          return [
-            ...wordsAcc,
-            <hr key={`${id}j`} />,
-            <Card key={`${id}`} style={{ width: '18rem' }}>
-              <Card.Img variant="top" src={`${process.env.REACT_APP_BASE_URL}/${image}`} />
+        const cardElements = data.reduce((wordsAcc: JSX.Element[], wordData) => {
+          const {
+            id,
+            image,
+            word,
+            transcription,
+            wordTranslate,
+            textMeaning,
+            textMeaningTranslate,
+            textExample,
+            textExampleTranslate,
+            audio,
+            audioMeaning,
+            audioExample,
+          } = wordData;
+          const currentCard = (
+            <Card key={`${id}`}>
               <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the bulk of the cards content.
-                </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
+                <Container>
+                  <Row>
+                    <Col>
+                      <Card.Img src={`${process.env.REACT_APP_BASE_URL}/${image}`} />
+                    </Col>
+                    <Col>
+                      <Row>
+                        <Col>
+                          <Button
+                            variant="light"
+                            onClick={() => {
+                              const soundUrl = `${process.env.REACT_APP_BASE_URL}/${audio}`;
+                              sound.playSound(soundUrl, volume);
+                            }}
+                          >
+                            <VolumeUpFill size={20} />
+                          </Button>
+                        </Col>
+                        <Col>
+                          <Button variant="light">
+                            <ExclamationTriangle size={20} color="#ff0303" />
+                          </Button>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <p>
+                            <strong>{word}</strong>
+                          </p>
+                          <p>{transcription}</p>
+                          <p>{wordTranslate}</p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Row className="middle">
+                    <Col>
+                      <p>
+                        <Button
+                          variant="light"
+                          onClick={() => {
+                            const soundUrl = `${process.env.REACT_APP_BASE_URL}/${audioMeaning}`;
+                            sound.playSound(soundUrl, volume);
+                          }}
+                        >
+                          <VolumeUpFill size={16} />
+                        </Button>
+                        &nbsp;
+                        <strong dangerouslySetInnerHTML={{ __html: textMeaning }} />
+                      </p>
+                      <p>→ {textMeaningTranslate}</p>
+                      <p>
+                        <Button
+                          variant="light"
+                          onClick={() => {
+                            const soundUrl = `${process.env.REACT_APP_BASE_URL}/${audioExample}`;
+                            sound.playSound(soundUrl, volume);
+                          }}
+                        >
+                          <VolumeUpFill size={16} />
+                        </Button>
+                        &nbsp;
+                        <strong dangerouslySetInnerHTML={{ __html: textExample }} />
+                      </p>
+                      <p>→ {textExampleTranslate}</p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <Button variant="outline-danger">
+                        <ExclamationTriangle />
+                        &nbsp; Сложные слова
+                      </Button>
+                    </Col>
+                    <Col>
+                      <Button variant="outline-dark">
+                        <X size={20} />
+                        &nbsp; Удаленные слова
+                      </Button>
+                    </Col>
+                  </Row>
+                </Container>
               </Card.Body>
-            </Card>,
-            <pre key={`${id}k`}>{JSON.stringify(wordData, null, 2)}</pre>,
-          ];
+            </Card>
+          );
+          return [...wordsAcc, currentCard];
         }, []);
-        content = <div style={{ textAlign: 'left' }}>{wordFields}</div>;
+        content = <div className="cards">{cardElements}</div>;
       }
       break;
     }

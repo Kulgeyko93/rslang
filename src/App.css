@@ -31,9 +31,17 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(10px)
+    transform: translateY(10px);
   }
   100% {
-    transform: translateY(0px)
+    transform: translateY(0px);
+  }
+}
+
+@media (max-width: 800px) {
+   .recharts-text.recharts-cartesian-axis-tick-value[text-anchor="middle"] {
+    transform: rotate(90deg) translate(59px, -14px);
+    transform-origin: 50% 0%;
+    transform-box: fill-box;
   }
 }

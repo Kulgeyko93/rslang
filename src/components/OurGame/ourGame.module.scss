@@ -1,0 +1,85 @@
+.gameField:focus {
+  outline: none;
+  cursor: default;
+}
+.gameField:fullscreen {
+  width: 100vw;
+  height: 100vh;
+}
+.container {
+  padding: 0 3rem 3rem;
+}
+.heightWordImg {
+  height: 150px;
+}
+.flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.right {
+  text-align: start;
+}
+.left {
+  text-align: end;
+  margin-bottom: 2rem;
+}
+.words {
+  margin: 2rem auto;
+  max-width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.img {
+  cursor: pointer;
+}
+.img:hover {
+  transform: scale(1.05);
+}
+@media (max-width: 1200px) {
+  .words {
+    max-width: 100%;
+  }
+}
+@media (max-width: 991px) {
+  .container {
+    padding: 1rem;
+  }
+  .heightWordImg {
+    height: 130px;
+  }
+}
+@media (max-width: 800px) {
+  .words {
+    margin: 1rem 0;
+  }
+}
+@media (max-height: 767px) {
+  .root {
+    height: auto;
+  }
+}
+@media (max-width: 575px) {
+  .heightWordImg {
+    height: auto;
+  }
+  .left,
+  .right {
+    text-align: center;
+  }
+}
+
+.wordCorrectly{
+  color: black;
+  // text-shadow: 0 0 20px rgba(0, 0, 0);
+  transition: all 0.7s;
+}
+
+.wordNoCorrectly{
+  color: transparent;
+  text-shadow: 0 0 20px rgb(0, 0, 0);
+  transition: all 0.1s;
+}

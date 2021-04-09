@@ -4,9 +4,11 @@ import wordsReducer from '../features/words/wordsSlice';
 import authReducer from '../features/auth/authSlice';
 import gamesReducer from '../features/games/gamesSlice';
 import gameReducer from '../features/game/gameSlice';
+import audiocallReducer from '../features/audiocall/audiocallSlice';
 
 export const store = configureStore({
   reducer: {
+    audiocall: audiocallReducer,
     counter: counterReducer,
     words: wordsReducer,
     auth: authReducer,

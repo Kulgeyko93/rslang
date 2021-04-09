@@ -1,5 +1,6 @@
 export const STORAGE_KEYS = {
   AUTH: 'auth',
+  STATISTICS: 'statistics',
   AUTH_TIME: 'auth_time',
 };
 

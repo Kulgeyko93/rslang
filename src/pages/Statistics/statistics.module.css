@@ -1,15 +1,34 @@
 .statisticsImg {
-  max-width: 95vw;
+  max-width: 90vw;
+  margin: 0 auto;
 }
+.first,
 .color {
   background-color: rgb(190, 190, 190);
   margin-top: 0;
 }
-.margin {
-  margin: 3rem auto;
+.container {
+  max-width: 60%;
+  margin: 0 auto;
 }
-@media (max-width: 768px) {
-  .mainScreenImg {
-    max-width: 100vw;
+.margin {
+  margin: 3rem auto 1rem;
+}
+@media (max-width: 1000px) {
+  .container {
+    max-width: 80%;
+  }
+}
+@media (max-width: 800px) {
+  .first {
+    margin-top: 5px;
+  }
+}
+@media (max-width: 550px) {
+  .margin {
+    margin: 2rem auto 1rem;
+  }
+  .container {
+    max-width: 100%;
   }
 }

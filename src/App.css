@@ -13,3 +13,14 @@ h3 {
   font-size: 18px;
   line-height: 21px;
 }
+
+@media (max-width: 800px) {
+  .recharts-text.recharts-cartesian-axis-tick-value[text-anchor='middle'] {
+    transform: rotate(90deg) translate(64px, -12px);
+    transform-origin: 50% 0%;
+    transform-box: fill-box;
+  }
+}
+rect.recharts-brush-slide {
+  fill: rgb(255, 186, 186);
+}

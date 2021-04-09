@@ -5,7 +5,7 @@ import yesImg from '../../assets/icons/yes.svg';
 import noImg from '../../assets/icons/no.svg';
 import { pushWrongAnswers, pushCorrectAnswers } from '../../features/game/gameSlice';
 import { sound } from '../../utils/sound';
-import { Word } from '../../features/types';
+import { Word } from '../../types';
 import { GAME_ANSWERS_CODES } from '../../const/games';
 import styles from './possibleAnswer.module.css';
 
@@ -87,11 +87,15 @@ const PossibleAnswer = ({
       >
         {!isNewGroupWords && isShowAnswer && isWrongAnswer && <Image width="10" height="auto" src={noImg} />}
         {!isNewGroupWords && isShowAnswer && isCorrectAnswer && <Image width="20" height="auto" src={yesImg} />}
-        {
-          gameCheck === 'ourGame'
-            ? <><span className={styles.color}>{index + 1}</span> {word.word}</>
-            : <><span className={styles.color}>{index + 1}</span> {word.wordTranslate}</>
-        }
+        {gameCheck === 'ourGame' ? (
+          <>
+            <span className={styles.color}>{index + 1}</span> {word.word}
+          </>
+        ) : (
+          <>
+            <span className={styles.color}>{index + 1}</span> {word.wordTranslate}
+          </>
+        )}
         {/* <span className={styles.color}>{index + 1}</span> {word.wordTranslate} */}
       </span>
     </div>

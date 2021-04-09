@@ -1,0 +1,46 @@
+.group-page {
+  .cards {
+    text-align: left;
+    margin: 70px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 425px);
+    grid-gap: 70px 150px;
+    justify-content: center;
+  }
+
+  h3 {
+    font-size: 18px;
+    line-height: 66px;
+    background-color: rgba(253, 203, 157, 0.5);
+  }
+
+  .card {
+    width: 425px;
+    height: 460px;
+  }
+
+  .card-img {
+    width: 170px;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .btn {
+    white-space: nowrap;
+    font-size: 14px;
+  }
+
+  .row {
+    margin-bottom: 10px;
+  }
+
+  .row.middle {
+    height: 240px;
+
+    .col {
+      align-items: center;
+    }
+  }
+}

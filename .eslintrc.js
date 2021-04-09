@@ -37,6 +37,7 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 0,
     'react/jsx-one-expression-per-line': 'off',
     'react/button-has-type': 'off',
+    'no-underscore-dangle': ['error', { allow: ['_id'] }],
   },
   plugins: ['react', '@typescript-eslint'],
   settings: {

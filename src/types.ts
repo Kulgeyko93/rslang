@@ -3,6 +3,7 @@ export enum Status {
   Loading = 'LOADING',
   Succeeded = 'SUCCEEDED',
   Failed = 'FAILED',
+  Authorized = 'AUTHORIZED',
 }
 
 export interface EntityState<T> {
@@ -26,4 +27,21 @@ export interface Word {
   textExampleTranslate: string;
   textMeaningTranslate: string;
   wordTranslate: string;
+}
+
+export enum Difficulty {
+  Easy = 'EASY',
+  Hard = 'HARD',
+}
+
+export interface UserWord {
+  difficulty?: Difficulty;
+  optional?: {
+    isDeleted: boolean;
+  };
+}
+
+export interface UserAggregatedWord extends Word {
+  _id: string;
+  userWord: UserWord;
 }

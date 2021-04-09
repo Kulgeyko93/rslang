@@ -37,6 +37,9 @@ export const authSlice = createSlice({
       state.status = Status.Succeeded;
       state.data = action.payload;
     },
+    setAuthorizedStatus: (state) => {
+      state.status = Status.Authorized;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
@@ -53,7 +56,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setAuthData } = authSlice.actions;
+export const { setAuthData, setAuthorizedStatus } = authSlice.actions;
 
 export function selectAuthStatus(state: RootState): AuthState['status'] {
   return state.auth.status;

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import Sprinter from './components/Sprinter/Sprinter';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -12,8 +13,8 @@ import Group from './pages/Group';
 import { Counter } from './features/counter/Counter';
 import { Words } from './features/words/Words';
 import './App.css';
-import { loginUser, selectAuthData, setAuthData } from './features/auth/authSlice';
-import { STORAGE_KEYS } from './constants';
+import { loginUser, selectAuthData, setAuthData, setAuthorizedStatus } from './features/auth/authSlice';
+import { STORAGE_KEYS, TOKEN_EXPIRE_TIME } from './constants';
 import Games from './pages/Games/Games';
 
 const App = (): JSX.Element => {
@@ -21,16 +22,27 @@ const App = (): JSX.Element => {
   const authData = useSelector(selectAuthData);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem(STORAGE_KEYS.AUTH);
-    if (storedAuth) {
+    let isTokenExpired = true;
+    const serializedAuthTime = localStorage.getItem(STORAGE_KEYS.AUTH_TIME);
+    if (serializedAuthTime) {
+      const authTime = Number(serializedAuthTime);
+      const currentTime = new Date().getTime();
+      const expiredTime = currentTime - authTime;
+      isTokenExpired = expiredTime >= TOKEN_EXPIRE_TIME;
+    }
+    const serializedAuthData = localStorage.getItem(STORAGE_KEYS.AUTH);
+    if (serializedAuthData && !isTokenExpired) {
       try {
-        const authObj = JSON.parse(storedAuth);
-        dispatch(setAuthData(authObj));
+        const storedAuthData = JSON.parse(serializedAuthData);
+        dispatch(setAuthData(storedAuthData));
       } catch (e) {
         /* eslint-disable-next-line no-console */
         console.error(e);
+        dispatch(setAuthData(null));
       }
     } else {
+      localStorage.removeItem(STORAGE_KEYS.AUTH_TIME);
+      localStorage.removeItem(STORAGE_KEYS.AUTH);
       dispatch(
         loginUser({
           email: 'a@a.com',
@@ -43,7 +55,16 @@ const App = (): JSX.Element => {
   useEffect(() => {
     const storedAuth = localStorage.getItem(STORAGE_KEYS.AUTH);
     if (!storedAuth && authData) {
+      const currentTime = new Date().getTime();
+      localStorage.setItem(STORAGE_KEYS.AUTH_TIME, String(currentTime));
       localStorage.setItem(STORAGE_KEYS.AUTH, JSON.stringify(authData));
+    }
+  }, [authData]);
+
+  useEffect(() => {
+    if (authData && authData.token) {
+      axios.defaults.headers.common.Authorization = `Bearer ${authData.token}`;
+      dispatch(setAuthorizedStatus());
     }
   }, [authData]);
 

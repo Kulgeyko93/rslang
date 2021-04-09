@@ -1,5 +1,6 @@
 export const STORAGE_KEYS = {
   AUTH: 'auth',
+  AUTH_TIME: 'auth_time',
 };
 
 export const GROUP_COLORS = [
@@ -10,3 +11,5 @@ export const GROUP_COLORS = [
   [193, 237, 232],
   [193, 197, 237],
 ];
+
+export const TOKEN_EXPIRE_TIME = 4 * 60 * 60 * 1000;

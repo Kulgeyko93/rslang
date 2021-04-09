@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Status, EntityState } from '../types';
 
-export function useRequest<T>(fetch: () => Promise<T>): EntityState<T> {
+export function useRequest<T>(fetch: () => Promise<T>, dependencies: any[] = []): EntityState<T> {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState(undefined);
   const [status, setStatus] = useState(Status.Idle);
@@ -23,7 +23,7 @@ export function useRequest<T>(fetch: () => Promise<T>): EntityState<T> {
       }
     }
     run();
-  }, []);
+  }, dependencies);
 
   return {
     status,

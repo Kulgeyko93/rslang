@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-danger */
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
@@ -47,7 +48,6 @@ const OurGame = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const [isShowAnswer, setIsShowAnswer] = React.useState(false);
-  const [counter, setCounter] = React.useState(0);
   const [isEndGame, setIsEndGame] = React.useState(false);
   const [isNewGroupWords, setIsNewGroupWords] = React.useState(false);
   const [isFirstClick, setIsFirstClick] = React.useState(true);
@@ -56,19 +56,16 @@ const OurGame = (): JSX.Element => {
 
   const textWithCurrentWord = React.useMemo(() => {
     let currentWordText: Array<string>;
-    if (counter === 20) {
+    if (currentWord === undefined) {
       setIsEndGame(true);
+      return [''];
     }
     if (currentWord !== null) {
       const currentWordWithTag = currentWord.textExample.match(/<b>[a-zA-Z]{1,}<\/b>/);
-
       let currentWordInOffer;
       if (currentWordWithTag !== null) {
-        // console.log(`adasdasdasdas      ${currentWordWithTag[0]}`);
         currentWordInOffer = currentWordWithTag[0].slice(3, currentWordWithTag.length - 5);
-        console.log(currentWordInOffer, `counter=${counter}`);
       }
-      // const currentWordInOffer = currentWordWithTag.slice(3, currentWordWithTag.length - 4);
 
       const currentWordTextArr = currentWord.textExample.split(`<b>${currentWordInOffer}</b>`);
       if (currentWordTextArr[0] === undefined) {
@@ -83,25 +80,6 @@ const OurGame = (): JSX.Element => {
     }
     return currentWordText;
   }, [currentWord]);
-
-  // React.useEffect(() => {
-  //   console.log(document.querySelector(`${currentWordRef.current.className[0]} b`));
-  // }, []);
-
-  // React.useEffect(() => {
-  //   if (currentWord && !isAudioCallGameEnd) {
-  //     const currentWordText = `${process.env.REACT_APP_BASE_URL}`;
-  //     sound.playSound(currentWordText, volume);
-  //     console.log(currentWord.textExample);
-  //   }
-  // }, [currentWord]);
-
-  // const onInputClick = () => {
-  //   if (currentWord) {
-  //     const currentWordText = `${process.env.REACT_APP_BASE_URL}/${currentWord.audio}`;
-  //     sound.playSound(currentWordText, volume);
-  //   }
-  // };
 
   const onDontKnowBtnClick = () => {
     setIsFirstClick(false);
@@ -120,7 +98,6 @@ const OurGame = (): JSX.Element => {
     dispatch(setPlayWordsArray());
     setIsNewGroupWords(true);
     setIsFirstClick(true);
-    setCounter(counter + 1);
   };
 
   const handlerOnKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
@@ -131,9 +108,6 @@ const OurGame = (): JSX.Element => {
       } else if (event.key === ARROW_CODE && isShowAnswer) {
         onNextBtnClick();
       }
-      // else if (event.key === PLUS_CODE) {
-      //   onInputClick();
-      // }
     }
   };
   const handlerOnFocus = () => {
@@ -167,28 +141,29 @@ const OurGame = (): JSX.Element => {
             <Row className={styles.heightWordImg}>
               <div className={styles.currentWord}>
                 {
-                  textWithCurrentWord.map((item) => {
+                  textWithCurrentWord.map((item, index) => {
                     if (item.includes('<b>')) {
-                      return <span key={item.length * 2} className={isShowAnswer ? styles.wordCorrectly : styles.wordNoCorrectly} dangerouslySetInnerHTML={{ __html: `&nbsp;${item}&nbsp;` }} />;
+                      return <span key={index} className={isShowAnswer ? styles.wordCorrectly : styles.wordNoCorrectly} dangerouslySetInnerHTML={{ __html: `&nbsp;${item}&nbsp;` }} />;
                     }
-                    return <span key={item.length * 2}>{item}</span>;
+                    return <span key={index}>{item}</span>;
                   })
                 }
-                {isShowAnswer && currentWord && (
-                  <Row className={styles.heightWordImg}>
-                    <Col className={styles.right} lg={6} md={6} sm={6} xs={12}>
-                      <Figure>
-                        <Figure.Image
-                          width="50%"
-                          height="auto"
-                          alt="рисунок для слова"
-                          src={`${process.env.REACT_APP_BASE_URL}/${currentWord.image}`}
-                        />
-                      </Figure>
-                    </Col>
-                  </Row>
-                )}
               </div>
+              {isShowAnswer && currentWord && (
+                <Row className={styles.heightWordImg}>
+                  <Col className={styles.right} lg={6} md={6} sm={6} xs={12}>
+                    <Figure>
+                      <Figure.Image
+                        width="100%"
+                        height="auto"
+                        alt="рисунок для слова"
+                        src={`${process.env.REACT_APP_BASE_URL}/${currentWord.image}`}
+                      />
+                    </Figure>
+                  </Col>
+                </Row>
+              )}
+
             </Row>
             <Row>
               <Col className={styles.words} lg={12}>

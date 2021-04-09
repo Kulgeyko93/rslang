@@ -6,6 +6,7 @@ import gamesReducer from '../features/games/gamesSlice';
 import gameReducer from '../features/game/gameSlice';
 import statisticsReducer from '../features/statistics/statisticsSlice';
 
+
 export const store = configureStore({
   reducer: {
     counter: counterReducer,

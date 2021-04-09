@@ -5,7 +5,7 @@ import yesImg from '../../assets/icons/yes.svg';
 import noImg from '../../assets/icons/no.svg';
 import { pushWrongAnswers, pushCorrectAnswers } from '../../features/game/gameSlice';
 import { sound } from '../../utils/sound';
-import { Word } from '../../features/types';
+import { Word } from '../../types';
 import { GAME_ANSWERS_CODES } from '../../const/games';
 import styles from './possibleAnswer.module.css';
 
@@ -24,6 +24,7 @@ type PropsType = {
   setIsFirstClick: any;
   soundVolume: number;
   pressedKeyboardKey: string;
+  gameCheck?: string;
 };
 
 const PossibleAnswer = ({
@@ -38,6 +39,7 @@ const PossibleAnswer = ({
   setIsFirstClick,
   soundVolume,
   pressedKeyboardKey,
+  gameCheck,
 }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
   const [isCorrectAnswer, setIsCorrectAnswer] = React.useState(false);
@@ -85,10 +87,23 @@ const PossibleAnswer = ({
       >
         {!isNewGroupWords && isShowAnswer && isWrongAnswer && <Image width="10" height="auto" src={noImg} />}
         {!isNewGroupWords && isShowAnswer && isCorrectAnswer && <Image width="20" height="auto" src={yesImg} />}
-        <span className={styles.color}>{index + 1}</span> {word.wordTranslate}
+        {gameCheck === 'ourGame' ? (
+          <>
+            <span className={styles.color}>{index + 1}</span> {word.word}
+          </>
+        ) : (
+          <>
+            <span className={styles.color}>{index + 1}</span> {word.wordTranslate}
+          </>
+        )}
+        {/* <span className={styles.color}>{index + 1}</span> {word.wordTranslate} */}
       </span>
     </div>
   );
 };
 
 export default PossibleAnswer;
+
+PossibleAnswer.defaultProps = {
+  gameCheck: '',
+};

@@ -1,11 +1,11 @@
 /* eslint-disable array-callback-return */
-import { IWord } from '../interface/interfaces';
+import { Word } from '../features/types';
 
-export const createArrayEnAndRUWords = (wordList: Array<IWord>): Array<Array<string>> => {
+export const createArrayEnAndRUWords = (wordList: Array<Word>): Array<Array<string>> => {
   const resultRu: Array<string> = [];
   const resultEn: Array<string> = [];
 
-  wordList.map((item: IWord) => {
+  wordList.map((item: Word) => {
     resultEn.push(item.word);
     resultRu.push(item.wordTranslate);
   });

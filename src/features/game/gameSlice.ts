@@ -50,13 +50,51 @@ export const gameSlice = createSlice({
       state.originWordsArray = createGameArray(data, newArrayOfIndices);
     },
     setPlayWordsArray: (state) => {
-      if (state.currentWordIndex < state.originWordsArray.length && state.wrongAnswers.length < 5) {
-        const data = state.originWordsArray;
-        const newArrayOfIndices = getRandomArray(data.length, wordsPerPage);
-        const newPlayWordsArray = createWordsArray(data, newArrayOfIndices, state.currentWordIndex);
-        state.playWordsArray = newPlayWordsArray;
-      } else {
-        state.isGameEnd = true;
+      switch (state.currentGame) {
+        case 'audiocall': {
+          if (state.currentWordIndex < state.originWordsArray.length && state.wrongAnswers.length < 5) {
+            const data = state.originWordsArray;
+            const newArrayOfIndices = getRandomArray(data.length, wordsPerPage);
+            const newPlayWordsArray = createWordsArray(data, newArrayOfIndices, state.currentWordIndex);
+            state.playWordsArray = newPlayWordsArray;
+          } else {
+            state.isGameEnd = true;
+          }
+          break;
+        }
+        case 'savannah': {
+          if (state.currentWordIndex < state.originWordsArray.length && state.wrongAnswers.length < 5) {
+            const data = state.originWordsArray;
+            const newArrayOfIndices = getRandomArray(data.length, wordsPerPage);
+            const newPlayWordsArray = createWordsArray(data, newArrayOfIndices, state.currentWordIndex);
+            state.playWordsArray = newPlayWordsArray;
+          } else {
+            state.isGameEnd = true;
+          }
+          break;
+        }
+        case 'sprint': {
+          if (state.currentWordIndex < state.originWordsArray.length) {
+            state.playWordsArray = state.originWordsArray;
+          } else {
+            state.isGameEnd = true;
+          }
+          break;
+        }
+        case 'newgame': {
+          if (state.currentWordIndex < state.originWordsArray.length && state.wrongAnswers.length < 5) {
+            const data = state.originWordsArray;
+            const newArrayOfIndices = getRandomArray(data.length, wordsPerPage);
+            const newPlayWordsArray = createWordsArray(data, newArrayOfIndices, state.currentWordIndex);
+            state.playWordsArray = newPlayWordsArray;
+          } else {
+            state.isGameEnd = true;
+          }
+          break;
+        }
+        default: {
+          state.isGameEnd = true;
+        }
       }
     },
     setCurrentWord: (state) => {

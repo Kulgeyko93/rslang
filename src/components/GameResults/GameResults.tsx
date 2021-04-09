@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import closeImg from '../../assets/icons/close.svg';
 import { setInitSettings } from '../../features/game/gameSlice';
-import { Word } from '../../features/types';
+import { Word } from '../../types';
 import GameResultsItem from '../GameResultsItem/GameResultsItem';
 import styles from './gameResults.module.css';
 

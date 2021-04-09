@@ -2,6 +2,7 @@
   max-width: 90vw;
   margin: 0 auto;
 }
+.first,
 .color {
   background-color: rgb(190, 190, 190);
   margin-top: 0;
@@ -16,6 +17,11 @@
 @media (max-width: 1000px) {
   .container {
     max-width: 80%;
+  }
+}
+@media (max-width: 800px) {
+  .first {
+    margin-top: 5px;
   }
 }
 @media (max-width: 550px) {

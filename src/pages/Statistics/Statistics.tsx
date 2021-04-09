@@ -1,111 +1,76 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import statisticsImg from '../../assets/statistics.png';
 import styles from './statistics.module.css';
-import { games } from '../../const/games';
 import StatisticsBarChart from '../../components/StatisticsBarChart/StatisticsBarChart';
 import StatisticsLineChart from '../../components/StatisticsLineChart/StatisticsLineChart';
+import { getDayAndMonth } from '../../utils/getDayAndMonth';
+import { learnedWords, setStatistics, correctAnswers, seriesAnswers } from '../../features/statistics/statisticsSlice';
 
-export type BarChartDataItem = {
-  name: string;
+export interface LineChartDataItem {
+  date: string;
   value: number;
-  label: string;
-};
-export type LineChartDataItem = {
-  name: string;
-  value: number;
-};
+}
 
-const learnedWords: Array<BarChartDataItem> = [
-  { name: games[0].nameRU, value: 9, label: '9 слов' },
-  { name: games[1].nameRU, value: 7, label: '7 слов' },
-  { name: games[2].nameRU, value: 0, label: '0 слов' },
-  { name: games[3].nameRU, value: 20, label: '21 слово' },
-  { name: 'Общее кол-во', value: 20, label: '20 слов' },
-];
-const correctAnswers: Array<BarChartDataItem> = [
-  { name: games[0].nameRU, value: 90, label: '90%' },
-  { name: games[1].nameRU, value: 7, label: '7%' },
-  { name: games[2].nameRU, value: 0, label: '0%' },
-  { name: games[3].nameRU, value: 20, label: '21%' },
-  { name: 'Общий %', value: 20, label: '20%' },
-];
-const seriesCorrectAnswers: Array<BarChartDataItem> = [
-  { name: games[0].nameRU, value: 90, label: '90' },
-  { name: games[1].nameRU, value: 7, label: '7' },
-  { name: games[2].nameRU, value: 0, label: '0' },
-  { name: games[3].nameRU, value: 20, label: '21' },
-];
+console.log(getDayAndMonth());
+
 const allLearnedWords: Array<LineChartDataItem> = [
-  { name: '1', value: 20 },
-  { name: '2', value: 7 },
-  { name: '3', value: 0 },
-  { name: '4', value: 10 },
-  { name: '5', value: 10 },
-  { name: '6', value: 10 },
-  { name: '7', value: 10 },
-  { name: '8', value: 10 },
-  { name: '9', value: 10 },
-  { name: '10', value: 10 },
-  { name: '11', value: 10 },
-  { name: '12', value: 10 },
-  { name: '1', value: 20 },
-  { name: '2', value: 7 },
-  { name: '3', value: 0 },
-  { name: '4', value: 10 },
-  { name: '5', value: 10 },
-  { name: '6', value: 10 },
-  { name: '7', value: 10 },
-  { name: '8', value: 10 },
-  { name: '9', value: 10 },
-  { name: '10', value: 10 },
-  { name: '11', value: 10 },
-  { name: '12', value: 10 },
-  { name: '8', value: 10 },
-  { name: '9', value: 10 },
-  { name: '10', value: 10 },
-  { name: '11', value: 10 },
-  { name: '12', value: 10 },
-  { name: '12', value: 10 },
-  { name: '8', value: 10 },
-  { name: '9', value: 10 },
-  { name: '10', value: 10 },
-  { name: '11', value: 10 },
-  { name: '12', value: 10 },
+  { date: '1 апреля', value: 20 },
+  { date: '2 апреля', value: 10 },
+  { date: '3 апреля', value: 0 },
+  { date: '5 апреля', value: 10 },
+  { date: '6 апреля', value: 10 },
+  { date: '7 апреля', value: 10 },
+  { date: '9 апреля', value: 10 },
 ];
-const month = 'апреля';
+let sum = 0;
+const increaseLearnedWords = allLearnedWords.map((item) => {
+  sum += item.value;
+  return { date: item.date, value: sum };
+});
 
-const Statistics = (): JSX.Element => (
-  <div>
-    <Container fluid>
-      <h4>Статистика</h4>
-      <img className={styles.statisticsImg} src={statisticsImg} alt="Ученики и графики" />
-      <hr className={styles.color} />
-      <h5 className={styles.margin}>Количество слов, выученных сегодня </h5>
-      <div className={styles.container}>
-        <StatisticsBarChart chartData={learnedWords} />
-      </div>
-      <hr className={styles.color} />
-      <h5 className={styles.margin}>Процент правильных ответов в играх</h5>
-      <div className={styles.container}>
-        <StatisticsBarChart chartData={correctAnswers} />
-      </div>
-      <hr className={styles.color} />
-      <h5 className={styles.margin}>Самая длинная серия правильных ответов в каждой игре</h5>
-      <div className={styles.container}>
-        <StatisticsBarChart chartData={seriesCorrectAnswers} />
-      </div>
-      <hr className={styles.color} />
-      <h5 className={styles.margin}>Количество выученных слов за весь период обучения по дням</h5>
-      <div className={styles.container}>
-        <StatisticsLineChart chartData={allLearnedWords} month={month} />
-      </div>
-      <h5 className={styles.margin}>Увеличение общего количества выученных слов за весь период обучения по дням</h5>
-      <div className={styles.container}>
-        <StatisticsLineChart chartData={allLearnedWords} month={month} />
-      </div>
-    </Container>
-  </div>
-);
+const Statistics = (): JSX.Element => {
+  const learnedWordsData = useSelector(learnedWords);
+  const correctAnswersData = useSelector(correctAnswers);
+  const seriesCorrectAnswersData = useSelector(seriesAnswers);
+
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(setStatistics());
+  }, []);
+  return (
+    <div>
+      <Container fluid>
+        <h4>Статистика</h4>
+        <img className={styles.statisticsImg} src={statisticsImg} alt="Ученики и графики" />
+        <hr className={styles.color} />
+        <h5 className={styles.margin}>Количество слов, изученных сегодня </h5>
+        <div className={styles.container}>
+          <StatisticsBarChart chartData={learnedWordsData} />
+        </div>
+        <hr className={styles.first} />
+        <h5 className={styles.margin}>Процент правильных ответов в играх</h5>
+        <div className={styles.container}>
+          <StatisticsBarChart chartData={correctAnswersData} />
+        </div>
+        <hr className={styles.color} />
+        <h5 className={styles.margin}>Самая длинная серия правильных ответов в каждой игре</h5>
+        <div className={styles.container}>
+          <StatisticsBarChart chartData={seriesCorrectAnswersData} />
+        </div>
+        <hr className={styles.color} />
+        <h5 className={styles.margin}>Количество изученных слов за весь период обучения по дням</h5>
+        <div className={styles.container}>
+          <StatisticsLineChart chartData={allLearnedWords} />
+        </div>
+        <h5 className={styles.margin}>Увеличение общего количества изученных слов за весь период обучения по дням</h5>
+        <div className={styles.container}>
+          <StatisticsLineChart chartData={increaseLearnedWords} />
+        </div>
+      </Container>
+    </div>
+  );
+};
 
 export default Statistics;

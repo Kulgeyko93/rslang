@@ -4,6 +4,7 @@ import wordsReducer from '../features/words/wordsSlice';
 import authReducer from '../features/auth/authSlice';
 import gamesReducer from '../features/games/gamesSlice';
 import gameReducer from '../features/game/gameSlice';
+import statisticsReducer from '../features/statistics/statisticsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     auth: authReducer,
     games: gamesReducer,
     game: gameReducer,
+    statistics: statisticsReducer,
   },
 });
 

@@ -81,6 +81,17 @@ export const gameSlice = createSlice({
           }
           break;
         }
+        case 'newgame': {
+          if (state.currentWordIndex < state.originWordsArray.length && state.wrongAnswers.length < 5) {
+            const data = state.originWordsArray;
+            const newArrayOfIndices = getRandomArray(data.length, wordsPerPage);
+            const newPlayWordsArray = createWordsArray(data, newArrayOfIndices, state.currentWordIndex);
+            state.playWordsArray = newPlayWordsArray;
+          } else {
+            state.isGameEnd = true;
+          }
+          break;
+        }
         default: {
           state.isGameEnd = true;
         }

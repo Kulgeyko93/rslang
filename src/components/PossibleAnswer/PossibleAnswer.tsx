@@ -24,6 +24,7 @@ type PropsType = {
   setIsFirstClick: any;
   soundVolume: number;
   pressedKeyboardKey: string;
+  gameCheck?: string;
 };
 
 const PossibleAnswer = ({
@@ -38,6 +39,7 @@ const PossibleAnswer = ({
   setIsFirstClick,
   soundVolume,
   pressedKeyboardKey,
+  gameCheck,
 }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
   const [isCorrectAnswer, setIsCorrectAnswer] = React.useState(false);
@@ -85,10 +87,19 @@ const PossibleAnswer = ({
       >
         {!isNewGroupWords && isShowAnswer && isWrongAnswer && <Image width="10" height="auto" src={noImg} />}
         {!isNewGroupWords && isShowAnswer && isCorrectAnswer && <Image width="20" height="auto" src={yesImg} />}
-        <span className={styles.color}>{index + 1}</span> {word.wordTranslate}
+        {
+          gameCheck === 'ourGame'
+            ? <><span className={styles.color}>{index + 1}</span> {word.word}</>
+            : <><span className={styles.color}>{index + 1}</span> {word.wordTranslate}</>
+        }
+        {/* <span className={styles.color}>{index + 1}</span> {word.wordTranslate} */}
       </span>
     </div>
   );
 };
 
 export default PossibleAnswer;
+
+PossibleAnswer.defaultProps = {
+  gameCheck: '',
+};

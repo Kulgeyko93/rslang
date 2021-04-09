@@ -16,10 +16,13 @@ import './App.css';
 import { loginUser, selectAuthData, setAuthData, setAuthorizedStatus } from './features/auth/authSlice';
 import { STORAGE_KEYS, TOKEN_EXPIRE_TIME } from './constants';
 import Games from './pages/Games/Games';
+import { isPlaying } from './features/game/gameSlice';
+import Statistics from './pages/Statistics/Statistics';
 
 const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const authData = useSelector(selectAuthData);
+  const isGamePlaying = useSelector(isPlaying);
 
   useEffect(() => {
     let isTokenExpired = true;
@@ -70,7 +73,7 @@ const App = (): JSX.Element => {
 
   return (
     <div className="App">
-      <Header />
+      {!isGamePlaying && <Header />}
       <main>
         <Switch>
           <Route exact path="/" component={Main} />
@@ -81,10 +84,11 @@ const App = (): JSX.Element => {
           <Route path="/sprinter" component={Sprinter} />
           <Route exact path="/textbook" component={Textbook} />
           <Route exact path="/groups/:groupId" component={Group} />
+          <Route exact path="/statistics" component={Statistics} />
           <Route path="*" component={NotFound} />
         </Switch>
       </main>
-      <Footer />
+      {!isGamePlaying && <Footer />}
     </div>
   );
 };

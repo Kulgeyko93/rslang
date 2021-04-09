@@ -1,75 +1,85 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/no-danger */
+/* eslint-disable consistent-return */
+/* eslint-disable max-len */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image';
-import Button from 'react-bootstrap/Button';
-import Figure from 'react-bootstrap/Figure';
-import volumeImg from '../../assets/icons/volume.svg';
+import { Container, Figure, Row, Col, Button } from 'react-bootstrap';
 import {
-  isGameEnd,
+  // isGameEnd,
   playWord,
   playWords,
   pushWrongAnswers,
   setCurrentWord,
   setCurrentWordIndex,
   setPlayWordsArray,
+  // setIsGameEnd,
 } from '../../features/game/gameSlice';
 import { soundsVolume } from '../../features/games/gamesSlice';
 import { sound } from '../../utils/sound';
-import { ARROW_CODE, ENTER_CODE, games, PLUS_CODE, volume } from '../../const/games';
+import { ARROW_CODE, ENTER_CODE, games } from '../../const/games';
 import GameHeader from '../GameHeader/GameHeader';
 import GameDescription from '../GameDescription/GameDescription';
 import EndGame from '../EndGame/EndGame';
 import PossibleAnswer from '../PossibleAnswer/PossibleAnswer';
 import ScrollToTopOnMount from '../ScrollToTopOnMount/ScrollToTopOnMount';
-import styles from './AudioCallGame.module.css';
+import styles from './ourGame.module.scss';
+import { Word } from '../../features/types';
 
 const wrongSound = 'assets/sounds/wrong.mp3';
 
-const text = {
-  color: '#000',
-  fontSize: '1.1rem',
-  fontWeight: 600,
-};
 const gameField = {
   cursor: 'default',
-  backgroundColor: '#fdff95',
+  backgroundColor: '#ffb5d8',
 };
 const root = {
   padding: 0,
 };
 
-const AudioCallGame = (): JSX.Element => {
+const OurGame = (): JSX.Element => {
   const gameRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  // const currentWordRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
   const words = useSelector(playWords);
-  const currentWord = useSelector(playWord);
-  const isAudioCallGameEnd = useSelector(isGameEnd);
+  const currentWord: Word | null = useSelector(playWord);
+  // const isAudioCallGameEnd = useSelector(isGameEnd);
   const soundVolume = useSelector(soundsVolume);
 
   const dispatch = useDispatch();
 
   const [isShowAnswer, setIsShowAnswer] = React.useState(false);
+  const [isEndGame, setIsEndGame] = React.useState(false);
   const [isNewGroupWords, setIsNewGroupWords] = React.useState(false);
   const [isFirstClick, setIsFirstClick] = React.useState(true);
   const [pressedKeyboardKey, setPressedKeyboardKey] = React.useState('');
   const [isKeyboardActive, setIsKeyboardActive] = React.useState(false);
 
-  React.useEffect(() => {
-    if (currentWord && !isAudioCallGameEnd) {
-      const soundUrl = `${process.env.REACT_APP_BASE_URL}/${currentWord.audio}`;
-      sound.playSound(soundUrl, volume);
+  const textWithCurrentWord = React.useMemo(() => {
+    let currentWordText: Array<string>;
+    if (currentWord === undefined) {
+      setIsEndGame(true);
+      return [''];
     }
-  }, [currentWord]);
+    if (currentWord !== null) {
+      const currentWordWithTag = currentWord.textExample.match(/<b>[a-zA-Z]{1,}<\/b>/);
+      let currentWordInOffer;
+      if (currentWordWithTag !== null) {
+        currentWordInOffer = currentWordWithTag[0].slice(3, currentWordWithTag.length - 5);
+      }
 
-  const onSoundImgClick = () => {
-    if (currentWord) {
-      const soundUrl = `${process.env.REACT_APP_BASE_URL}/${currentWord.audio}`;
-      sound.playSound(soundUrl, volume);
+      const currentWordTextArr = currentWord.textExample.split(`<b>${currentWordInOffer}</b>`);
+      if (currentWordTextArr[0] === undefined) {
+        currentWordText = [`<b>${currentWord.word}</b>`, currentWordTextArr[1]];
+      } else if (currentWordTextArr[1] === undefined) {
+        currentWordText = [currentWordTextArr[0], `<b>${currentWord.word}</b>`];
+      } else {
+        currentWordText = [currentWordTextArr[0], `<b>${currentWord.word}</b>`, currentWordTextArr[1]];
+      }
+    } else {
+      currentWordText = [''];
     }
-  };
+    return currentWordText;
+  }, [currentWord]);
 
   const onDontKnowBtnClick = () => {
     setIsFirstClick(false);
@@ -97,8 +107,6 @@ const AudioCallGame = (): JSX.Element => {
         onDontKnowBtnClick();
       } else if (event.key === ARROW_CODE && isShowAnswer) {
         onNextBtnClick();
-      } else if (event.key === PLUS_CODE) {
-        onSoundImgClick();
       }
     }
   };
@@ -112,7 +120,7 @@ const AudioCallGame = (): JSX.Element => {
   return (
     <Container fluid style={root}>
       <ScrollToTopOnMount />
-      {!isAudioCallGameEnd && (
+      {!isEndGame && (
         <div
           ref={gameRef}
           role="button"
@@ -124,37 +132,39 @@ const AudioCallGame = (): JSX.Element => {
           onBlur={handlerOnBlur}
         >
           <GameHeader
-            color={games[0].color}
+            color={games[3].color}
             soundVolume={soundVolume}
             gameRef={gameRef}
             isKeyboardActive={isKeyboardActive}
           />
           <Container fluid className={styles.container}>
-            {!isShowAnswer && (
-              <Row className={styles.heightWordImg}>
-                <Col lg={12} md={12} sm={12} xs={12}>
-                  <Image className={styles.img} width="60" height="auto" src={volumeImg} onClick={onSoundImgClick} />
-                </Col>
-              </Row>
-            )}
-            {isShowAnswer && currentWord && (
-              <Row className={styles.heightWordImg}>
-                <Col className={styles.left} lg={6} md={6} sm={6} xs={12}>
-                  <Image className={styles.img} width="50" height="auto" src={volumeImg} onClick={onSoundImgClick} />
-                </Col>
-                <Col className={styles.right} lg={6} md={6} sm={6} xs={12}>
-                  <Figure>
-                    <Figure.Image
-                      width="50%"
-                      height="auto"
-                      alt="рисунок для слова"
-                      src={`${process.env.REACT_APP_BASE_URL}/${currentWord.image}`}
-                    />
-                    <Figure.Caption style={text}>{currentWord.word}</Figure.Caption>
-                  </Figure>
-                </Col>
-              </Row>
-            )}
+            <Row className={styles.heightWordImg}>
+              <div className={styles.currentWord}>
+                {
+                  textWithCurrentWord.map((item, index) => {
+                    if (item.includes('<b>')) {
+                      return <span key={index} className={isShowAnswer ? styles.wordCorrectly : styles.wordNoCorrectly} dangerouslySetInnerHTML={{ __html: `&nbsp;${item}&nbsp;` }} />;
+                    }
+                    return <span key={index}>{item}</span>;
+                  })
+                }
+              </div>
+              {isShowAnswer && currentWord && (
+                <Row className={styles.heightWordImg}>
+                  <Col className={styles.right} lg={6} md={6} sm={6} xs={12}>
+                    <Figure>
+                      <Figure.Image
+                        width="100%"
+                        height="auto"
+                        alt="рисунок для слова"
+                        src={`${process.env.REACT_APP_BASE_URL}/${currentWord.image}`}
+                      />
+                    </Figure>
+                  </Col>
+                </Row>
+              )}
+
+            </Row>
             <Row>
               <Col className={styles.words} lg={12}>
                 {words &&
@@ -172,6 +182,7 @@ const AudioCallGame = (): JSX.Element => {
                       setIsFirstClick={setIsFirstClick}
                       soundVolume={soundVolume}
                       pressedKeyboardKey={pressedKeyboardKey}
+                      gameCheck="ourGame"
                     />
                   ))}
               </Col>
@@ -192,13 +203,13 @@ const AudioCallGame = (): JSX.Element => {
                 </Col>
               )}
             </Row>
-            <GameDescription />
+            <GameDescription gameCheck="ourGame" />
           </Container>
         </div>
       )}
-      {isAudioCallGameEnd && <EndGame color={games[0].color} />}
+      {isEndGame && <EndGame color={games[0].color} />}
     </Container>
   );
 };
 
-export default AudioCallGame;
+export default OurGame;

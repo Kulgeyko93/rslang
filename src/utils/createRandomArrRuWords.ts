@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
-import { IWord } from '../interface/interfaces';
+import { Word } from '../features/types';
 
-export const createRandomArrRuWords = (wordList: Array<IWord>): Array<string> => {
+export const createRandomArrRuWords = (wordList: Array<Word>): Array<string> => {
   const result: Array<string> = [];
   const randomHalfWordList: Array<string> = [];
   let indexRandomHalf = 0;
@@ -13,7 +13,7 @@ export const createRandomArrRuWords = (wordList: Array<IWord>): Array<string> =>
     randomHalfWordList.push(wordList[randomIndex].wordTranslate);
   }
 
-  wordList.map((item: IWord) => {
+  wordList.map((item: Word) => {
     if (randomHalfWordList.includes(item.wordTranslate)) {
       result.push(randomHalfWordList[indexRandomHalf]);
       indexRandomHalf += 1;

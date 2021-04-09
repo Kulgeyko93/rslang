@@ -10,7 +10,10 @@
   padding: 0 3rem 3rem;
 }
 .heightWordImg {
-  height: 150px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  // height: 150px;
 }
 .flex {
   display: flex;
@@ -20,7 +23,8 @@
   flex-wrap: wrap;
 }
 .right {
-  text-align: start;
+  width: 100%;
+
 }
 .left {
   text-align: end;
@@ -49,7 +53,11 @@
     padding: 1rem;
   }
   .heightWordImg {
-    height: 130px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    // height: 130px;
   }
 }
 @media (max-width: 800px) {
@@ -64,10 +72,33 @@
 }
 @media (max-width: 575px) {
   .heightWordImg {
-    height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    // height: auto;
   }
   .left,
   .right {
     text-align: center;
   }
+}
+
+.wordCorrectly{
+  color: black;
+  // text-shadow: 0 0 20px rgba(0, 0, 0);
+  transition: all 0.7s;
+}
+
+.wordNoCorrectly{
+  color: transparent;
+  text-shadow: 0 0 20px rgb(0, 0, 0);
+  transition: all 0.1s;
+}
+
+.currentWord{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }

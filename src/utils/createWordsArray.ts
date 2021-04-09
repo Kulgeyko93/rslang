@@ -9,21 +9,14 @@ const createIndiciesArrayWithPlayWordIndex = (arrayOfIndices: Array<number>, pla
   return arrayOfIndices;
 };
 
+export const createGameArray = (originArray: Array<Word>, arrayOfIndices: Array<number>): Array<Word> =>
+  arrayOfIndices.map((indexNumber) => originArray[indexNumber]);
+
 export const createWordsArray = (
   originArray: Array<Word>,
   arrayOfIndices: Array<number>,
   playWordIndex: number,
 ): Array<Word> => {
   createIndiciesArrayWithPlayWordIndex(arrayOfIndices, playWordIndex);
-  return arrayOfIndices.reduce((resultArray: Array<Word>, indexNumber) => {
-    resultArray.push(originArray[indexNumber]);
-    return resultArray;
-  }, []);
+  return createGameArray(originArray, arrayOfIndices);
 };
-
-// eslint-disable-next-line max-len
-export const createGameArray = (originArray: Array<Word>, arrayOfIndices: Array<number>): Array<Word> =>
-  arrayOfIndices.reduce((resultArray: Array<Word>, indexNumber) => {
-    resultArray.push(originArray[indexNumber]);
-    return resultArray;
-  }, []);

@@ -7,21 +7,15 @@ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import closeImg from '../../assets/icons/close.svg';
 import { endGame } from '../../const/games';
-import AudioCallResults from '../AudioCallResults/AudioCallResults';
-import styles from './EndAudioCall.module.css';
-import {
-  correctAnswers,
-  setInitSettings,
-  setIsGameEnd,
-  setIsPlaying,
-  wrongAnswers,
-} from '../../features/audiocall/audiocallSlice';
+import styles from './endGame.module.css';
+import { correctAnswers, setInitSettings, wrongAnswers } from '../../features/game/gameSlice';
+import GameResults from '../GameResults/GameResults';
 
 type PropsType = {
   color: string;
 };
 
-const EndAudioCall = ({ color }: PropsType): JSX.Element => {
+const EndGame = ({ color }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
   const wrongAnswersArray = useSelector(wrongAnswers);
   const correctAnswersArray = useSelector(correctAnswers);
@@ -31,8 +25,6 @@ const EndAudioCall = ({ color }: PropsType): JSX.Element => {
   };
 
   const onCloseBtnClick = () => {
-    dispatch(setIsPlaying(false));
-    dispatch(setIsGameEnd(false));
     dispatch(setInitSettings());
   };
   return (
@@ -69,11 +61,9 @@ const EndAudioCall = ({ color }: PropsType): JSX.Element => {
           </Container>
         </Container>
       )}
-      {isShowResult && (
-        <AudioCallResults correctAnswersArray={correctAnswersArray} wrongAnswersArray={wrongAnswersArray} />
-      )}
+      {isShowResult && <GameResults correctAnswersArray={correctAnswersArray} wrongAnswersArray={wrongAnswersArray} />}
     </>
   );
 };
 
-export default EndAudioCall;
+export default EndGame;

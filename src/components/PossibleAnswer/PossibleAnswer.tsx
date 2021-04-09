@@ -3,10 +3,11 @@ import { useDispatch } from 'react-redux';
 import Image from 'react-bootstrap/Image';
 import yesImg from '../../assets/icons/yes.svg';
 import noImg from '../../assets/icons/no.svg';
-import styles from './PossibleAnswerOfAudioCall.module.css';
-import { pushWrongAnswers, pushCorrectAnswers } from '../../features/audiocall/audiocallSlice';
+import { pushWrongAnswers, pushCorrectAnswers } from '../../features/game/gameSlice';
 import { sound } from '../../utils/sound';
 import { Word } from '../../types';
+import { GAME_ANSWERS_CODES } from '../../const/games';
+import styles from './possibleAnswer.module.css';
 
 const correctSound = 'assets/sounds/correct.mp3';
 const wrongSound = 'assets/sounds/wrong.mp3';
@@ -17,49 +18,62 @@ type PropsType = {
   index: number;
   isShowAnswer: boolean;
   setIsShowAnswer: any;
-  isNewGame: boolean;
-  setIsNewGame: any;
+  isNewGroupWords: boolean;
+  setIsNewGroupWords: any;
   isFirstClick: boolean;
   setIsFirstClick: any;
   soundVolume: number;
+  pressedKeyboardKey: string;
+  gameCheck?: string;
 };
 
-const PossibleAnswerOfAudioCall = ({
+const PossibleAnswer = ({
   currentWord,
   word,
   index,
   isShowAnswer,
   setIsShowAnswer,
-  isNewGame,
-  setIsNewGame,
+  isNewGroupWords,
+  setIsNewGroupWords,
   isFirstClick,
   setIsFirstClick,
   soundVolume,
+  pressedKeyboardKey,
+  gameCheck,
 }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
-
   const [isCorrectAnswer, setIsCorrectAnswer] = React.useState(false);
   const [isWrongAnswer, setIsWrongAnswer] = React.useState(false);
 
+  React.useEffect(() => {
+    if (isNewGroupWords) {
+      setIsCorrectAnswer(false);
+      setIsWrongAnswer(false);
+    }
+  }, [isNewGroupWords]);
+
   const onSomeWordClick = () => {
     if (currentWord && isFirstClick) {
+      setIsNewGroupWords(false);
+      setIsShowAnswer(true);
+      setIsFirstClick(false);
       if (word.word === currentWord.word) {
-        setIsNewGame(false);
-        setIsShowAnswer(true);
         setIsCorrectAnswer(true);
-        setIsFirstClick(false);
         sound.playSound(correctSound, soundVolume);
         dispatch(pushCorrectAnswers(currentWord));
       } else {
-        setIsNewGame(false);
-        setIsShowAnswer(true);
         setIsWrongAnswer(true);
-        setIsFirstClick(false);
         sound.playSound(wrongSound, soundVolume);
         dispatch(pushWrongAnswers(currentWord));
       }
     }
   };
+
+  React.useEffect(() => {
+    if (!isShowAnswer && GAME_ANSWERS_CODES.includes(pressedKeyboardKey) && +pressedKeyboardKey === index + 1) {
+      onSomeWordClick();
+    }
+  }, [pressedKeyboardKey]);
 
   return (
     <div className={styles.word}>
@@ -71,12 +85,25 @@ const PossibleAnswerOfAudioCall = ({
         tabIndex={0}
         onClick={onSomeWordClick}
       >
-        {!isNewGame && isShowAnswer && isWrongAnswer && <Image width="10" height="auto" src={noImg} />}
-        {!isNewGame && isShowAnswer && isCorrectAnswer && <Image width="20" height="auto" src={yesImg} />}
-        <span className={styles.color}>{index + 1}</span> {word.wordTranslate}
+        {!isNewGroupWords && isShowAnswer && isWrongAnswer && <Image width="10" height="auto" src={noImg} />}
+        {!isNewGroupWords && isShowAnswer && isCorrectAnswer && <Image width="20" height="auto" src={yesImg} />}
+        {gameCheck === 'ourGame' ? (
+          <>
+            <span className={styles.color}>{index + 1}</span> {word.word}
+          </>
+        ) : (
+          <>
+            <span className={styles.color}>{index + 1}</span> {word.wordTranslate}
+          </>
+        )}
+        {/* <span className={styles.color}>{index + 1}</span> {word.wordTranslate} */}
       </span>
     </div>
   );
 };
 
-export default PossibleAnswerOfAudioCall;
+export default PossibleAnswer;
+
+PossibleAnswer.defaultProps = {
+  gameCheck: '',
+};

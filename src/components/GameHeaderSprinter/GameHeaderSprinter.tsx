@@ -1,26 +1,18 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
-import volumeImg from '../../assets/icons/volume.svg';
-import muteImg from '../../assets/icons/mute.svg';
 import fullscreenImg from '../../assets/icons/fullscreen.svg';
 import notfullscreenImg from '../../assets/icons/notfullscreen.svg';
 import closeImg from '../../assets/icons/close.svg';
-import keyboardImg from '../../assets/icons/keyboard.svg';
-import heartImg from '../../assets/icons/heart.svg';
 import styles from './GameHeader.module.css';
-import { setInitSettings, attempts } from '../../features/game/gameSlice';
-import { setSoundsVolume } from '../../features/games/gamesSlice';
-import { volume } from '../../const/games';
+import { setInitSettings } from '../../features/game/gameSlice';
 
 type PropsType = {
   color: string;
-  soundVolume: number;
   gameRef: React.MutableRefObject<HTMLInputElement>;
-  isKeyboardActive: boolean;
 };
 
 const gameHeaderStyle = {
@@ -32,12 +24,10 @@ const gameHeaderStyle = {
   },
 };
 
-const GameHeader = ({ color, soundVolume, gameRef, isKeyboardActive }: PropsType): JSX.Element => {
+const GameHeaderSprinter = ({ color, gameRef }: PropsType): JSX.Element => {
   const [isFullScreen, setIsFullScreen] = React.useState(false);
 
   const dispatch = useDispatch();
-
-  const arrayAttempts = useSelector(attempts);
 
   React.useEffect(() => {
     if (!isFullScreen) {
@@ -52,20 +42,8 @@ const GameHeader = ({ color, soundVolume, gameRef, isKeyboardActive }: PropsType
     }
   }, [isFullScreen]);
 
-  React.useEffect(() => {
-    window.localStorage.setItem('volume', soundVolume.toString());
-  }, [dispatch, soundVolume]);
-
   const onCloseBtnClick = () => {
     dispatch(setInitSettings());
-  };
-
-  const onVolumeBtnClick = () => {
-    if (soundVolume === volume) {
-      dispatch(setSoundsVolume(0));
-    } else {
-      dispatch(setSoundsVolume(volume));
-    }
   };
 
   const onFullScreenBtnClick = () => {
@@ -76,35 +54,6 @@ const GameHeader = ({ color, soundVolume, gameRef, isKeyboardActive }: PropsType
     <div className={styles[color]}>
       <Container fluid className={styles.container}>
         <Row>
-          <Col className={styles.left}>
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={onVolumeBtnClick}
-              className={styles.img}
-              style={gameHeaderStyle.imgStyle}
-            >
-              {soundVolume === volume ? (
-                <Image width="20" height="auto" src={volumeImg} fluid />
-              ) : (
-                <Image width="20" height="auto" src={muteImg} fluid />
-              )}
-            </div>
-            {isKeyboardActive && (
-              <div>
-                <Image width="20" height="auto" src={keyboardImg} fluid />
-              </div>
-            )}
-          </Col>
-          {arrayAttempts.length > 0 && (
-            <Col className={styles.center}>
-              {arrayAttempts.map((item) => (
-                <div key={item} style={gameHeaderStyle.heartStyle}>
-                  <Image width="13" height="auto" src={heartImg} />
-                </div>
-              ))}
-            </Col>
-          )}
           <Col className={styles.right}>
             <div
               role="button"
@@ -129,4 +78,4 @@ const GameHeader = ({ color, soundVolume, gameRef, isKeyboardActive }: PropsType
   );
 };
 
-export default GameHeader;
+export default GameHeaderSprinter;

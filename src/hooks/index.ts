@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Status, EntityState } from '../types';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useRequest<T>(fetch: () => Promise<T>, dependencies: any[] = []): EntityState<T> {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState(undefined);

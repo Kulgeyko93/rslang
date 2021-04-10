@@ -24,7 +24,7 @@ import EndGame from '../EndGame/EndGame';
 import PossibleAnswer from '../PossibleAnswer/PossibleAnswer';
 import ScrollToTopOnMount from '../ScrollToTopOnMount/ScrollToTopOnMount';
 import styles from './ourGame.module.scss';
-import { Word } from '../../features/types';
+import { Word } from '../../types';
 
 const wrongSound = 'assets/sounds/wrong.mp3';
 
@@ -140,14 +140,18 @@ const OurGame = (): JSX.Element => {
           <Container fluid className={styles.container}>
             <Row className={styles.heightWordImg}>
               <div className={styles.currentWord}>
-                {
-                  textWithCurrentWord.map((item, index) => {
-                    if (item.includes('<b>')) {
-                      return <span key={index} className={isShowAnswer ? styles.wordCorrectly : styles.wordNoCorrectly} dangerouslySetInnerHTML={{ __html: `&nbsp;${item}&nbsp;` }} />;
-                    }
-                    return <span key={index}>{item}</span>;
-                  })
-                }
+                {textWithCurrentWord.map((item, index) => {
+                  if (item.includes('<b>')) {
+                    return (
+                      <span
+                        key={index}
+                        className={isShowAnswer ? styles.wordCorrectly : styles.wordNoCorrectly}
+                        dangerouslySetInnerHTML={{ __html: `&nbsp;${item}&nbsp;` }}
+                      />
+                    );
+                  }
+                  return <span key={index}>{item}</span>;
+                })}
               </div>
               {isShowAnswer && currentWord && (
                 <Row className={styles.heightWordImg}>
@@ -163,7 +167,6 @@ const OurGame = (): JSX.Element => {
                   </Col>
                 </Row>
               )}
-
             </Row>
             <Row>
               <Col className={styles.words} lg={12}>

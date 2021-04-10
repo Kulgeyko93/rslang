@@ -13,6 +13,7 @@ export interface LineChartDataItem {
   value: number;
 }
 
+// eslint-disable-next-line no-console
 console.log(getDayAndMonth());
 
 const allLearnedWords: Array<LineChartDataItem> = [

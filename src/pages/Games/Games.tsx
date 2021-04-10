@@ -54,6 +54,7 @@ const Games = (): JSX.Element => {
         if (newValue !== null) {
           dispatch(setCurrentLevel(newValue));
           dispatch(fetchWords(newValue));
+          // eslint-disable-next-line no-console
           console.log(currentGameName, currentGameLevel);
         }
       }

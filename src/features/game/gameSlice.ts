@@ -4,7 +4,7 @@ import { getRandomArray } from '../../utils/getRandomArray';
 import { createWordsArray, createGameArray } from '../../utils/createWordsArray';
 import { AppThunk, RootState } from '../../app/store';
 import { getRandom } from '../../utils/getRandom';
-import { Word } from '../types';
+import { Word } from '../../types';
 import { countPagesInGroup, wordsPerPage, wordsFromServer } from '../../const/games';
 // import { countPagesInGroup, wordsPerPage } from '../../const/games';
 
@@ -170,6 +170,7 @@ export const fetchWords = (group: string): AppThunk => async (dispatch) => {
   try {
     // const { data } = await axios.get(`words?page=${randomPage}&group=${group}`);
     const data = wordsFromServer;
+    // eslint-disable-next-line no-console
     console.log(group, randomPage);
     dispatch(setOriginWordsArray(data));
     dispatch(setPlayWordsArray());

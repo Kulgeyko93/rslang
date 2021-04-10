@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import { Word } from '../features/types';
+import { Word } from '../types';
 
 export const createArrayEnAndRUWords = (wordList: Array<Word>): Array<Array<string>> => {
   const resultRu: Array<string> = [];

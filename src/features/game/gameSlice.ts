@@ -170,6 +170,7 @@ export const fetchWords = (group: string): AppThunk => async (dispatch) => {
   try {
     // const { data } = await axios.get(`words?page=${randomPage}&group=${group}`);
     const data = wordsFromServer;
+    // eslint-disable-next-line no-console
     console.log(group, randomPage);
     dispatch(setOriginWordsArray(data));
     dispatch(setPlayWordsArray());

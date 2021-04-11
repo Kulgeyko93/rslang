@@ -30,7 +30,7 @@ const Footer = (): JSX.Element => (
           <small>
             Векторные изображения созданы{' '}
             <a className={styles.link} href="https://ru.freepik.com/vectors/business">
-              pch.vector - ru.freepik.com
+              pch.vector и svstudioart - ru.freepik.com
             </a>
           </small>
           <small>

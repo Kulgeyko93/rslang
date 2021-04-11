@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { ExclamationTriangle } from 'react-bootstrap-icons';

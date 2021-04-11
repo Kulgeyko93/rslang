@@ -4,7 +4,7 @@ import { ProgressBar } from 'react-bootstrap';
 type PropsType = {
   now: number;
   max: number;
-  className: any;
+  className: string;
   stopGame: () => void;
 };
 

@@ -17,11 +17,11 @@ type PropsType = {
   word: Word;
   index: number;
   isShowAnswer: boolean;
-  setIsShowAnswer: any;
+  setIsShowAnswer: (isShowAnswer: boolean) => void;
   isNewGroupWords: boolean;
-  setIsNewGroupWords: any;
+  setIsNewGroupWords: (isNewGroupWords: boolean) => void;
   isFirstClick: boolean;
-  setIsFirstClick: any;
+  setIsFirstClick: (isFirstClick: boolean) => void;
   soundVolume: number;
   pressedKeyboardKey: string;
   gameCheck?: string;

@@ -7,13 +7,12 @@ import StatisticsBarChart from '../../components/StatisticsBarChart/StatisticsBa
 import StatisticsLineChart from '../../components/StatisticsLineChart/StatisticsLineChart';
 import { getDayAndMonth } from '../../utils/getDayAndMonth';
 import { learnedWords, setStatistics, correctAnswers, seriesAnswers } from '../../features/statistics/statisticsSlice';
+import { STORAGE_KEYS } from '../../constants';
 
 export interface LineChartDataItem {
   date: string;
   value: number;
 }
-
-console.log(getDayAndMonth());
 
 const allLearnedWords: Array<LineChartDataItem> = [
   { date: '1 апреля', value: 20 },
@@ -37,7 +36,21 @@ const Statistics = (): JSX.Element => {
 
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(setStatistics());
+    const today = getDayAndMonth();
+    const serializedStatistics = localStorage.getItem(STORAGE_KEYS.STATISTICS);
+    if (serializedStatistics) {
+      try {
+        const statistics = JSON.parse(serializedStatistics);
+        if (statistics.date === today) {
+          dispatch(setStatistics(statistics));
+        } else {
+          localStorage.removeItem(STORAGE_KEYS.STATISTICS);
+        }
+      } catch (e) {
+        /* eslint-disable-next-line no-console */
+        console.error(e);
+      }
+    }
   }, []);
   return (
     <div>
@@ -45,20 +58,29 @@ const Statistics = (): JSX.Element => {
         <h4>Статистика</h4>
         <img className={styles.statisticsImg} src={statisticsImg} alt="Ученики и графики" />
         <hr className={styles.color} />
-        <h5 className={styles.margin}>Количество слов, изученных сегодня </h5>
-        <div className={styles.container}>
-          <StatisticsBarChart chartData={learnedWordsData} />
-        </div>
-        <hr className={styles.first} />
-        <h5 className={styles.margin}>Процент правильных ответов в играх</h5>
-        <div className={styles.container}>
-          <StatisticsBarChart chartData={correctAnswersData} />
-        </div>
-        <hr className={styles.color} />
-        <h5 className={styles.margin}>Самая длинная серия правильных ответов в каждой игре</h5>
-        <div className={styles.container}>
-          <StatisticsBarChart chartData={seriesCorrectAnswersData} />
-        </div>
+        {learnedWordsData.length > 0 && (
+          <>
+            <h5 className={styles.margin}>Количество слов, изученных сегодня </h5>
+            <div className={styles.container}>
+              <StatisticsBarChart chartData={learnedWordsData} />
+            </div>
+
+            <hr className={styles.first} />
+            <h5 className={styles.margin}>Процент правильных ответов в играх</h5>
+            <div className={styles.container}>
+              <StatisticsBarChart chartData={correctAnswersData} />
+            </div>
+
+            <hr className={styles.color} />
+            <h5 className={styles.margin}>Самая длинная серия правильных ответов в каждой игре</h5>
+            <div className={styles.container}>
+              <StatisticsBarChart chartData={seriesCorrectAnswersData} />
+            </div>
+          </>
+        )}
+        {learnedWordsData.length === 0 && (
+          <h5 className={styles.margin}>Пока не сыграешь в игру, статистика не отобразится :)</h5>
+        )}
         <hr className={styles.color} />
         <h5 className={styles.margin}>Количество изученных слов за весь период обучения по дням</h5>
         <div className={styles.container}>

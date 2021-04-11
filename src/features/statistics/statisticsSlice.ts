@@ -1,5 +1,4 @@
-// import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { getNoun } from '../../utils/getNoun';
 import { getUniqueArray } from '../../utils/getUniqueArray';
@@ -21,47 +20,47 @@ interface StatisticsState {
   seriesCorrectAnswers: Array<BarChartDataItem>;
 }
 
-interface DataItem {
+export interface DataItem {
   name: string;
   words: Array<string>;
   countCorrectAnswers: number;
   longestSeriesCorrectAnswers: number;
 }
-interface Data {
+export interface Data {
   date: string;
   data: Array<DataItem>;
 }
 // если в какую-то игру не играли, то в localStorage не заносим о ней результаты.
 // Из localStorage надо удалять statistics, если текущая дата изменилась
-const data: Data = {
-  date: '9 апреля',
-  data: [
-    {
-      name: 'Аудиовызов',
-      words: ['ahead', 'top', 'end', 'spring', 'hello'],
-      countCorrectAnswers: 2,
-      longestSeriesCorrectAnswers: 5,
-    },
-    {
-      name: 'Спринт',
-      words: ['ahead', 'top', 'end', 'spring'],
-      countCorrectAnswers: 1,
-      longestSeriesCorrectAnswers: 1,
-    },
-    {
-      name: 'Своя игра',
-      words: ['ahead', 'top', 'end', 'spring', 'today'],
-      countCorrectAnswers: 2,
-      longestSeriesCorrectAnswers: 18,
-    },
-    {
-      name: 'Саванна',
-      words: ['ahead', 'top', 'end', 'spring', 'today'],
-      countCorrectAnswers: 2,
-      longestSeriesCorrectAnswers: 18,
-    },
-  ],
-};
+// const data: Data = {
+//   date: '9 апреля',
+//   data: [
+//     {
+//       name: 'Аудиовызов',
+//       words: ['ahead', 'top', 'end', 'spring', 'hello'],
+//       countCorrectAnswers: 2,
+//       longestSeriesCorrectAnswers: 5,
+//     },
+//     {
+//       name: 'Спринт',
+//       words: ['ahead', 'top', 'end', 'spring'],
+//       countCorrectAnswers: 1,
+//       longestSeriesCorrectAnswers: 1,
+//     },
+//     {
+//       name: 'Своя игра',
+//       words: ['ahead', 'top', 'end', 'spring', 'today'],
+//       countCorrectAnswers: 2,
+//       longestSeriesCorrectAnswers: 18,
+//     },
+//     {
+//       name: 'Саванна',
+//       words: ['ahead', 'top', 'end', 'spring', 'today'],
+//       countCorrectAnswers: 2,
+//       longestSeriesCorrectAnswers: 18,
+//     },
+//   ],
+// };
 
 const initialState: StatisticsState = {
   learnedWords: [],
@@ -73,11 +72,8 @@ export const statisticsSlice = createSlice({
   name: 'statistics',
   initialState,
   reducers: {
-    // setStatistics: (state, action: PayloadAction<Data>) => {
-    //   const dataFromLocalStorage = action.payload;
-    // },
-    setStatistics: (state) => {
-      const dataFromLocalStorage = data;
+    setStatistics: (state, action: PayloadAction<Data>) => {
+      const dataFromLocalStorage = action.payload;
       const learnedWordsArr = dataFromLocalStorage.data.map((item) => ({
         name: item.name,
         value: item.words.length,

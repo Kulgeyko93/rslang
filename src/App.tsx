@@ -18,6 +18,7 @@ import { STORAGE_KEYS, TOKEN_EXPIRE_TIME } from './constants';
 import Games from './pages/Games/Games';
 import { isPlaying } from './features/game/gameSlice';
 import Statistics from './pages/Statistics/Statistics';
+import Dictionary from './pages/Dictionary/Dictionary';
 
 const App = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -85,6 +86,10 @@ const App = (): JSX.Element => {
           <Route exact path="/textbook" component={Textbook} />
           <Route exact path="/groups/:groupId" component={Group} />
           <Route exact path="/statistics" component={Statistics} />
+          <Route exact path="/dictionary" component={Dictionary} />
+          <Route exact path="/dictionary/learned/groups/:groupId" component={Group} />
+          <Route exact path="/dictionary/difficult/groups/:groupId" component={Group} />
+          <Route exact path="/dictionary/deleted/groups/:groupId" component={Group} />
           <Route path="*" component={NotFound} />
         </Switch>
       </main>

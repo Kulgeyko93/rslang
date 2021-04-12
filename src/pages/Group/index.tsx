@@ -6,7 +6,7 @@ import './style.scss';
 import { Status, StorageKey, UserAggregatedWord, Word } from '../../types';
 import { usePagination, useRequest } from '../../hooks';
 import { selectAuthData, selectAuthStatus } from '../../features/auth/authSlice';
-import WordCard from './components/WordCard';
+import WordCards from './components/WordCards';
 import Pagination from './components/Pagination';
 
 interface MatchParams {
@@ -87,23 +87,9 @@ export default function Group(props: Props): JSX.Element {
     }
   } else if (hasLoadedAllData) {
     if (wordsData) {
-      const cardElements = wordsData.reduce((wordsAcc: JSX.Element[], wordData) => {
-        const wordId = wordData.id;
-        const userWord = userAggregatedWordsData?.find(
-          (userAggregatedWord: UserAggregatedWord) => userAggregatedWord._id === wordId,
-        )?.userWord;
-        if (userWord?.optional?.isDeleted) {
-          return wordsAcc;
-        }
-
-        const currentWordCard = (
-          <WordCard key={`${wordId}`} wordData={wordData} userWord={userWord} userId={authData?.userId} />
-        );
-        return [...wordsAcc, currentWordCard];
-      }, []);
       content = (
         <div>
-          <div className="cards">{cardElements}</div>
+          <WordCards wordsData={wordsData} userAggregatedWordsData={userAggregatedWordsData} authData={authData} />
           <Pagination currentPage={currentPage} onPreviousClick={openPreviousPage} onNextClick={openNextPage} />
         </div>
       );

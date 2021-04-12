@@ -46,7 +46,7 @@ export default function Group(props: Props): JSX.Element {
     status: userAggregatedWordsStatus,
     data: userAggregatedWordsData,
     error: userAggregatedWordsError,
-  } = useRequest<UserAggregatedWord[] | null>(boundedFetchUserAggregatedWords, [authStatus]);
+  } = useRequest<UserAggregatedWord[] | null>(boundedFetchUserAggregatedWords, [authStatus, currentPage]);
 
   const entityStatuses = [wordsStatus, userAggregatedWordsStatus];
   const isLoadingSomeData = entityStatuses.some((status) => [Status.Idle, Status.Loading].includes(status));

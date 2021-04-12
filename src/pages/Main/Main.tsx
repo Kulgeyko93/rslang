@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import FigureItem from '../../components/FigureItem/FigureItem';
+import Games from '../Games/Games';
 import mainScreenImg from '../../assets/main_screen.png';
 import booksImg from '../../assets/icons/books.svg';
 import gameImg from '../../assets/icons/game.svg';
@@ -32,6 +33,11 @@ const Main = (): JSX.Element => (
           </Col>
           <Col lg={3} md={6} sm={6} xs={6}>
             <FigureItem img={progressImg} text="Отслеживай свой прогресс" />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Games />
           </Col>
         </Row>
       </Container>

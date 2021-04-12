@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
+import { NavLink } from 'react-router-dom';
 import volumeImg from '../../assets/icons/volume.svg';
 import muteImg from '../../assets/icons/mute.svg';
 import fullscreenImg from '../../assets/icons/fullscreen.svg';
@@ -119,9 +120,11 @@ const GameHeader = ({ color, soundVolume, gameRef, isKeyboardActive }: PropsType
                 <Image width="20" height="auto" src={fullscreenImg} fluid />
               )}
             </div>
-            <div className={styles.img} onClick={onCloseBtnClick} role="button" tabIndex={0}>
-              <Image width="20" height="auto" src={closeImg} fluid />
-            </div>
+            <NavLink to="/">
+              <div className={styles.img} onClick={onCloseBtnClick} role="button" tabIndex={0}>
+                <Image width="20" height="auto" src={closeImg} fluid />
+              </div>
+            </NavLink>
           </Col>
         </Row>
       </Container>

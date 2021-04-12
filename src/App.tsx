@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import Sprinter from './components/Sprinter/Sprinter';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Main from './pages/Main/Main';
+import PreStartInfo from './components/PreStartInfo/PreStartInfo';
 import About from './pages/About/About';
 import NotFound from './pages/NotFound/NotFound';
 import Textbook from './pages/Textbook';
@@ -81,10 +81,10 @@ const App = (): JSX.Element => {
           <Route exact path="/counter" component={Counter} />
           <Route exact path="/words" component={Words} />
           <Route exact path="/games" component={Games} />
-          <Route path="/sprinter" component={Sprinter} />
           <Route exact path="/textbook" component={Textbook} />
           <Route exact path="/groups/:groupId" component={Group} />
           <Route exact path="/statistics" component={Statistics} />
+          <Route exact path="/prestart" component={PreStartInfo} />
           <Route path="*" component={NotFound} />
         </Switch>
       </main>

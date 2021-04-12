@@ -1,8 +1,33 @@
+/* eslint-disable max-len */
 export const games = [
-  { name: 'audiocall', nameRU: 'Аудиовызов', description: 'Игра улучшает восприятие речи на слух', color: 'yellow' },
-  { name: 'sprint', nameRU: 'Спринт', description: 'Игра улучшает восприятие речи на слух', color: 'green' },
-  { name: 'savannah', nameRU: 'Саванна', description: 'Игра улучшает восприятие речи на слух', color: 'blue' },
-  { name: 'newgame', nameRU: 'Своя игра', description: 'Игра улучшает восприятие речи на слух', color: 'red' },
+  {
+    name: 'audiocall',
+    nameRU: 'Аудиовызов',
+    description: 'Игра Аудиовызов улучшает восприятие английской речи на слух.',
+    color: 'yellow',
+    img: 'https://i2.wp.com/hipertextual.com/wp-content/uploads/2016/02/Firewatch-Encabezado.jpg?fit=2560%2C1440&ssl=1',
+  },
+  {
+    name: 'sprint',
+    nameRU: 'Спринт',
+    description: 'Истинная гонка на проверку знаний.<br/> Укажите верно ли приведен перевод слова?',
+    color: 'green',
+    img: 'https://oboi.ws/filters/lomo_17_12401_oboi_zelenyj_firewatch_1920x1080.jpg',
+  },
+  {
+    name: 'savannah',
+    nameRU: 'Саванна',
+    description: 'Игра Саванна развивает словарный запас.<br/> Чем больше слов ты знаешь, тем легче тебе будет общаться.',
+    color: 'blue',
+    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF2JnamB2Pmnq70KrzBPF_9JGaoYqmhv6nw2r1QXb_fAUv4BwErmxpY1O4u4IhMe9nx3s&usqp=CAU',
+  },
+  {
+    name: 'newgame',
+    nameRU: 'Riddle',
+    description: 'Задействуй знания английского языка и кругозор для решения лучших загадок со всего мира.',
+    color: 'red',
+    img: 'https://s1.1zoom.ru/big3/596/Evening_Forests_Mountains_Firewatch_Campo_Santo_549147_2560x1440.jpg',
+  },
 ];
 
 export const volume = 0.5;

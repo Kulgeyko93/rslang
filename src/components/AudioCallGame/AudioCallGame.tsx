@@ -35,11 +35,14 @@ const text = {
 };
 const gameField = {
   cursor: 'default',
-  backgroundColor: '#fdff95',
+  color: '#000',
+  backgroundImage: `url('${games[0].img}')`,
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
 };
-const root = {
-  padding: 0,
-};
+// const root = {
+//   padding: 0,
+// };
 
 const AudioCallGame = (): JSX.Element => {
   const gameRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -110,7 +113,7 @@ const AudioCallGame = (): JSX.Element => {
   };
 
   return (
-    <Container fluid style={root}>
+    <Container fluid>
       <ScrollToTopOnMount />
       {!isAudioCallGameEnd && (
         <div
@@ -122,9 +125,10 @@ const AudioCallGame = (): JSX.Element => {
           style={gameField}
           onFocus={handlerOnFocus}
           onBlur={handlerOnBlur}
+          // style={gameBorder}
         >
           <GameHeader
-            color={games[0].color}
+            color="none"
             soundVolume={soundVolume}
             gameRef={gameRef}
             isKeyboardActive={isKeyboardActive}

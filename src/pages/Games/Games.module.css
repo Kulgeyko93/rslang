@@ -54,3 +54,16 @@
 .margin {
   margin: 0 auto 2rem;
 }
+
+.game{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50%;
+  background: red;
+}
+
+.item{
+  margin: 1rem 0;
+}

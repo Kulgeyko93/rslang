@@ -1,6 +1,11 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import { groups } from '../../const/games';
+import {
+  setCurrentLevel,
+  currentLevel,
+} from '../../features/game/gameSlice';
 import styles from './GameOptions.module.css';
 
 const select = {
@@ -20,7 +25,10 @@ type PropsType = {
 };
 
 const GameOptions = ({ gameName }: PropsType): JSX.Element => {
-  const [level, setLevel] = React.useState(groups[0]);
+  const currentLvlForGame = useSelector(currentLevel);
+  const [level, setLevel] = React.useState(currentLvlForGame);
+
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     if (window.localStorage.getItem(gameName) !== null) {
@@ -45,10 +53,17 @@ const GameOptions = ({ gameName }: PropsType): JSX.Element => {
     <div className={styles.container}>
       <Form style={select}>
         <Form.Group controlId="exampleForm.SelectCustom">
-          <Form.Control value={level} onChange={handlerOnChange} size="sm" style={select} as="select" custom>
+          <Form.Control
+            value={level}
+            onChange={handlerOnChange}
+            size="sm"
+            style={select}
+            as="select"
+            custom
+          >
             {groups &&
               groups.map((item, index) => (
-                <option style={option} key={item} value={index}>
+                <option style={option} key={item} value={index} onChange={() => dispatch(setCurrentLevel(item))}>
                   Уровень сложности {index}
                 </option>
               ))}

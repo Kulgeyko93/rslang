@@ -6,10 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 import {
+  isGameEnd,
   playWords,
   pushWrongAnswers,
   pushCorrectAnswers,
   setCurrentWordIndex,
+  setIsGameEnd,
 } from '../../features/game/gameSlice';
 import Progress from '../Progress/Progress';
 import { games } from '../../const/games';
@@ -17,14 +19,23 @@ import GameHeaderSprinter from '../GameHeaderSprinter/GameHeaderSprinter';
 import { createRandomArrRuWords } from '../../utils/createRandomArrRuWords';
 import { createArrayEnAndRUWords } from '../../utils/createArrayEnWords';
 import { AudioPlayer } from '../AudioPlayer/AudioPlayer';
-import style from './sprinter.module.scss';
+import styles from './sprinter.module.scss';
 import EndGame from '../EndGame/EndGame';
+
+const gameField = {
+  cursor: 'default',
+  color: '#000',
+  backgroundImage: `url('${games[1].img}')`,
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
+};
 
 const Sprinter = (): JSX.Element => {
   const gameRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
   const dispatch = useDispatch();
 
   const words = useSelector(playWords);
+  const isEnd = useSelector(isGameEnd);
 
   const randomArrayWords: Array<string> = createRandomArrRuWords(words);
   const arrayEnWords: Array<string> = createArrayEnAndRUWords(words)[0];
@@ -38,10 +49,10 @@ const Sprinter = (): JSX.Element => {
   const [scoreMultiplier, setScoreMultiplier] = useState<number>(1);
   const [disable, setDisable] = useState<boolean>(false);
   const [playSound, setPlaySound] = useState<boolean>(false);
-  const [isEndGame, setIsEndGame] = useState<boolean>(false);
+  // const [isEndGame, setIsEndGame] = useState<boolean>(false);
   const [audioUrl, setAudioUrl] = useState<string>('https://zvukipro.com/uploads/files/2019-12/1575881866_22b1d8c783a14eb.mp3');
-  const [border, setBorder] = useState(style.borderGame);
-  const [opasity, setOpasity] = useState(style.iconNoVisible);
+  const [border, setBorder] = useState(styles.borderGame);
+  const [opasity, setOpasity] = useState(styles.iconNoVisible);
   const [opasityWord, setOpasityWord] = useState(true);
 
   const iconRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -49,7 +60,8 @@ const Sprinter = (): JSX.Element => {
 
   const stopGame = () => {
     setPlaySound(false);
-    setIsEndGame(true);
+    // setIsEndGame(true);
+    dispatch(setIsGameEnd(true));
     return false;
   };
 
@@ -78,15 +90,15 @@ const Sprinter = (): JSX.Element => {
       dispatch(pushCorrectAnswers(words[ruWorsIndex]));
       setTimeout(() => {
         setDisable(false);
-        setBorder(style.borderGame);
-        setOpasity(style.iconNoVisible);
+        setBorder(styles.borderGame);
+        setOpasity(styles.iconNoVisible);
         setOpasityWord(true);
         nextWord(ruWorsIndex);
       }, 800);
       setAnswerTrueCount(answerTrueCount + 1);
       setIsTrueWord(true);
-      setBorder(style.borderTrue);
-      setOpasity(style.iconVisible);
+      setBorder(styles.borderTrue);
+      setOpasity(styles.iconVisible);
       switch (true) {
         case answerTrueCount >= 6: {
           setScoreMultiplier(4);
@@ -110,16 +122,16 @@ const Sprinter = (): JSX.Element => {
       dispatch(pushWrongAnswers(words[ruWorsIndex]));
       setTimeout(() => {
         setDisable(false);
-        setBorder(style.borderGame);
-        setOpasity(style.iconNoVisible);
+        setBorder(styles.borderGame);
+        setOpasity(styles.iconNoVisible);
         setOpasityWord(true);
         nextWord(ruWorsIndex);
       }, 800);
       setIsTrueWord(false);
       setAnswerTrueCount(0);
       setScoreMultiplier(1);
-      setBorder(style.borderFalse);
-      setOpasity(style.iconVisible);
+      setBorder(styles.borderFalse);
+      setOpasity(styles.iconVisible);
       showIcon();
     }
 
@@ -133,36 +145,36 @@ const Sprinter = (): JSX.Element => {
   };
 
   return (
-    isEndGame
+    isEnd
       ? <EndGame color={games[1].color} />
       : (
-        <div ref={gameRef} className={style.sprinter}>
-          <div className={style.header}>
-            <GameHeaderSprinter color={games[0].color} gameRef={gameRef} />
+        <div ref={gameRef} className={styles.sprinter} style={gameField}>
+          <div className={styles.header}>
+            <GameHeaderSprinter color="none" gameRef={gameRef} />
           </div>
-          <div className={`${border} ${style.container}`}>
-            <div className={style.info}>
-              <div className={style.score}>
-                <div className={style.value}>Общий счёт: {score}</div>
-                <div className={style.multipilier}>+{20 * scoreMultiplier} очков за слово</div>
+          <div className={`${border} ${styles.container}`}>
+            <div className={styles.info}>
+              <div className={styles.score}>
+                <div className={styles.value}>Общий счёт: {score}</div>
+                <div className={styles.multipilier}>+{20 * scoreMultiplier} очков за слово</div>
               </div>
-              <Progress now={45} max={45} className={style.visualTimer} stopGame={stopGame} />
+              <Progress now={45} max={45} className={styles.visualTimer} stopGame={stopGame} />
             </div>
-            <div ref={contentRef} className={style.content}>
-              <div className={`${style.word}`}>
-                <div className={style.enWord}>{arrayEnWords[enWorsIndex]}</div>
-                <div className={opasityWord ? `${style.ruWord} ${style.ruWordVisible}` : `${style.ruWord} ${style.ruWordNoVisible}`}>{randomArrayWords[ruWorsIndex]}</div>
+            <div ref={contentRef} className={styles.content}>
+              <div className={`${styles.word}`}>
+                <div className={styles.enWord}>{arrayEnWords[enWorsIndex]}</div>
+                <div className={opasityWord ? `${styles.ruWord} ${styles.ruWordVisible}` : `${styles.ruWord} ${styles.ruWordNoVisible}`}>{randomArrayWords[ruWorsIndex]}</div>
               </div>
-              <div ref={iconRef} className={`${style.iconWord} ${opasity}`}>
+              <div ref={iconRef} className={`${styles.iconWord} ${opasity}`}>
                 {
                   isTrueWord
-                    ? <Icon.CheckCircleFill className={style.iconTrue} />
-                    : <Icon.XCircleFill className={style.iconFalse} />
+                    ? <Icon.CheckCircleFill className={styles.iconTrue} />
+                    : <Icon.XCircleFill className={styles.iconFalse} />
                 }
               </div>
-              <div className={style.answerBtn}>
+              <div className={styles.answerBtn}>
                 <Button
-                  className={style.button}
+                  className={styles.button}
                   variant="danger"
                   disabled={ruWorsIndex === randomArrayWords.length || disable}
                   onClick={() => {
@@ -180,7 +192,7 @@ const Sprinter = (): JSX.Element => {
                   Не верно
                 </Button>
                 <Button
-                  className={style.button}
+                  className={styles.button}
                   variant="success"
                   disabled={ruWorsIndex === randomArrayWords.length || disable}
                   onClick={() => {
@@ -192,7 +204,7 @@ const Sprinter = (): JSX.Element => {
                 </Button>
 
                 <Icon.FullscreenExit
-                  className={style.buttonFullScreen}
+                  className={styles.buttonFullScreen}
                 />
               </div>
             </div>

@@ -1,111 +1,101 @@
+/* eslint-disable react/no-danger */
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Spinner from 'react-bootstrap/Spinner';
+import { useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image';
-import playImg from '../../assets/icons/play.svg';
-import { games, volume } from '../../const/games';
+// import Image from 'react-bootstrap/Image';
+import { NavLink } from 'react-router-dom';
+import { Button, Card } from 'react-bootstrap';
+// import playImg from '../../assets/icons/play.svg';
+import { games } from '../../const/games';
 import GameOptions from '../../components/GameOptions/GameOptions';
 import styles from './Games.module.css';
 import {
-  fetchWords,
-  isLoading,
-  isPlaying,
-  setCurrentLevel,
-  currentLevel,
-  isGameOpenFromTextBook,
-  setIsPlaying,
-  currentGame,
   setCurrentGame,
 } from '../../features/game/gameSlice';
-// import { setSoundsVolume, currentGame, setCurrentGame } from '../../features/games/gamesSlice';
-import { setSoundsVolume } from '../../features/games/gamesSlice';
-import AudioCallGame from '../../components/AudioCallGame/AudioCallGame';
-import Savannah from '../../components/Savannah/Savannah';
-import Sprinter from '../../components/Sprinter/Sprinter';
-import OurGame from '../../components/OurGame/OurGame';
 
 const Games = (): JSX.Element => {
-  const currentGameName = useSelector(currentGame);
-  const isGamePlaying = useSelector(isPlaying);
-  const isDataLoading = useSelector(isLoading);
-  const currentGameLevel = useSelector(currentLevel);
-  const isGameOpenFromBook = useSelector(isGameOpenFromTextBook);
-
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    if (window.localStorage.getItem('volume') !== null) {
-      const newVolume = localStorage.getItem('volume');
-      if (newVolume !== null) {
-        dispatch(setSoundsVolume(parseFloat(newVolume)));
-      }
-    } else {
-      window.localStorage.setItem('volume', volume.toString());
-    }
-  }, [dispatch]);
-
-  React.useEffect(() => {
-    if (currentGameName !== '' && !isGameOpenFromBook && isGamePlaying) {
-      if (window.localStorage.getItem(currentGameName) !== null) {
-        const newValue = localStorage.getItem(currentGameName);
-        if (newValue !== null) {
-          dispatch(setCurrentLevel(newValue));
-          dispatch(fetchWords(newValue));
-          // eslint-disable-next-line no-console
-          console.log(currentGameName, currentGameLevel);
-        }
-      }
-    }
-  }, [dispatch, currentGameName]);
 
   const onPlayBtnClick = (gameName: string): void => {
     dispatch(setCurrentGame(gameName));
-    dispatch(setIsPlaying(true));
   };
 
   return (
-    <div>
-      {isDataLoading ? (
-        <Spinner animation="border" className={styles.spinner} />
-      ) : (
-        <div>
-          {isGamePlaying && currentGameName === games[0].name && <AudioCallGame />}
-          {isGamePlaying && currentGameName === games[1].name && <Sprinter />}
-          {isGamePlaying && currentGameName === games[2].name && <Savannah />}
-          {isGamePlaying && currentGameName === games[3].name && <OurGame />}
-          {!isGamePlaying && (
-            <Container>
-              <h4 className={styles.margin}>Игры</h4>
-              <Row>
-                {games &&
-                  games.map((game) => (
-                    <Col key={game.color} lg={6} md={6} sm={6}>
-                      <Container fluid className={styles[game.color]}>
-                        <GameOptions gameName={game.name} />
-                        <span className={styles.bold}>{game.nameRU}</span>
-                        <p>{game.description}</p>
-                        <div
-                          role="button"
-                          tabIndex={0}
-                          onClick={() => {
-                            onPlayBtnClick(game.name);
-                          }}
-                          className={styles.play_img}
-                        >
-                          <Image width="25" height="auto" src={playImg} fluid />
-                        </div>
-                      </Container>
-                    </Col>
-                  ))}
-              </Row>
-            </Container>
-          )}
-        </div>
-      )}
-    </div>
+    <Container>
+      <h4 className={styles.margin}>Игры</h4>
+      <Row>
+        {games &&
+          games.map((game) => (
+            <Col key={game.color} lg={6} md={6} sm={6} className={styles.item}>
+              <Container fluid>
+                {/* <Container fluid className={styles[game.color]}> */}
+                <Card>
+                  <Card.Header>{game.name}</Card.Header>
+                  <Card.Img variant="top" src={`${game.img}`} />
+                  <Card.Body>
+                    <Card.Text>
+                      <GameOptions gameName={game.name} />
+                      <div dangerouslySetInnerHTML={{ __html: game.description }} />
+                    </Card.Text>
+                    <NavLink to="prestart">
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          onPlayBtnClick(game.name);
+                        }}
+                      >
+                        Играть
+                      </Button>
+                    </NavLink>
+                  </Card.Body>
+                </Card>
+
+                {/* <GameOptions gameName={game.name} />
+                <span className={styles.bold}>{game.nameRU}</span>
+                <p>{game.description}</p>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => {
+                    onPlayBtnClick(game.name);
+                  }}
+                  className={styles.play_img}
+                >
+                  <NavLink to="prestart">
+                    <Image width="25" height="auto" src={playImg} fluid />
+                  </NavLink>
+                </div> */}
+              </Container>
+            </Col>
+          ))}
+      </Row>
+      {/* <Row>
+        <Container>
+          <Card style={{ width: '18rem' }}>
+            <Card.Header>{games[0].name}</Card.Header>
+            <Card.Img variant="top" src={`${games[0].img}`} />
+            <Card.Body>
+              <Card.Title>
+                <GameOptions gameName={game.name} />
+              </Card.Title>
+              <Card.Text>{games[0].description}</Card.Text>
+              <NavLink to="prestart">
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    onPlayBtnClick(games[0].name);
+                  }}
+                >
+                  Играть
+                </Button>
+              </NavLink>
+            </Card.Body>
+          </Card>
+        </Container>
+      </Row> */}
+    </Container>
   );
 };
 

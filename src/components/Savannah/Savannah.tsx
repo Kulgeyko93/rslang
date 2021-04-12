@@ -36,7 +36,9 @@ const text = {
 };
 const gameField = {
   cursor: 'default',
-  backgroundColor: '#a6fff5',
+  backgroundImage: `url('${games[2].img}')`,
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
 };
 const root = {
   padding: 0,
@@ -118,7 +120,7 @@ const Savannah = (): JSX.Element => {
           onBlur={handlerOnBlur}
         >
           <GameHeader
-            color={games[2].color}
+            color="none"
             soundVolume={soundVolume}
             gameRef={gameRef}
             isKeyboardActive={isKeyboardActive}

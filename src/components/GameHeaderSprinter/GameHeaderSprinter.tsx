@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
+import { NavLink } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
@@ -68,9 +69,11 @@ const GameHeaderSprinter = ({ color, gameRef }: PropsType): JSX.Element => {
                 <Image width="20" height="auto" src={fullscreenImg} fluid />
               )}
             </div>
-            <div className={styles.img} onClick={onCloseBtnClick} role="button" tabIndex={0}>
-              <Image width="20" height="auto" src={closeImg} fluid />
-            </div>
+            <NavLink to="/">
+              <div className={styles.img} onClick={onCloseBtnClick} role="button" tabIndex={0}>
+                <Image width="20" height="auto" src={closeImg} fluid />
+              </div>
+            </NavLink>
           </Col>
         </Row>
       </Container>

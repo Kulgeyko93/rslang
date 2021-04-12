@@ -6,14 +6,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Figure, Row, Col, Button } from 'react-bootstrap';
 import {
-  // isGameEnd,
+  isGameEnd,
   playWord,
   playWords,
   pushWrongAnswers,
   setCurrentWord,
   setCurrentWordIndex,
   setPlayWordsArray,
-  // setIsGameEnd,
+  setIsGameEnd,
 } from '../../features/game/gameSlice';
 import { soundsVolume } from '../../features/games/gamesSlice';
 import { sound } from '../../utils/sound';
@@ -30,7 +30,9 @@ const wrongSound = 'assets/sounds/wrong.mp3';
 
 const gameField = {
   cursor: 'default',
-  backgroundColor: '#ffb5d8',
+  backgroundImage: `url('${games[3].img}')`,
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
 };
 const root = {
   padding: 0,
@@ -42,13 +44,12 @@ const OurGame = (): JSX.Element => {
 
   const words = useSelector(playWords);
   const currentWord: Word | null = useSelector(playWord);
-  // const isAudioCallGameEnd = useSelector(isGameEnd);
+  const isNewGameEnd = useSelector(isGameEnd);
   const soundVolume = useSelector(soundsVolume);
 
   const dispatch = useDispatch();
 
   const [isShowAnswer, setIsShowAnswer] = React.useState(false);
-  const [isEndGame, setIsEndGame] = React.useState(false);
   const [isNewGroupWords, setIsNewGroupWords] = React.useState(false);
   const [isFirstClick, setIsFirstClick] = React.useState(true);
   const [pressedKeyboardKey, setPressedKeyboardKey] = React.useState('');
@@ -57,7 +58,7 @@ const OurGame = (): JSX.Element => {
   const textWithCurrentWord = React.useMemo(() => {
     let currentWordText: Array<string>;
     if (currentWord === undefined) {
-      setIsEndGame(true);
+      dispatch(setIsGameEnd(true));
       return [''];
     }
     if (currentWord !== null) {
@@ -120,7 +121,7 @@ const OurGame = (): JSX.Element => {
   return (
     <Container fluid style={root}>
       <ScrollToTopOnMount />
-      {!isEndGame && (
+      {!isNewGameEnd && (
         <div
           ref={gameRef}
           role="button"
@@ -132,7 +133,7 @@ const OurGame = (): JSX.Element => {
           onBlur={handlerOnBlur}
         >
           <GameHeader
-            color={games[3].color}
+            color="none"
             soundVolume={soundVolume}
             gameRef={gameRef}
             isKeyboardActive={isKeyboardActive}
@@ -210,7 +211,7 @@ const OurGame = (): JSX.Element => {
           </Container>
         </div>
       )}
-      {isEndGame && <EndGame color={games[0].color} />}
+      {isNewGameEnd && <EndGame color={games[0].color} />}
     </Container>
   );
 };

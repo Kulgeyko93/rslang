@@ -6,6 +6,13 @@ export enum Status {
   Authorized = 'AUTHORIZED',
 }
 
+export enum StorageKey {
+  Auth = 'auth',
+  Statistics = 'statistics',
+  AuthTime = 'auth_time',
+  GroupPageIndex = 'group_page_index',
+}
+
 export interface EntityState<T> {
   status: Status;
   data: T | null;

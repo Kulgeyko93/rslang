@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
 import './style.scss';
-import { Status, Word, UserAggregatedWord } from '../../types';
-import { useRequest } from '../../hooks';
+import { Status, StorageKey, UserAggregatedWord, Word } from '../../types';
+import { usePagination, useRequest } from '../../hooks';
 import { selectAuthData, selectAuthStatus } from '../../features/auth/authSlice';
 import WordCard from './components/WordCard';
+import Pagination from './components/Pagination';
 
 interface MatchParams {
   groupId: string;
@@ -49,8 +50,15 @@ export default function Group(props: Props): JSX.Element {
   const authData = useSelector(selectAuthData);
   const authStatus = useSelector(selectAuthStatus);
 
-  const boundedFetchWords = fetchWords.bind(null, { group: Number(groupId), page: 0 });
-  const { status: wordsStatus, data: wordsData, error: wordsError } = useRequest<Word[]>(boundedFetchWords);
+  const { currentPage, openPreviousPage, openNextPage } = usePagination({
+    pageCount: 30,
+    storageKey: StorageKey.GroupPageIndex,
+  });
+
+  const boundedFetchWords = fetchWords.bind(null, { group: Number(groupId), page: currentPage });
+  const { status: wordsStatus, data: wordsData, error: wordsError } = useRequest<Word[]>(boundedFetchWords, [
+    currentPage,
+  ]);
 
   const boundedFetchUserAggregatedWords = async () => {
     if (authStatus === Status.Authorized && authData) {
@@ -93,7 +101,12 @@ export default function Group(props: Props): JSX.Element {
         );
         return [...wordsAcc, currentWordCard];
       }, []);
-      content = <div className="cards">{cardElements}</div>;
+      content = (
+        <div>
+          <div className="cards">{cardElements}</div>
+          <Pagination currentPage={currentPage} onPreviousClick={openPreviousPage} onNextClick={openNextPage} />
+        </div>
+      );
     }
   } else {
     throw new Error('Unmatched case');

@@ -10,7 +10,7 @@ export interface Auth {
   name: string;
 }
 
-type AuthState = EntityState<Auth>;
+export type AuthState = EntityState<Auth>;
 
 const initialState: AuthState = {
   status: Status.Idle,

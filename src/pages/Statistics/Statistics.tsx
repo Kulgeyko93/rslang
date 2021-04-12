@@ -7,7 +7,7 @@ import StatisticsBarChart from '../../components/StatisticsBarChart/StatisticsBa
 import StatisticsLineChart from '../../components/StatisticsLineChart/StatisticsLineChart';
 import { getDayAndMonth } from '../../utils/getDayAndMonth';
 import { learnedWords, setStatistics, correctAnswers, seriesAnswers } from '../../features/statistics/statisticsSlice';
-import { STORAGE_KEYS } from '../../constants';
+import { StorageKey } from '../../types';
 
 export interface LineChartDataItem {
   date: string;
@@ -37,14 +37,14 @@ const Statistics = (): JSX.Element => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     const today = getDayAndMonth();
-    const serializedStatistics = localStorage.getItem(STORAGE_KEYS.STATISTICS);
+    const serializedStatistics = localStorage.getItem(StorageKey.Statistics);
     if (serializedStatistics) {
       try {
         const statistics = JSON.parse(serializedStatistics);
         if (statistics.date === today) {
           dispatch(setStatistics(statistics));
         } else {
-          localStorage.removeItem(STORAGE_KEYS.STATISTICS);
+          localStorage.removeItem(StorageKey.Statistics);
         }
       } catch (e) {
         /* eslint-disable-next-line no-console */

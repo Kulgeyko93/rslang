@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import axios from 'axios';
 import './style.scss';
 import { Status, StorageKey, UserAggregatedWord, Word } from '../../types';
 import { usePagination, useRequest } from '../../hooks';
+import { fetchWords, fetchUserAggregatedWords } from '../../api';
 import { selectAuthData, selectAuthStatus } from '../../features/auth/authSlice';
 import WordCards from './components/WordCards';
 import Pagination from './components/Pagination';
@@ -14,35 +14,6 @@ interface MatchParams {
 }
 
 type Props = RouteComponentProps<MatchParams>;
-
-async function fetchWords({ group = 0, page = 0 }: { group?: number; page?: number }) {
-  const response = await axios.get('/words', {
-    params: {
-      group,
-      page,
-    },
-  });
-  return response.data;
-}
-
-async function fetchUserAggregatedWords({
-  group = 0,
-  page = 0,
-  userId,
-}: {
-  group?: number;
-  page?: number;
-  userId: string;
-}) {
-  const response = await axios.get(`/users/${userId}/aggregatedWords`, {
-    params: {
-      group,
-      page,
-      wordsPerPage: 20,
-    },
-  });
-  return response.data;
-}
 
 export default function Group(props: Props): JSX.Element {
   const { match } = props;
@@ -62,8 +33,12 @@ export default function Group(props: Props): JSX.Element {
 
   const boundedFetchUserAggregatedWords = async () => {
     if (authStatus === Status.Authorized && authData) {
-      const response = await fetchUserAggregatedWords({ group: Number(groupId), page: 0, userId: authData.userId });
-      return response[0].paginatedResults;
+      const response = await fetchUserAggregatedWords({
+        group: Number(groupId),
+        page: currentPage,
+        userId: authData.userId,
+      });
+      return response;
     }
     return null;
   };
@@ -71,7 +46,7 @@ export default function Group(props: Props): JSX.Element {
     status: userAggregatedWordsStatus,
     data: userAggregatedWordsData,
     error: userAggregatedWordsError,
-  } = useRequest<UserAggregatedWord[]>(boundedFetchUserAggregatedWords, [authStatus]);
+  } = useRequest<UserAggregatedWord[] | null>(boundedFetchUserAggregatedWords, [authStatus]);
 
   const entityStatuses = [wordsStatus, userAggregatedWordsStatus];
   const isLoadingSomeData = entityStatuses.some((status) => [Status.Idle, Status.Loading].includes(status));

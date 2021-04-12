@@ -14,10 +14,12 @@ import { Counter } from './features/counter/Counter';
 import { Words } from './features/words/Words';
 import './App.css';
 import { loginUser, selectAuthData, setAuthData, setAuthorizedStatus } from './features/auth/authSlice';
-import { STORAGE_KEYS, TOKEN_EXPIRE_TIME } from './constants';
+import { TOKEN_EXPIRE_TIME } from './constants';
+import { StorageKey } from './types';
 import Games from './pages/Games/Games';
 import { isPlaying } from './features/game/gameSlice';
 import Statistics from './pages/Statistics/Statistics';
+import Dictionary from './pages/Dictionary/Dictionary';
 
 const App = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -26,14 +28,14 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     let isTokenExpired = true;
-    const serializedAuthTime = localStorage.getItem(STORAGE_KEYS.AUTH_TIME);
+    const serializedAuthTime = localStorage.getItem(StorageKey.AuthTime);
     if (serializedAuthTime) {
       const authTime = Number(serializedAuthTime);
       const currentTime = new Date().getTime();
       const expiredTime = currentTime - authTime;
       isTokenExpired = expiredTime >= TOKEN_EXPIRE_TIME;
     }
-    const serializedAuthData = localStorage.getItem(STORAGE_KEYS.AUTH);
+    const serializedAuthData = localStorage.getItem(StorageKey.Auth);
     if (serializedAuthData && !isTokenExpired) {
       try {
         const storedAuthData = JSON.parse(serializedAuthData);
@@ -44,8 +46,8 @@ const App = (): JSX.Element => {
         dispatch(setAuthData(null));
       }
     } else {
-      localStorage.removeItem(STORAGE_KEYS.AUTH_TIME);
-      localStorage.removeItem(STORAGE_KEYS.AUTH);
+      localStorage.removeItem(StorageKey.AuthTime);
+      localStorage.removeItem(StorageKey.Auth);
       dispatch(
         loginUser({
           email: 'a@a.com',
@@ -56,11 +58,11 @@ const App = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem(STORAGE_KEYS.AUTH);
+    const storedAuth = localStorage.getItem(StorageKey.Auth);
     if (!storedAuth && authData) {
       const currentTime = new Date().getTime();
-      localStorage.setItem(STORAGE_KEYS.AUTH_TIME, String(currentTime));
-      localStorage.setItem(STORAGE_KEYS.AUTH, JSON.stringify(authData));
+      localStorage.setItem(StorageKey.AuthTime, String(currentTime));
+      localStorage.setItem(StorageKey.Auth, JSON.stringify(authData));
     }
   }, [authData]);
 
@@ -85,6 +87,10 @@ const App = (): JSX.Element => {
           <Route exact path="/groups/:groupId" component={Group} />
           <Route exact path="/statistics" component={Statistics} />
           <Route exact path="/prestart" component={PreStartInfo} />
+          <Route exact path="/dictionary" component={Dictionary} />
+          <Route exact path="/dictionary/learned/groups/:groupId" component={Group} />
+          <Route exact path="/dictionary/difficult/groups/:groupId" component={Group} />
+          <Route exact path="/dictionary/deleted/groups/:groupId" component={Group} />
           <Route path="*" component={NotFound} />
         </Switch>
       </main>

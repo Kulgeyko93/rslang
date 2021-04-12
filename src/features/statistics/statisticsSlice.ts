@@ -30,37 +30,6 @@ export interface Data {
   date: string;
   data: Array<DataItem>;
 }
-// если в какую-то игру не играли, то в localStorage не заносим о ней результаты.
-// Из localStorage надо удалять statistics, если текущая дата изменилась
-// const data: Data = {
-//   date: '9 апреля',
-//   data: [
-//     {
-//       name: 'Аудиовызов',
-//       words: ['ahead', 'top', 'end', 'spring', 'hello'],
-//       countCorrectAnswers: 2,
-//       longestSeriesCorrectAnswers: 5,
-//     },
-//     {
-//       name: 'Спринт',
-//       words: ['ahead', 'top', 'end', 'spring'],
-//       countCorrectAnswers: 1,
-//       longestSeriesCorrectAnswers: 1,
-//     },
-//     {
-//       name: 'Своя игра',
-//       words: ['ahead', 'top', 'end', 'spring', 'today'],
-//       countCorrectAnswers: 2,
-//       longestSeriesCorrectAnswers: 18,
-//     },
-//     {
-//       name: 'Саванна',
-//       words: ['ahead', 'top', 'end', 'spring', 'today'],
-//       countCorrectAnswers: 2,
-//       longestSeriesCorrectAnswers: 18,
-//     },
-//   ],
-// };
 
 const initialState: StatisticsState = {
   learnedWords: [],

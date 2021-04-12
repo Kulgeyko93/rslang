@@ -1,9 +1,3 @@
-export const STORAGE_KEYS = {
-  AUTH: 'auth',
-  STATISTICS: 'statistics',
-  AUTH_TIME: 'auth_time',
-};
-
 export const GROUP_COLORS = [
   [245, 248, 140],
   [167, 233, 166],

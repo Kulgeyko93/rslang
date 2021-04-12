@@ -11,9 +11,9 @@ import styles from './endGame.module.css';
 import { correctAnswers, currentGame, setInitSettings, wrongAnswers } from '../../features/game/gameSlice';
 import GameResults from '../GameResults/GameResults';
 import { getDayAndMonth } from '../../utils/getDayAndMonth';
-import { STORAGE_KEYS } from '../../constants';
 import { getUniqueArray } from '../../utils/getUniqueArray';
 import { Data, DataItem } from '../../features/statistics/statisticsSlice';
+import { StorageKey } from '../../types';
 
 type PropsType = {
   color: string;
@@ -47,7 +47,7 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
         longestSeriesCorrectAnswers: correctAnswersArray.length,
       };
 
-      const serializedStatistics = localStorage.getItem(STORAGE_KEYS.STATISTICS);
+      const serializedStatistics = localStorage.getItem(StorageKey.Statistics);
 
       if (serializedStatistics) {
         try {
@@ -88,10 +88,10 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
               statistics.data.push(gameData);
             }
             // добавляем данные в localStorage
-            localStorage.setItem(STORAGE_KEYS.STATISTICS, JSON.stringify(statistics));
+            localStorage.setItem(StorageKey.Statistics, JSON.stringify(statistics));
           } else {
             // если прошедший день, то удаляем данные
-            localStorage.removeItem(STORAGE_KEYS.STATISTICS);
+            localStorage.removeItem(StorageKey.Statistics);
           }
         } catch (e) {
           /* eslint-disable-next-line no-console */
@@ -103,7 +103,7 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
           date: today,
           data: [gameData],
         };
-        localStorage.setItem(STORAGE_KEYS.STATISTICS, JSON.stringify(data));
+        localStorage.setItem(StorageKey.Statistics, JSON.stringify(data));
       }
     }
   }, []);

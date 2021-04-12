@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Status, EntityState } from '../types';
+import { Status, StorageKey, EntityState } from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useRequest<T>(fetch: () => Promise<T>, dependencies: any[] = []): EntityState<T> {
@@ -31,4 +31,39 @@ export function useRequest<T>(fetch: () => Promise<T>, dependencies: any[] = [])
     data,
     error,
   };
+}
+
+interface PaginationProps {
+  pageCount: number;
+  storageKey: StorageKey;
+}
+
+interface PaginationResult {
+  currentPage: number;
+  openNextPage: () => void;
+  openPreviousPage: () => void;
+}
+
+export function usePagination({ pageCount, storageKey }: PaginationProps): PaginationResult {
+  const storedPage = localStorage.getItem(storageKey);
+  const initialPage = storedPage ? Number(storedPage) : 0;
+  const [currentPage, setCurrentPage] = useState(initialPage);
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, String(currentPage));
+  }, [currentPage]);
+
+  function openNextPage() {
+    if (currentPage < pageCount - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
+  function openPreviousPage() {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+
+  return { currentPage, openNextPage, openPreviousPage };
 }

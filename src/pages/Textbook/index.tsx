@@ -2,11 +2,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './style.scss';
 import { GROUP_COLORS } from '../../constants';
+import getColorFromRgbArray from '../../utils/getColorFromRgbArray';
 
 export default function Textbook(): JSX.Element {
   const groups = Array.from(Array(6).keys());
   const groupCards = groups.map((i) => {
-    const backgroundColor = `rgba(${[...GROUP_COLORS[i], 0.5].join(', ')})`;
+    const backgroundColor = getColorFromRgbArray(GROUP_COLORS[i]);
     return (
       <NavLink to={`/groups/${i}`} className="group-card" key={i} style={{ backgroundColor }}>
         <h3 className="group-title">Уровень сложности {i}</h3>
@@ -17,7 +18,6 @@ export default function Textbook(): JSX.Element {
 
   return (
     <div className="textbook">
-      <h1>Textbook</h1>
       <div className="groups">{groupCards}</div>
     </div>
   );

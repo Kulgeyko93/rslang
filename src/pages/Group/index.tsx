@@ -8,6 +8,8 @@ import { fetchWords, fetchUserAggregatedWords } from '../../api';
 import { selectAuthData, selectAuthStatus } from '../../features/auth/authSlice';
 import WordCards from './components/WordCards';
 import Pagination from './components/Pagination';
+import getColorFromRgbArray from '../../utils/getColorFromRgbArray';
+import { GROUP_COLORS } from '../../constants';
 
 interface MatchParams {
   groupId: string;
@@ -75,7 +77,9 @@ export default function Group(props: Props): JSX.Element {
 
   return (
     <div className="group-page">
-      <h3>Уровень сложности {groupId}</h3>
+      <h3 style={{ backgroundColor: getColorFromRgbArray(GROUP_COLORS[Number(groupId)]) }}>
+        Уровень сложности {groupId}
+      </h3>
       {content}
     </div>
   );

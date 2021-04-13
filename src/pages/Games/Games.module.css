@@ -67,3 +67,11 @@
 .item{
   margin: 1rem 0;
 }
+
+.card:hover{
+  transform: translate(5px, -5px);
+  box-shadow: 0 0 10px rgba(0,0,0,0.5)
+}
+.gameBtn:hover{
+  box-shadow: 0 0 10px rgba(0,0,0,0.5)
+}

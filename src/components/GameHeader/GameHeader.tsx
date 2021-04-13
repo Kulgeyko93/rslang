@@ -3,15 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image';
+// import Image from 'react-bootstrap/Image';
 import { NavLink } from 'react-router-dom';
-import volumeImg from '../../assets/icons/volume.svg';
-import muteImg from '../../assets/icons/mute.svg';
-import fullscreenImg from '../../assets/icons/fullscreen.svg';
-import notfullscreenImg from '../../assets/icons/notfullscreen.svg';
-import closeImg from '../../assets/icons/close.svg';
-import keyboardImg from '../../assets/icons/keyboard.svg';
-import heartImg from '../../assets/icons/heart.svg';
+import * as Icon from 'react-bootstrap-icons';
+// import volumeImg from '../../assets/icons/volume.svg';
+// import muteImg from '../../assets/icons/mute.svg';
+// import fullscreenImg from '../../assets/icons/fullscreen.svg';
+// import notfullscreenImg from '../../assets/icons/notfullscreen.svg';
+// import closeImg from '../../assets/icons/close.svg';
+// import keyboardImg from '../../assets/icons/keyboard.svg';
+// import heartImg from '../../assets/icons/heart.svg';
 import styles from './GameHeader.module.css';
 import { setInitSettings, attempts } from '../../features/game/gameSlice';
 import { setSoundsVolume } from '../../features/games/gamesSlice';
@@ -27,9 +28,16 @@ type PropsType = {
 const gameHeaderStyle = {
   imgStyle: {
     marginRight: '30px',
+    color: '#fff',
+    fontSize: '30px',
   },
   heartStyle: {
     margin: '0 10px 0 0',
+    color: '#ff0000',
+  },
+  keyboard: {
+    color: '#fff',
+    fontSize: '30px',
   },
 };
 
@@ -86,14 +94,17 @@ const GameHeader = ({ color, soundVolume, gameRef, isKeyboardActive }: PropsType
               style={gameHeaderStyle.imgStyle}
             >
               {soundVolume === volume ? (
-                <Image width="20" height="auto" src={volumeImg} fluid />
+                <Icon.VolumeUpFill />
+                // <Image width="20" height="auto" color="white" src={volumeImg} fluid />
               ) : (
-                <Image width="20" height="auto" src={muteImg} fluid />
+                <Icon.VolumeMuteFill />
+                // <Image width="20" height="auto" src={muteImg} fluid />
               )}
             </div>
             {isKeyboardActive && (
-              <div>
-                <Image width="20" height="auto" src={keyboardImg} fluid />
+              <div style={gameHeaderStyle.keyboard}>
+                {/* <Image width="20" height="auto" src={keyboardImg} fluid className={styles.keyboard} /> */}
+                <Icon.Keyboard />
               </div>
             )}
           </Col>
@@ -101,7 +112,8 @@ const GameHeader = ({ color, soundVolume, gameRef, isKeyboardActive }: PropsType
             <Col className={styles.center}>
               {arrayAttempts.map((item) => (
                 <div key={item} style={gameHeaderStyle.heartStyle}>
-                  <Image width="13" height="auto" src={heartImg} />
+                  <Icon.HeartFill />
+                  {/* <Image width="13" height="auto" src={heartImg} /> */}
                 </div>
               ))}
             </Col>
@@ -115,14 +127,17 @@ const GameHeader = ({ color, soundVolume, gameRef, isKeyboardActive }: PropsType
               className={styles.img}
             >
               {isFullScreen ? (
-                <Image width="20" height="auto" src={notfullscreenImg} fluid />
+                // <Image width="20" height="auto" src={notfullscreenImg} fluid />
+                <Icon.Fullscreen />
               ) : (
-                <Image width="20" height="auto" src={fullscreenImg} fluid />
+                // <Image width="20" height="auto" src={fullscreenImg} fluid />
+                <Icon.FullscreenExit />
               )}
             </div>
             <NavLink to="/">
-              <div className={styles.img} onClick={onCloseBtnClick} role="button" tabIndex={0}>
-                <Image width="20" height="auto" src={closeImg} fluid />
+              <div style={gameHeaderStyle.imgStyle} onClick={onCloseBtnClick} role="button" tabIndex={0}>
+                {/* <Image width="20" height="auto" src={closeImg} fluid /> */}
+                <Icon.XSquare />
               </div>
             </NavLink>
           </Col>

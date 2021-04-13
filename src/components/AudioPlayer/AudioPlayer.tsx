@@ -6,7 +6,7 @@ type AudioPlayerProps = {
   playing: boolean;
   format: Array<string>;
   loop: boolean;
-  mute: boolean;
+  mute: boolean | null;
 };
 
 export const AudioPlayer = ({ link, playing, format, loop, mute }: AudioPlayerProps): JSX.Element => (
@@ -15,7 +15,7 @@ export const AudioPlayer = ({ link, playing, format, loop, mute }: AudioPlayerPr
     playing={playing}
     format={format}
     loop={loop}
-    mute={mute}
+    mute={mute || false}
     volume={0.5}
     preload
     html5

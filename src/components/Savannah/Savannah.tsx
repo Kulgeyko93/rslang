@@ -191,7 +191,9 @@ const Savannah = (): JSX.Element => {
                 </Col>
               )}
             </Row>
-            <GameDescription />
+            <div className={styles.description}>
+              <GameDescription />
+            </div>
           </Container>
         </div>
       )}

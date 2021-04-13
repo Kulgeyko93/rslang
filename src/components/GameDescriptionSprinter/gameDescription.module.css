@@ -1,0 +1,10 @@
+.container {
+  margin: 2rem 0 0;
+  padding: 1.6rem 2rem 0.8rem;
+  background-color: #ffffff;
+  border: 1px solid #333333;
+  box-sizing: border-box;
+}
+.img {
+  padding: 0 1rem;
+}

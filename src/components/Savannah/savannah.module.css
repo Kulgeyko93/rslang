@@ -39,6 +39,18 @@
 .img:hover {
   transform: scale(1.05);
 }
+
+.description{
+  width: 100%;
+  opacity: 0.6;
+  transition: all 0.5s;
+}
+
+.description:hover{
+  opacity: 1;
+  transition: all 0.5s;
+}
+
 @media (max-width: 1200px) {
   .words {
     max-width: 100%;

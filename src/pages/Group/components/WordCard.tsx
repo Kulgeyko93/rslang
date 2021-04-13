@@ -10,10 +10,12 @@ interface Props {
   wordData: Word;
   userWord: UserWord | undefined;
   userId: string | undefined;
+  addHardWordLabel: () => void;
+  deleteWordFromList: () => void;
 }
 
 export default function WordCard(props: Props): JSX.Element {
-  const { wordData, userWord, userId } = props;
+  const { wordData, userWord, userId, addHardWordLabel, deleteWordFromList } = props;
   const {
     id,
     image,
@@ -78,7 +80,15 @@ export default function WordCard(props: Props): JSX.Element {
               <p>→ {textExampleTranslate}</p>
             </Col>
           </Row>
-          {userId && <WordControls userId={userId} wordId={id} userWord={userWord} />}
+          {userId && (
+            <WordControls
+              userId={userId}
+              wordId={id}
+              userWord={userWord}
+              addHardWordLabel={addHardWordLabel}
+              deleteWordFromList={deleteWordFromList}
+            />
+          )}
         </Container>
       </Card.Body>
     </Card>

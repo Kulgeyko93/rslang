@@ -19,7 +19,7 @@ export const games = [
     nameRU: 'Саванна',
     description: 'Игра Саванна развивает словарный запас.<br/> Чем больше слов ты знаешь, тем легче тебе будет общаться.',
     color: 'blue',
-    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF2JnamB2Pmnq70KrzBPF_9JGaoYqmhv6nw2r1QXb_fAUv4BwErmxpY1O4u4IhMe9nx3s&usqp=CAU',
+    img: 'https://img3.akspic.ru/originals/4/2/6/1/71624-illustracia-utro-nebo-poslesvechenie-pustynya-2000x1200.jpg',
   },
   {
     name: 'newgame',

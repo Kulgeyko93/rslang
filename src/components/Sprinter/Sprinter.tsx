@@ -21,6 +21,7 @@ import { createArrayEnAndRUWords } from '../../utils/createArrayEnWords';
 import { AudioPlayer } from '../AudioPlayer/AudioPlayer';
 import styles from './sprinter.module.scss';
 import EndGame from '../EndGame/EndGame';
+import GameDescriptionSprinter from '../GameDescriptionSprinter/GameDescriptionSprinter';
 
 const gameField = {
   cursor: 'default',
@@ -42,14 +43,13 @@ const Sprinter = (): JSX.Element => {
   const arrayRuWords: Array<string> = createArrayEnAndRUWords(words)[1];
 
   const [isTrueWord, setIsTrueWord] = useState<boolean>(false);
+  // const [isMute, setIsMute] = useState<boolean>(false);
   const [ruWorsIndex, setRuWordIndex] = useState<number>(0);
   const [enWorsIndex, setEnWordIndex] = useState<number>(0);
-  const [score, setSetScore] = useState<number>(0);
+  const [score, setSetScore] = useState<string>('Поехали!!');
   const [answerTrueCount, setAnswerTrueCount] = useState<number>(0);
-  const [scoreMultiplier, setScoreMultiplier] = useState<number>(1);
   const [disable, setDisable] = useState<boolean>(false);
   const [playSound, setPlaySound] = useState<boolean>(false);
-  // const [isEndGame, setIsEndGame] = useState<boolean>(false);
   const [audioUrl, setAudioUrl] = useState<string>('https://zvukipro.com/uploads/files/2019-12/1575881866_22b1d8c783a14eb.mp3');
   const [border, setBorder] = useState(styles.borderGame);
   const [opasity, setOpasity] = useState(styles.iconNoVisible);
@@ -57,6 +57,7 @@ const Sprinter = (): JSX.Element => {
 
   const iconRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const contentRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const muteRef = useRef<boolean | null>(false);
 
   const stopGame = () => {
     setPlaySound(false);
@@ -83,7 +84,7 @@ const Sprinter = (): JSX.Element => {
     setDisable(true);
     setOpasityWord(false);
     const trueAnswer = arrayRuWords[ruWorsIndex] === randomArrayWords[ruWorsIndex];
-    const points = 20;
+    // const points = 20;
     dispatch(setCurrentWordIndex());
     if (trueAnswer === answer) {
       setAudioUrl('https://zvukipro.com/uploads/files/2019-12/1575881866_22b1d8c783a14eb.mp3');
@@ -101,18 +102,15 @@ const Sprinter = (): JSX.Element => {
       setOpasity(styles.iconVisible);
       switch (true) {
         case answerTrueCount >= 6: {
-          setScoreMultiplier(4);
-          setSetScore(score + points * scoreMultiplier);
+          setSetScore('Превосходно');
           break;
         }
         case answerTrueCount >= 3 && answerTrueCount < 6: {
-          setScoreMultiplier(2);
-          setSetScore(score + points * scoreMultiplier);
+          setSetScore('Отлично');
           break;
         }
         default: {
-          setScoreMultiplier(1);
-          setSetScore(score + points * scoreMultiplier);
+          setSetScore('Не плохо');
           break;
         }
       }
@@ -129,7 +127,6 @@ const Sprinter = (): JSX.Element => {
       }, 800);
       setIsTrueWord(false);
       setAnswerTrueCount(0);
-      setScoreMultiplier(1);
       setBorder(styles.borderFalse);
       setOpasity(styles.iconVisible);
       showIcon();
@@ -144,21 +141,52 @@ const Sprinter = (): JSX.Element => {
     setPlaySound(true);
   };
 
+  React.useEffect(() => {
+    const onKeypress = (e: any) => {
+      if (e.key === 'Enter') {
+        compareResults(true);
+        handlePlaySong();
+      }
+      if (e.key === ' ') {
+        compareResults(false);
+        handlePlaySong();
+      }
+    };
+    document.addEventListener('keypress', onKeypress);
+    return () => {
+      document.removeEventListener('keypress', onKeypress);
+    };
+  }, []);
+
+  const handleMute = (mute: boolean): void => {
+    muteRef.current = mute;
+  };
+
+  const isSound = React.useMemo(() => {
+    if (muteRef.current === null) return false;
+    return muteRef.current;
+  }, [muteRef.current]);
+
   return (
     isEnd
       ? <EndGame color={games[1].color} />
       : (
         <div ref={gameRef} className={styles.sprinter} style={gameField}>
           <div className={styles.header}>
-            <GameHeaderSprinter color="none" gameRef={gameRef} />
+            <GameHeaderSprinter
+              color="none"
+              gameRef={gameRef}
+              isMuteSound={muteRef.current}
+              setIsMuteSound={handleMute}
+              // muteRef={muteRef}
+            />
           </div>
           <div className={`${border} ${styles.container}`}>
             <div className={styles.info}>
               <div className={styles.score}>
-                <div className={styles.value}>Общий счёт: {score}</div>
-                <div className={styles.multipilier}>+{20 * scoreMultiplier} очков за слово</div>
+                <div className={styles.value}>{score}</div>
               </div>
-              <Progress now={45} max={45} className={styles.visualTimer} stopGame={stopGame} />
+              <Progress now={18000} max={45} className={styles.visualTimer} stopGame={stopGame} />
             </div>
             <div ref={contentRef} className={styles.content}>
               <div className={`${styles.word}`}>
@@ -171,6 +199,9 @@ const Sprinter = (): JSX.Element => {
                     ? <Icon.CheckCircleFill className={styles.iconTrue} />
                     : <Icon.XCircleFill className={styles.iconFalse} />
                 }
+              </div>
+              <div className={styles.description}>
+                <GameDescriptionSprinter />
               </div>
               <div className={styles.answerBtn}>
                 <Button
@@ -187,7 +218,7 @@ const Sprinter = (): JSX.Element => {
                     playing={playSound}
                     format={['.mp3']}
                     loop={false}
-                    mute={false}
+                    mute={isSound}
                   />
                   Не верно
                 </Button>

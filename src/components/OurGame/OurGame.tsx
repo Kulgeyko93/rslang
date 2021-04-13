@@ -33,6 +33,11 @@ const gameField = {
   backgroundImage: `url('${games[3].img}')`,
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
+  height: '100vh',
+  minHeight: '900px',
+  margin: 0,
+  paddin: 0,
+
 };
 const root = {
   padding: 0,
@@ -127,7 +132,7 @@ const OurGame = (): JSX.Element => {
           role="button"
           tabIndex={0}
           onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => handlerOnKeyDown(event)}
-          className={styles.gameField}
+          className={styles.gameFields}
           style={gameField}
           onFocus={handlerOnFocus}
           onBlur={handlerOnBlur}
@@ -155,11 +160,11 @@ const OurGame = (): JSX.Element => {
                 })}
               </div>
               {isShowAnswer && currentWord && (
-                <Row className={styles.heightWordImg}>
+                <Row className={styles.heightImg}>
                   <Col className={styles.right} lg={6} md={6} sm={6} xs={12}>
                     <Figure>
                       <Figure.Image
-                        width="100%"
+                        width="60%"
                         height="auto"
                         alt="рисунок для слова"
                         src={`${process.env.REACT_APP_BASE_URL}/${currentWord.image}`}
@@ -169,7 +174,7 @@ const OurGame = (): JSX.Element => {
                 </Row>
               )}
             </Row>
-            <Row>
+            <Row style={{ width: '70%' }}>
               <Col className={styles.words} lg={12}>
                 {words &&
                   words.map((word, index) => (
@@ -194,20 +199,22 @@ const OurGame = (): JSX.Element => {
             <Row>
               {!isShowAnswer && (
                 <Col lg={12}>
-                  <Button onClick={onDontKnowBtnClick} variant="outline-dark">
+                  <Button onClick={onDontKnowBtnClick} variant="light">
                     Не знаю
                   </Button>
                 </Col>
               )}
               {isShowAnswer && (
                 <Col lg={12}>
-                  <Button onClick={onNextBtnClick} variant="outline-dark">
+                  <Button onClick={onNextBtnClick} variant="light">
                     Далее
                   </Button>
                 </Col>
               )}
             </Row>
-            <GameDescription gameCheck="ourGame" />
+            <div className={styles.description}>
+              <GameDescription gameCheck="ourGame" />
+            </div>
           </Container>
         </div>
       )}

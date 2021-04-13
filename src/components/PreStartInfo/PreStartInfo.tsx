@@ -55,7 +55,7 @@ const PreStartInfo = (): JSX.Element => {
         break;
       }
       default: {
-        console.error('don\'t have game');
+        throw new Error('don\'t have game');
       }
     }
   }, [currentGameName]);
@@ -78,7 +78,7 @@ const PreStartInfo = (): JSX.Element => {
         if (newValue !== null) {
           dispatch(setCurrentLevel(newValue));
           dispatch(fetchWords(currentGameLevel));
-          console.log(currentGameName, currentGameLevel);
+          // console.log(currentGameName, currentGameLevel);
         }
       }
     }

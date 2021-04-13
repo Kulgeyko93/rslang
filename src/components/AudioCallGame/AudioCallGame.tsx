@@ -40,9 +40,9 @@ const gameField = {
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
 };
-// const root = {
-//   padding: 0,
-// };
+const root = {
+  padding: 0,
+};
 
 const AudioCallGame = (): JSX.Element => {
   const gameRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -113,7 +113,7 @@ const AudioCallGame = (): JSX.Element => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid style={root}>
       <ScrollToTopOnMount />
       {!isAudioCallGameEnd && (
         <div
@@ -196,7 +196,9 @@ const AudioCallGame = (): JSX.Element => {
                 </Col>
               )}
             </Row>
-            <GameDescription />
+            <div className={styles.description}>
+              <GameDescription />
+            </div>
           </Container>
         </div>
       )}

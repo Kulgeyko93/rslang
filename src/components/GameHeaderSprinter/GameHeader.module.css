@@ -14,16 +14,19 @@
 .left {
   display: flex;
   justify-content: flex-start;
+  font-size: 30px
 }
 .right {
   display: flex;
   justify-content: flex-end;
+  font-size: 30px
 }
 .center {
   display: flex;
 }
 .img {
-  width: 20px;
+  width: 50px;
+  color: #fff;
   cursor: pointer;
 }
 .img:hover,

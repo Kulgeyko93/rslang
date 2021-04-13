@@ -174,3 +174,18 @@
   width: 25px;
   height: 25px;
 }
+
+.description{
+  width: 80%;
+  opacity: 0.6;
+  transition: all 0.5s;
+}
+
+.description:hover{
+  opacity: 1;
+  transition: all 0.5s;
+}
+
+.header{
+  width: 100%;
+}

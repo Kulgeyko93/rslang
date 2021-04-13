@@ -31,16 +31,17 @@ const Games = (): JSX.Element => {
             <Col key={game.color} lg={6} md={6} sm={6} className={styles.item}>
               <Container fluid>
                 {/* <Container fluid className={styles[game.color]}> */}
-                <Card>
-                  <Card.Header>{game.name}</Card.Header>
+                <Card className={styles.card}>
+                  <Card.Header>{game.name.toUpperCase()}</Card.Header>
                   <Card.Img variant="top" src={`${game.img}`} />
                   <Card.Body>
-                    <Card.Text>
+                    <Card.Title>
                       <GameOptions gameName={game.name} />
-                      <div dangerouslySetInnerHTML={{ __html: game.description }} />
-                    </Card.Text>
+                    </Card.Title>
+                    <Card.Text dangerouslySetInnerHTML={{ __html: game.description }} />
                     <NavLink to="prestart">
                       <Button
+                        className={styles.gameBtn}
                         variant="primary"
                         onClick={() => {
                           onPlayBtnClick(game.name);

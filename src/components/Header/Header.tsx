@@ -1,13 +1,25 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { Nav, Image, Navbar, NavDropdown } from 'react-bootstrap';
-import { BoxArrowInRight, BoxArrowLeft, BookmarkXFill, BookmarkCheckFill } from 'react-bootstrap-icons';
+import { Nav, Image, Navbar, NavDropdown, OverlayTrigger, Popover, Button } from 'react-bootstrap';
+import {
+  // BoxArrowLeft,
+  BookmarkXFill,
+  BookmarkCheckFill,
+  BoxArrowInRight,
+  PersonCheck,
+  ArrowRepeat,
+} from 'react-bootstrap-icons';
+import axios from 'axios';
 import logoImg from '../../assets/icons/logo.svg';
 // import menuImg from '../../assets/icons/menu.svg';
 // import settingsImg from '../../assets/icons/settings.svg';
-import { selectAuthData } from '../../features/auth/authSlice';
+// import menuImg from '../../assets/icons/menu.svg';
+// import settingsImg from '../../assets/icons/settings.svg';
+import { selectAuthData, selectAuthStatus, setAuthData } from '../../features/auth/authSlice';
+import InlineSpinner from '../InlineSpinner';
+import { Status, StorageKey } from '../../types';
 import styles from './header.module.css';
 
 const imgStyle = {
@@ -18,8 +30,17 @@ interface Props {
   openAuthModal: () => void;
 }
 
+interface UserData {
+  email: string;
+  photo_url: string;
+}
+
 const Header = (props: Props): JSX.Element => {
   const { openAuthModal } = props;
+  const dispatch = useDispatch();
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const authStatus = useSelector(selectAuthStatus);
   const authData = useSelector(selectAuthData);
 
   const [expanded, setExpanded] = React.useState(false);
@@ -27,14 +48,66 @@ const Header = (props: Props): JSX.Element => {
   const [isTranslate, setIsTranslate] = React.useState(true);
   const [isBtn, setIsBtn] = React.useState(true);
 
-  const signOutButton = <BoxArrowLeft size={20} />;
-  const signInButton = <BoxArrowInRight size={20} onClick={openAuthModal} />;
+  // const signOutButton = <BoxArrowLeft size={20} />;
+  // const signInButton = <BoxArrowInRight size={20} onClick={openAuthModal} />;
   const handleToggle = () => {
     setExpanded((prevState) => !prevState);
   };
+  async function fetchAndSetUserData() {
+    const userDataFromServer = await axios.get(`/users/${authData?.userId}`);
+    if (!userDataFromServer?.data) {
+      throw new Error('Недействительный пользователь');
+    }
+    setUserData(userDataFromServer.data);
+  }
+
+  function logoutUser() {
+    setIsLoggingOut(true);
+    dispatch(setAuthData(null));
+    localStorage.removeItem(StorageKey.AuthTime);
+    localStorage.removeItem(StorageKey.Auth);
+    setTimeout(() => setIsLoggingOut(false), 3000);
+  }
+
+  let authButton;
+  if (userData) {
+    const { email, photo_url: photoUrl } = userData;
+    const popover = (
+      <Popover id="popover-basic">
+        <Popover.Title as="h3">{email}</Popover.Title>
+        <Popover.Content>
+          <Image className="mb-2" width={200} src={photoUrl} rounded />
+          <Button disabled={isLoggingOut} onClick={logoutUser} variant="outline-info">
+            {isLoggingOut && <InlineSpinner />}
+            &nbsp; Разавторизовать
+          </Button>
+        </Popover.Content>
+      </Popover>
+    );
+    authButton = (
+      <OverlayTrigger trigger="click" placement="left" overlay={popover}>
+        <PersonCheck size={20} />
+      </OverlayTrigger>
+    );
+  } else if (authData) {
+    authButton = <ArrowRepeat size={20} />;
+  } else {
+    authButton = <BoxArrowInRight size={20} onClick={openAuthModal} />;
+  }
+
+  useEffect(() => {
+    if (authStatus === Status.Authorized && authData?.userId) {
+      try {
+        fetchAndSetUserData();
+      } catch (e) {
+        setUserData(null);
+      }
+    } else {
+      setUserData(null);
+    }
+  }, [authStatus, authData]);
 
   React.useEffect(() => {
-    console.log(window.location.href);
     const isTextBook: boolean = /textbook/.test(window.location.href);
     // const isDictionary = /dictionary/.test(window.location.href);
     if (isTextBook) setIsSettings(true);
@@ -57,7 +130,7 @@ const Header = (props: Props): JSX.Element => {
             className={styles.img}
             onClick={() => setIsSettings(false)}
           >
-            {authData ? signOutButton : signInButton}
+            {authButton}
           </div>
         </Nav.Link>
         {
@@ -107,7 +180,7 @@ const Header = (props: Props): JSX.Element => {
             </Nav.Item>
             <Nav.Item>
               <NavLink to="/dictionary">
-                <div className={styles.menuItems} onClick={() => setIsSettings(true)}>
+                <div className={styles.menuItems} onClick={() => setIsSettings(false)}>
                   Словарь
                 </div>
               </NavLink>

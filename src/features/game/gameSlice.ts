@@ -21,6 +21,7 @@ interface GameState {
   isLoading: boolean;
   attempts: Array<number>;
   currentGame: string;
+  gameLearnedWords: Array<string>;
 }
 
 const initialState: GameState = {
@@ -37,6 +38,7 @@ const initialState: GameState = {
   isLoading: false,
   attempts: [1, 2, 3, 4, 5],
   currentGame: '',
+  gameLearnedWords: [],
 };
 
 export const gameSlice = createSlice({
@@ -47,6 +49,7 @@ export const gameSlice = createSlice({
       const data = action.payload;
       const newArrayOfIndices = getRandomArray(data.length, data.length);
       state.originWordsArray = createGameArray(data, newArrayOfIndices);
+      state.gameLearnedWords = data.map((word) => word.id);
     },
     setPlayWordsArray: (state) => {
       switch (state.currentGame) {
@@ -135,6 +138,7 @@ export const gameSlice = createSlice({
       state.isLoading = false;
       state.attempts = [1, 2, 3, 4, 5];
       state.currentGame = '';
+      state.gameLearnedWords = [];
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
@@ -198,5 +202,6 @@ export const currentLevel = (state: RootState): string => state.game.currentLeve
 export const isGameOpenFromTextBook = (state: RootState): boolean => state.game.isGameOpenFromTextBook;
 export const attempts = (state: RootState): Array<number> => state.game.attempts;
 export const currentGame = (state: RootState): string => state.game.currentGame;
+export const gameLearnedWords = (state: RootState): Array<string> => state.game.gameLearnedWords;
 
 export default gameSlice.reducer;

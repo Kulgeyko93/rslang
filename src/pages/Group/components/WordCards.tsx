@@ -147,7 +147,13 @@ export default function WordCards(props: Props): JSX.Element {
         {cardElements.length > 10 && (
           <Row>
             {games.map((game) => (
-              <Col key={game.name} sm={3} xs={6} className="game" onClick={onGameClick}>
+              <Col
+                key={game.name}
+                sm={3}
+                xs={6}
+                className="game"
+                onClick={onGameClick}
+              >
                 {game.nameRU}
               </Col>
             ))}

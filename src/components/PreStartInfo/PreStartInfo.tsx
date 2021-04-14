@@ -55,7 +55,7 @@ const PreStartInfo = (): JSX.Element => {
         break;
       }
       default: {
-        throw new Error('don\'t have game');
+        console.error('don\'t have game');
       }
     }
   }, [currentGameName]);

@@ -21,6 +21,7 @@ import { selectAuthData, selectAuthStatus, setAuthData } from '../../features/au
 import InlineSpinner from '../InlineSpinner';
 import { Status, StorageKey } from '../../types';
 import styles from './header.module.css';
+import { selectSettingsData, updateSettings } from '../../features/settings/settingsSlice';
 
 const imgStyle = {
   marginRight: '10px',
@@ -42,14 +43,12 @@ const Header = (props: Props): JSX.Element => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const authStatus = useSelector(selectAuthStatus);
   const authData = useSelector(selectAuthData);
+  const settingsData = useSelector(selectSettingsData);
+  const currentSettings = settingsData?.optional;
 
   const [expanded, setExpanded] = React.useState(false);
   const [isSettings, setIsSettings] = React.useState(false);
-  const [isTranslate, setIsTranslate] = React.useState(true);
-  const [isBtn, setIsBtn] = React.useState(true);
 
-  // const signOutButton = <BoxArrowLeft size={20} />;
-  // const signInButton = <BoxArrowInRight size={20} onClick={openAuthModal} />;
   const handleToggle = () => {
     setExpanded((prevState) => !prevState);
   };
@@ -85,7 +84,7 @@ const Header = (props: Props): JSX.Element => {
       </Popover>
     );
     authButton = (
-      <OverlayTrigger trigger="click" placement="left" overlay={popover}>
+      <OverlayTrigger trigger="click" placement="right" overlay={popover}>
         <PersonCheck size={20} />
       </OverlayTrigger>
     );
@@ -108,64 +107,71 @@ const Header = (props: Props): JSX.Element => {
   }, [authStatus, authData]);
 
   React.useEffect(() => {
-    const isTextBook: boolean = /textbook/.test(window.location.href);
-    // const isDictionary = /dictionary/.test(window.location.href);
+    const isTextBook: boolean = /textbook|group/.test(window.location.href);
     if (isTextBook) setIsSettings(true);
   }, []);
   return (
     <div className={styles.container}>
-
       <Navbar collapseOnSelect expand="md" expanded={expanded} variant="light">
-        {/* <Container> */}
         <Navbar.Brand>
           <NavLink to="/">
-            <div className={styles.logo} onClick={() => setIsSettings(false)}>
+            <div className={styles.logo}>
               <Image width="45" height="auto" src={logoImg} fluid />
             </div>
           </NavLink>
         </Navbar.Brand>
         <Nav.Link>
-          <div
-            style={{ ...imgStyle, width: 20, height: 'auto' }}
-            className={styles.img}
-            onClick={() => setIsSettings(false)}
-          >
+          <div style={{ ...imgStyle, width: 20, height: 'auto' }} className={styles.img}>
             {authButton}
           </div>
         </Nav.Link>
-        {
-          isSettings
-            ? (
-              <Nav.Item>
-                <NavDropdown title="Настройки" id="dropdown-menu-align-right" className={styles.menuItems}>
-                  <NavDropdown.Item>
-                    <div onClick={() => setIsTranslate(!isTranslate)}>
-                      Перевод слова и предложений
-                      {
-                        isTranslate
-                          ? <BookmarkCheckFill className={styles.ok} />
-                          : <BookmarkXFill className={styles.no} />
-                      }
-                    </div>
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item>
-                    <div className={styles.menuItems} onClick={() => setIsBtn(!isBtn)}>
-                      Кнопки &quot;Сложные слова&quot; и <br />&quot;Удалённые слова&quot;
-                      {
-                        isBtn
-                          ? <BookmarkCheckFill className={styles.ok} />
-                          : <BookmarkXFill className={styles.no} />
-                      }
-                    </div>
-
-                  </NavDropdown.Item>
-
-                </NavDropdown>
-              </Nav.Item>
-            )
-            : ''
-        }
+        {isSettings && currentSettings && userData ? (
+          <Nav.Item>
+            <NavDropdown title="Настройки" id="dropdown-menu-align-right" className={styles.menuItems}>
+              <NavDropdown.Item>
+                <div
+                  onClick={() =>
+                    dispatch(
+                      updateSettings({
+                        settings: { ...currentSettings, showTranslations: !currentSettings.showTranslations },
+                      }),
+                    )
+                  }
+                >
+                  Перевод слова и предложений &nbsp;
+                  {currentSettings.showTranslations ? (
+                    <BookmarkCheckFill className={styles.ok} />
+                  ) : (
+                    <BookmarkXFill className={styles.no} />
+                  )}
+                </div>
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item>
+                <div
+                  className={styles.menuItems}
+                  onClick={() =>
+                    dispatch(
+                      updateSettings({
+                        settings: { ...currentSettings, showControls: !currentSettings.showControls },
+                      }),
+                    )
+                  }
+                >
+                  Кнопки &quot;Сложные слова&quot; и <br />
+                  &quot;Удалённые слова&quot; &nbsp;
+                  {currentSettings.showControls ? (
+                    <BookmarkCheckFill className={styles.ok} />
+                  ) : (
+                    <BookmarkXFill className={styles.no} />
+                  )}
+                </div>
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav.Item>
+        ) : (
+          ''
+        )}
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={handleToggle} />
 
@@ -208,7 +214,6 @@ const Header = (props: Props): JSX.Element => {
             </Nav.Item>
           </Nav>
         </Navbar.Collapse>
-        {/* </Container> */}
       </Navbar>
     </div>
   );

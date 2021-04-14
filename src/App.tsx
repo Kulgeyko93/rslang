@@ -13,18 +13,20 @@ import Group from './pages/Group';
 import { Counter } from './features/counter/Counter';
 import { Words } from './features/words/Words';
 import './App.css';
-import { selectAuthData, setAuthData, setAuthorizedStatus } from './features/auth/authSlice';
+import { selectAuthData, selectAuthStatus, setAuthData, setAuthorizedStatus } from './features/auth/authSlice';
 import { TOKEN_EXPIRE_TIME } from './constants';
-import { StorageKey } from './types';
+import { StorageKey, Status } from './types';
 import Games from './pages/Games/Games';
 import { isPlaying } from './features/game/gameSlice';
 import Statistics from './pages/Statistics/Statistics';
 import Dictionary from './pages/Dictionary/Dictionary';
 import AuthModal from './components/AuthModal';
+import { fetchSettings } from './features/settings/settingsSlice';
 
 const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const authData = useSelector(selectAuthData);
+  const authStatus = useSelector(selectAuthStatus);
   const isGamePlaying = useSelector(isPlaying);
   const [authShown, setAuthShown] = useState(false);
   const openAuthModal = () => setAuthShown(true);
@@ -70,6 +72,12 @@ const App = (): JSX.Element => {
       dispatch(setAuthorizedStatus());
     }
   }, [authData]);
+
+  useEffect(() => {
+    if (authStatus === Status.Authorized && authData?.userId) {
+      dispatch(fetchSettings());
+    }
+  }, [authStatus]);
 
   return (
     <div className="App">

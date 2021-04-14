@@ -52,3 +52,8 @@ export interface UserAggregatedWord extends Word {
   _id: string;
   userWord: UserWord;
 }
+
+export interface Settings {
+  showTranslations: boolean;
+  showControls: boolean;
+}

@@ -1,10 +1,12 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { ExclamationTriangle } from 'react-bootstrap-icons';
 import SoundButton from './SoundButton';
 import WordControls from './WordControls';
 import { Difficulty, UserWord, Word } from '../../../types';
+import { selectSettingsData } from '../../../features/settings/settingsSlice';
 
 interface Props {
   wordData: Word;
@@ -15,6 +17,8 @@ interface Props {
 }
 
 export default function WordCard(props: Props): JSX.Element {
+  const settingsData = useSelector(selectSettingsData);
+  const { showTranslations = true, showControls = true } = settingsData?.optional || {};
   const { wordData, userWord, userId, addHardWordLabel, deleteWordFromList } = props;
   const {
     id,
@@ -59,7 +63,7 @@ export default function WordCard(props: Props): JSX.Element {
                     <strong>{word}</strong>
                   </p>
                   <p>{transcription}</p>
-                  <p>{wordTranslate}</p>
+                  {showTranslations ? <p>{wordTranslate}</p> : null}
                 </Col>
               </Row>
             </Col>
@@ -71,16 +75,16 @@ export default function WordCard(props: Props): JSX.Element {
                 &nbsp;
                 <strong dangerouslySetInnerHTML={{ __html: textMeaning }} />
               </p>
-              <p>→ {textMeaningTranslate}</p>
+              {showTranslations ? <p>→ {textMeaningTranslate}</p> : null}
               <p>
                 <SoundButton iconSize={16} soundPath={audioExample} />
                 &nbsp;
                 <strong dangerouslySetInnerHTML={{ __html: textExample }} />
               </p>
-              <p>→ {textExampleTranslate}</p>
+              {showTranslations ? <p>→ {textExampleTranslate}</p> : null}
             </Col>
           </Row>
-          {userId && (
+          {userId && showControls && (
             <WordControls
               userId={userId}
               wordId={id}

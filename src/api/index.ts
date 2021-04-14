@@ -23,8 +23,9 @@ export async function fetchUserAggregatedWords({
   const response = await axios.get(`/users/${userId}/aggregatedWords`, {
     params: {
       group,
-      page,
+      page: 0,
       wordsPerPage: 20,
+      filter: `{"page":{"$eq":${page}}}`,
     },
   });
   return response.data[0].paginatedResults;

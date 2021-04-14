@@ -45,6 +45,7 @@ export interface UserWord {
   difficulty?: Difficulty;
   optional?: {
     isDeleted: boolean;
+    isRestored?: boolean;
   };
 }
 
@@ -56,4 +57,10 @@ export interface UserAggregatedWord extends Word {
 export interface Settings {
   showTranslations: boolean;
   showControls: boolean;
+}
+
+export enum DictionaryType {
+  Difficult = 'difficult',
+  Learned = 'learned',
+  Deleted = 'deleted',
 }

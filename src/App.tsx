@@ -152,9 +152,7 @@ const App = (): JSX.Element => {
           <Route exact path="/statistics" component={Statistics} />
           <Route exact path="/prestart" component={PreStartInfo} />
           <Route exact path="/dictionary" component={Dictionary} />
-          <Route exact path="/dictionary/learned/groups/:groupId" component={Group} />
-          <Route exact path="/dictionary/difficult/groups/:groupId" component={Group} />
-          <Route exact path="/dictionary/deleted/groups/:groupId" component={Group} />
+          <Route exact path="/dictionary/:type/groups/:groupId" component={Group} />
           <Route path="*" component={NotFound} />
         </Switch>
       </main>

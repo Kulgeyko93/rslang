@@ -2,9 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import './style.scss';
-import { Status, StorageKey, UserAggregatedWord, Word } from '../../types';
+import { DictionaryType, Status, StorageKey, UserAggregatedWord, Word } from '../../types';
 import { usePagination, useRequest } from '../../hooks';
-import { fetchWords, fetchUserAggregatedWords } from '../../api';
+import { fetchUserAggregatedWords, fetchWords } from '../../api';
 import { selectAuthData, selectAuthStatus } from '../../features/auth/authSlice';
 import WordCards from './components/WordCards';
 import Pagination from './components/Pagination';
@@ -13,13 +13,14 @@ import { GROUP_COLORS } from '../../constants';
 
 interface MatchParams {
   groupId: string;
+  type?: DictionaryType;
 }
 
 type Props = RouteComponentProps<MatchParams>;
 
 export default function Group(props: Props): JSX.Element {
   const { match } = props;
-  const { groupId } = match.params;
+  const { groupId, type: dictionaryType } = match.params;
   const authData = useSelector(selectAuthData);
   const authStatus = useSelector(selectAuthStatus);
 
@@ -34,11 +35,19 @@ export default function Group(props: Props): JSX.Element {
   ]);
 
   const boundedFetchUserAggregatedWords = async () => {
+    let filter;
+    if (dictionaryType === DictionaryType.Difficult) {
+      filter = `{"$and":[{"page":${currentPage}, "userWord.difficulty":"HARD"}]}`;
+    } else if (dictionaryType === DictionaryType.Deleted) {
+      filter = `{"$and":[{"page":${currentPage}, "userWord.optional.isDeleted":true}]}`;
+    } else {
+      filter = `{"page":{"$eq":${currentPage}}}`;
+    }
     if (authStatus === Status.Authorized && authData) {
       const response = await fetchUserAggregatedWords({
         group: Number(groupId),
-        page: currentPage,
         userId: authData.userId,
+        filter,
       });
       return response;
     }
@@ -48,7 +57,11 @@ export default function Group(props: Props): JSX.Element {
     status: userAggregatedWordsStatus,
     data: userAggregatedWordsData,
     error: userAggregatedWordsError,
-  } = useRequest<UserAggregatedWord[] | null>(boundedFetchUserAggregatedWords, [authStatus, currentPage]);
+  } = useRequest<UserAggregatedWord[] | null>(boundedFetchUserAggregatedWords, [
+    authStatus,
+    currentPage,
+    dictionaryType,
+  ]);
 
   const entityStatuses = [wordsStatus, userAggregatedWordsStatus];
   const isLoadingSomeData = entityStatuses.some((status) => [Status.Idle, Status.Loading].includes(status));
@@ -63,10 +76,24 @@ export default function Group(props: Props): JSX.Element {
       content = <p>Error: {wordsError || userAggregatedWordsError}</p>;
     }
   } else if (hasLoadedAllData) {
-    if (wordsData) {
+    if (wordsData && userAggregatedWordsData) {
+      let currentWords;
+      if (dictionaryType) {
+        currentWords = wordsData.filter((wordData) => {
+          const wordId = wordData.id;
+          return userAggregatedWordsData.some((userAggregatedWord) => userAggregatedWord._id === wordId);
+        });
+      } else {
+        currentWords = wordsData;
+      }
       content = (
         <div>
-          <WordCards wordsData={wordsData} userAggregatedWordsData={userAggregatedWordsData} authData={authData} />
+          <WordCards
+            wordsData={currentWords}
+            userAggregatedWordsData={userAggregatedWordsData}
+            authData={authData}
+            dictionaryType={dictionaryType}
+          />
           <Pagination currentPage={currentPage} onPreviousClick={openPreviousPage} onNextClick={openNextPage} />
         </div>
       );

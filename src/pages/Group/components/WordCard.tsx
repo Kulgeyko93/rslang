@@ -5,7 +5,7 @@ import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { ExclamationTriangle } from 'react-bootstrap-icons';
 import SoundButton from './SoundButton';
 import WordControls from './WordControls';
-import { Difficulty, UserWord, Word } from '../../../types';
+import { DictionaryType, Difficulty, UserWord, Word } from '../../../types';
 import { selectSettingsData } from '../../../features/settings/settingsSlice';
 
 interface Props {
@@ -14,12 +14,13 @@ interface Props {
   userId: string | undefined;
   addHardWordLabel: () => void;
   deleteWordFromList: () => void;
+  dictionaryType: DictionaryType | undefined;
 }
 
 export default function WordCard(props: Props): JSX.Element {
   const settingsData = useSelector(selectSettingsData);
   const { showTranslations = true, showControls = true } = settingsData?.optional || {};
-  const { wordData, userWord, userId, addHardWordLabel, deleteWordFromList } = props;
+  const { wordData, userWord, userId, addHardWordLabel, deleteWordFromList, dictionaryType } = props;
   const {
     id,
     image,
@@ -91,6 +92,7 @@ export default function WordCard(props: Props): JSX.Element {
               userWord={userWord}
               addHardWordLabel={addHardWordLabel}
               deleteWordFromList={deleteWordFromList}
+              dictionaryType={dictionaryType}
             />
           )}
         </Container>

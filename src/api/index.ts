@@ -12,20 +12,20 @@ export async function fetchWords({ group = 0, page = 0 }: { group?: number; page
 }
 
 export async function fetchUserAggregatedWords({
-  group = 0,
-  page = 0,
+  group,
   userId,
+  filter,
 }: {
-  group?: number;
-  page?: number;
+  group: number;
   userId: string;
+  filter: string;
 }): Promise<UserAggregatedWord[]> {
   const response = await axios.get(`/users/${userId}/aggregatedWords`, {
     params: {
       group,
       page: 0,
       wordsPerPage: 20,
-      filter: `{"page":{"$eq":${page}}}`,
+      filter,
     },
   });
   return response.data[0].paginatedResults;

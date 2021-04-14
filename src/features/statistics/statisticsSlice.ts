@@ -1,5 +1,6 @@
+import axios from 'axios';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
+import { AppThunk, RootState } from '../../app/store';
 import { getNoun } from '../../utils/getNoun';
 import { getUniqueArray } from '../../utils/getUniqueArray';
 
@@ -18,6 +19,9 @@ interface StatisticsState {
   learnedWords: Array<BarChartDataItem>;
   correctAnswers: Array<BarChartDataItem>;
   seriesCorrectAnswers: Array<BarChartDataItem>;
+  isLoading: boolean;
+  wordsPerDayArr: Array<LineChartDataItem>;
+  increaseWordsPerDayArr: Array<LineChartDataItem>;
 }
 
 export interface DataItem {
@@ -35,14 +39,41 @@ const initialState: StatisticsState = {
   learnedWords: [],
   correctAnswers: [],
   seriesCorrectAnswers: [],
+  isLoading: false,
+  wordsPerDayArr: [],
+  increaseWordsPerDayArr: [],
 };
 
 export const statisticsSlice = createSlice({
   name: 'statistics',
   initialState,
   reducers: {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    setLongTermStatistics: (state, action: PayloadAction<object>) => {
+      const data = action.payload;
+      // const data = { '10 апреля': 5, '11 апреля': 15, '13 апреля': 6 };
+      // устанавливаем wordsPerDayArr
+      const wordsPerDay = Object.keys(data).map((key) => ({
+        date: key,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        value: data[key],
+      }));
+      state.wordsPerDayArr = wordsPerDay;
+      // устанавливаем increaseWordsPerDayArr
+      let sum = 0;
+      const increaseWordsPerDay = wordsPerDay.map((item) => {
+        sum += item.value;
+        return { date: item.date, value: sum };
+      });
+      state.increaseWordsPerDayArr = increaseWordsPerDay;
+    },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
     setStatistics: (state, action: PayloadAction<Data>) => {
       const dataFromLocalStorage = action.payload;
+      // устанавливаем learnedWords
       const learnedWordsArr = dataFromLocalStorage.data.map((item) => ({
         name: item.name,
         value: item.words.length,
@@ -56,6 +87,7 @@ export const statisticsSlice = createSlice({
         label: getNoun(learnedWords.length, 'слово', 'слова', 'слов'),
       });
       state.learnedWords = learnedWordsArr;
+      // устанавливаем correctAnswers
       const correctAnswersArr = dataFromLocalStorage.data.map((item) => {
         const percent = Math.round((item.countCorrectAnswers * 100) / item.words.length);
         return { name: item.name, value: percent, label: `${percent}%` };
@@ -73,6 +105,7 @@ export const statisticsSlice = createSlice({
         label: `${commonPercent}%`,
       });
       state.correctAnswers = correctAnswersArr;
+      // устанавливаем seriesCorrectAnswers
       state.seriesCorrectAnswers = dataFromLocalStorage.data.map((item) => ({
         name: item.name,
         value: item.longestSeriesCorrectAnswers,
@@ -82,10 +115,26 @@ export const statisticsSlice = createSlice({
   },
 });
 
-export const { setStatistics } = statisticsSlice.actions;
+export const { setStatistics, setIsLoading, setLongTermStatistics } = statisticsSlice.actions;
+
+export const fetchStatistics = (userId: string): AppThunk => async (dispatch) => {
+  dispatch(setIsLoading(true));
+  try {
+    const { data } = await axios.get(`/users/${userId}/statistics`);
+    dispatch(setLongTermStatistics(data.optional.data));
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+  }
+  dispatch(setIsLoading(false));
+};
 
 export const learnedWords = (state: RootState): Array<BarChartDataItem> => state.statistics.learnedWords;
 export const correctAnswers = (state: RootState): Array<BarChartDataItem> => state.statistics.correctAnswers;
 export const seriesAnswers = (state: RootState): Array<BarChartDataItem> => state.statistics.seriesCorrectAnswers;
+export const isLoading = (state: RootState): boolean => state.statistics.isLoading;
+export const wordsPerDayArr = (state: RootState): Array<LineChartDataItem> => state.statistics.wordsPerDayArr;
+export const increaseWordsPerDayArr = (state: RootState): Array<LineChartDataItem> =>
+  state.statistics.increaseWordsPerDayArr;
 
 export default statisticsSlice.reducer;

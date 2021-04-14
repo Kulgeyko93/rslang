@@ -10,15 +10,15 @@ import gameImg from '../../assets/icons/game.svg';
 import warningImg from '../../assets/icons/warning.svg';
 import progressImg from '../../assets/icons/progress.svg';
 import styles from './Main.module.css';
-import Video from '../../components/Video/Video';
+// import Video from '../../components/Video/Video';
 
 const Main = (): JSX.Element => (
   <div className={styles.main}>
     <Container fluid>
       <img className={styles.mainScreenImg} src={mainScreenImg} alt="Английский - это легко с RS LANG" />
       <hr className={styles.color} />
-      <h5 className={styles.margin}>Посмотри видео, чтобы узнать, как работает приложение</h5>
-      <Video />
+      {/* <h5 className={styles.margin}>Посмотри видео, чтобы узнать, как работает приложение</h5>
+      <Video /> */}
       <h5 className={styles.margin}>Учи английский с RS LANG</h5>
       <Container>
         <Row>

@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,6 +14,7 @@ import {
   setIsPlaying,
   setOriginWordsArray,
   setPlayWordsArray,
+  setCurrentGame,
 } from '../../../features/game/gameSlice';
 
 interface Props {
@@ -133,8 +135,9 @@ export default function WordCards(props: Props): JSX.Element {
     );
   });
 
-  const onGameClick = () => {
+  const onGameClick = (gameName: string): void => {
     dispatch(setIsGameOpenFromTextBook(true));
+    dispatch(setCurrentGame(gameName));
     dispatch(setOriginWordsArray(activeWords.map((activeWord) => activeWord.wordData)));
     dispatch(setPlayWordsArray());
     dispatch(setCurrentWord());
@@ -144,12 +147,21 @@ export default function WordCards(props: Props): JSX.Element {
     <>
       <div className="cards">{cardElements}</div>
       <Container>
-        {cardElements.length > 10 && (
+        {cardElements.length >= 10 && (
           <Row>
             {games.map((game) => (
-              <Col key={game.name} sm={3} xs={6} className="game" onClick={onGameClick}>
-                {game.nameRU}
-              </Col>
+              <NavLink key={game.name} to="/prestart">
+                <Col
+                  sm={3}
+                  xs={6}
+                  className="game"
+                  onClick={() => {
+                    onGameClick(game.name);
+                  }}
+                >
+                  {game.nameRU}
+                </Col>
+              </NavLink>
             ))}
           </Row>
         )}

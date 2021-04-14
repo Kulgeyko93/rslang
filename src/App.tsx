@@ -17,7 +17,7 @@ import { selectAuthData, selectAuthStatus, setAuthData, setAuthorizedStatus } fr
 import { TOKEN_EXPIRE_TIME } from './constants';
 import { StorageKey, Status } from './types';
 import Games from './pages/Games/Games';
-import { isPlaying } from './features/game/gameSlice';
+import { isPlaying, wrongAnswers, correctAnswers } from './features/game/gameSlice';
 import Statistics from './pages/Statistics/Statistics';
 import Dictionary from './pages/Dictionary/Dictionary';
 import AuthModal from './components/AuthModal';
@@ -31,6 +31,8 @@ const App = (): JSX.Element => {
   const [authShown, setAuthShown] = useState(false);
   const openAuthModal = () => setAuthShown(true);
   const closeAuthModal = () => setAuthShown(false);
+  const correctlyAnsweredWords = useSelector(correctAnswers);
+  const wronglyAnsweredWords = useSelector(wrongAnswers);
 
   useEffect(() => {
     let isTokenExpired = true;
@@ -78,6 +80,62 @@ const App = (): JSX.Element => {
       dispatch(fetchSettings());
     }
   }, [authStatus]);
+
+  useEffect(() => {
+    async function run() {
+      if (authData?.userId && correctlyAnsweredWords.length) {
+        const lastWord = correctlyAnsweredWords[correctlyAnsweredWords.length - 1];
+        const path = `/users/${authData.userId}/words/${lastWord.id}`;
+        try {
+          const res = await axios.get(path);
+          await axios.put(path, {
+            ...res.data,
+            optional: {
+              correct: (res.data?.optional?.correct || 0) + 1,
+            },
+          });
+        } catch (e) {
+          if (e.response.status === 404) {
+            await axios.post(path, {
+              optional: {
+                correct: 1,
+              },
+            });
+          }
+        }
+      }
+    }
+    run();
+  }, [correctlyAnsweredWords.length]);
+
+  useEffect(() => {
+    async function run() {
+      if (authData?.userId && wronglyAnsweredWords.length) {
+        const lastWord = wronglyAnsweredWords[wronglyAnsweredWords.length - 1];
+        const path = `/users/${authData.userId}/words/${lastWord.id}`;
+        try {
+          const res = await axios.get(path);
+          await axios.put(path, {
+            ...res.data,
+            repeat: true,
+            optional: {
+              incorrect: (res.data?.optional?.incorrect || 0) + 1,
+            },
+          });
+        } catch (e) {
+          if (e.response.status === 404) {
+            await axios.post(path, {
+              repeat: true,
+              optional: {
+                incorrect: 1,
+              },
+            });
+          }
+        }
+      }
+    }
+    run();
+  }, [wronglyAnsweredWords.length]);
 
   return (
     <div className="App">

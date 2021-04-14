@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -13,18 +13,22 @@ import Group from './pages/Group';
 import { Counter } from './features/counter/Counter';
 import { Words } from './features/words/Words';
 import './App.css';
-import { loginUser, selectAuthData, setAuthData, setAuthorizedStatus } from './features/auth/authSlice';
+import { selectAuthData, setAuthData, setAuthorizedStatus } from './features/auth/authSlice';
 import { TOKEN_EXPIRE_TIME } from './constants';
 import { StorageKey } from './types';
 import Games from './pages/Games/Games';
 import { isPlaying } from './features/game/gameSlice';
 import Statistics from './pages/Statistics/Statistics';
 import Dictionary from './pages/Dictionary/Dictionary';
+import AuthModal from './components/AuthModal';
 
 const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const authData = useSelector(selectAuthData);
   const isGamePlaying = useSelector(isPlaying);
+  const [authShown, setAuthShown] = useState(false);
+  const openAuthModal = () => setAuthShown(true);
+  const closeAuthModal = () => setAuthShown(false);
 
   useEffect(() => {
     let isTokenExpired = true;
@@ -48,12 +52,6 @@ const App = (): JSX.Element => {
     } else {
       localStorage.removeItem(StorageKey.AuthTime);
       localStorage.removeItem(StorageKey.Auth);
-      dispatch(
-        loginUser({
-          email: 'a@a.com',
-          password: 'string123',
-        }),
-      );
     }
   }, []);
 
@@ -75,7 +73,7 @@ const App = (): JSX.Element => {
 
   return (
     <div className="App">
-      {!isGamePlaying && <Header />}
+      {!isGamePlaying && <Header openAuthModal={openAuthModal} />}
       <main>
         <Switch>
           <Route exact path="/" component={Main} />
@@ -94,6 +92,7 @@ const App = (): JSX.Element => {
           <Route path="*" component={NotFound} />
         </Switch>
       </main>
+      <AuthModal show={authShown} closeAuthModal={closeAuthModal} />
       {!isGamePlaying && <Footer />}
     </div>
   );

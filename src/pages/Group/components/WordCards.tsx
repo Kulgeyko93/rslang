@@ -9,11 +9,10 @@ import { AuthState } from '../../../features/auth/authSlice';
 import WordCard from './WordCard';
 import { games } from '../../../const/games';
 import {
-  setCurrentWord,
+  // setCurrentWord,
   setIsGameOpenFromTextBook,
-  setIsPlaying,
   setOriginWordsArray,
-  setPlayWordsArray,
+  // setPlayWordsArray,
   setCurrentGame,
 } from '../../../features/game/gameSlice';
 
@@ -139,9 +138,8 @@ export default function WordCards(props: Props): JSX.Element {
     dispatch(setIsGameOpenFromTextBook(true));
     dispatch(setCurrentGame(gameName));
     dispatch(setOriginWordsArray(activeWords.map((activeWord) => activeWord.wordData)));
-    dispatch(setPlayWordsArray());
-    dispatch(setCurrentWord());
-    dispatch(setIsPlaying(true));
+    // dispatch(setPlayWordsArray());
+    // dispatch(setCurrentWord());
   };
   return (
     <>
@@ -150,11 +148,10 @@ export default function WordCards(props: Props): JSX.Element {
         {cardElements.length >= 10 && (
           <Row>
             {games.map((game) => (
-              <NavLink key={game.name} to="/prestart">
+              <NavLink key={game.name} to="/prestart" className="game">
                 <Col
                   sm={3}
                   xs={6}
-                  className="game"
                   onClick={() => {
                     onGameClick(game.name);
                   }}

@@ -1,11 +1,12 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 import { Container, Button, Spinner } from 'react-bootstrap';
-// import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { games, volume } from '../../const/games';
 import {
+  setPlayWordsArray,
+  setCurrentWord,
   fetchWords,
   isLoading,
   isPlaying,
@@ -15,6 +16,8 @@ import {
   setIsPlaying,
   currentGame,
   setCurrentGame,
+  setOriginWordsArray,
+  originWordsArray,
 } from '../../features/game/gameSlice';
 import AudioCallGame from '../AudioCallGame/AudioCallGame';
 import Savannah from '../Savannah/Savannah';
@@ -31,9 +34,8 @@ const PreStartInfo = (): JSX.Element => {
   const isDataLoading = useSelector(isLoading);
   const currentGameLevel = useSelector(currentLevel);
   const isGameOpenFromBook = useSelector(isGameOpenFromTextBook);
-  // console.log('level:' + currentGameLevel);
+  const originWords = useSelector(originWordsArray);
   const gameNameReverse = currentGameName.split('').reverse().join('');
-  // console.log(isGameOpenFromBook);
   const [indexGame, setIndexGame] = React.useState<number>(0);
 
   React.useEffect(() => {
@@ -55,7 +57,8 @@ const PreStartInfo = (): JSX.Element => {
         break;
       }
       default: {
-        console.error('don\'t have game');
+        // eslint-disable-next-line no-console
+        console.error("don't have game");
       }
     }
   }, [currentGameName]);
@@ -72,14 +75,19 @@ const PreStartInfo = (): JSX.Element => {
   }, [dispatch]);
 
   React.useEffect(() => {
-    if (currentGameName !== '' && !isGameOpenFromBook && isGamePlaying) {
-      if (window.localStorage.getItem(currentGameName) !== null) {
-        const newValue = localStorage.getItem(currentGameName);
-        if (newValue !== null) {
-          dispatch(setCurrentLevel(newValue));
-          dispatch(fetchWords(currentGameLevel));
-          // console.log(currentGameName, currentGameLevel);
+    if (currentGameName !== '' && isGamePlaying) {
+      if (!isGameOpenFromBook) {
+        if (window.localStorage.getItem(currentGameName) !== null) {
+          const newValue = localStorage.getItem(currentGameName);
+          if (newValue !== null) {
+            dispatch(setCurrentLevel(newValue));
+            dispatch(fetchWords(currentGameLevel));
+          }
         }
+      } else {
+        dispatch(setOriginWordsArray(originWords));
+        dispatch(setPlayWordsArray());
+        dispatch(setCurrentWord());
       }
     }
   }, [dispatch, isGamePlaying]);
@@ -121,9 +129,11 @@ const PreStartInfo = (): JSX.Element => {
                   <Button className={styles.startBtn}>В меню</Button>
                 </NavLink>
 
-                <Button className={styles.startBtn} onClick={() => onPlayBtnClick(currentGameName)}>
-                  Начать игру
-                </Button>
+                {currentGameName && (
+                  <Button className={styles.startBtn} onClick={() => onPlayBtnClick(currentGameName)}>
+                    Начать игру
+                  </Button>
+                )}
               </Container>
             </div>
           )}

@@ -16,6 +16,7 @@ import {
   isGameOpenFromTextBook,
   setInitSettings,
   wrongAnswers,
+  setInitSettingsFromBook,
 } from '../../features/game/gameSlice';
 import GameResults from '../GameResults/GameResults';
 import { getDayAndMonth } from '../../utils/getDayAndMonth';
@@ -193,7 +194,11 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
   };
 
   const onCloseBtnClick = () => {
-    dispatch(setInitSettings());
+    if (isGameOpenFromBook) {
+      dispatch(setInitSettingsFromBook());
+    } else {
+      dispatch(setInitSettings());
+    }
   };
   return (
     <>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import closeImg from '../../assets/icons/close.svg';
-import { setInitSettings } from '../../features/game/gameSlice';
+import { setInitSettings, setInitSettingsFromBook, isGameOpenFromTextBook } from '../../features/game/gameSlice';
 import { Word } from '../../types';
 import GameResultsItem from '../GameResultsItem/GameResultsItem';
 import styles from './gameResults.module.css';
@@ -17,9 +17,14 @@ type PropsType = {
 
 const GameResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
+  const isGameOpenFromBook = useSelector(isGameOpenFromTextBook);
 
   const onCloseBtnClick = () => {
-    dispatch(setInitSettings());
+    if (isGameOpenFromBook) {
+      dispatch(setInitSettingsFromBook());
+    } else {
+      dispatch(setInitSettings());
+    }
   };
 
   return (

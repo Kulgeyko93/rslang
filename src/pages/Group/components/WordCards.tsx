@@ -1,17 +1,18 @@
 import React, { useEffect, useReducer } from 'react';
+import { useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Difficulty, UserAggregatedWord, Word } from '../../../types';
+import { Difficulty, UserAggregatedWord, UserWord, Word } from '../../../types';
 import { AuthState } from '../../../features/auth/authSlice';
 import WordCard from './WordCard';
 import { games } from '../../../const/games';
 import {
-  // setCurrentWord,
+  setCurrentWord,
   setIsGameOpenFromTextBook,
   setIsPlaying,
-  // setOriginWordsArray,
-  // setPlayWordsArray,
+  setOriginWordsArray,
+  setPlayWordsArray,
 } from '../../../features/game/gameSlice';
 
 interface Props {
@@ -30,6 +31,13 @@ type Action =
   | { type: WordActionType.SET_AGGREGATED_WORDS; words: UserAggregatedWord[] }
   | { type: WordActionType.DELETE_WORD_FROM_LIST; wordId: string }
   | { type: WordActionType.ADD_HARD_WORD_LABEL; wordId: string };
+
+interface ActiveWord {
+  wordId: string;
+  wordData: Word;
+  userWord: UserWord | undefined;
+  userId: string | undefined;
+}
 
 function aggregatedWordsReducer(state: UserAggregatedWord[] | null, action: Action) {
   switch (action.type) {
@@ -81,13 +89,14 @@ function aggregatedWordsReducer(state: UserAggregatedWord[] | null, action: Acti
 
 export default function WordCards(props: Props): JSX.Element {
   const { wordsData, userAggregatedWordsData, authData } = props;
-  const [aggregatedWords, dispatch] = useReducer(aggregatedWordsReducer, userAggregatedWordsData || []);
+  const dispatch = useDispatch();
+  const [aggregatedWords, dispatchWordAction] = useReducer(aggregatedWordsReducer, userAggregatedWordsData || []);
   useEffect(() => {
     if (userAggregatedWordsData) {
-      dispatch({ type: WordActionType.SET_AGGREGATED_WORDS, words: userAggregatedWordsData });
+      dispatchWordAction({ type: WordActionType.SET_AGGREGATED_WORDS, words: userAggregatedWordsData });
     }
   }, [userAggregatedWordsData]);
-  const cardElements = wordsData.reduce((wordsAcc: JSX.Element[], wordData) => {
+  const activeWords = wordsData.reduce((wordsAcc: ActiveWord[], wordData) => {
     const wordId = wordData.id;
     const userWord = aggregatedWords?.find(
       (userAggregatedWord: UserAggregatedWord) => userAggregatedWord._id === wordId,
@@ -95,33 +104,42 @@ export default function WordCards(props: Props): JSX.Element {
     if (userWord?.optional?.isDeleted) {
       return wordsAcc;
     }
+    const currentWord = {
+      wordId,
+      wordData,
+      userWord,
+      userId: authData?.userId,
+    };
+    return [...wordsAcc, currentWord];
+  }, []);
+
+  const cardElements = activeWords.map((word: ActiveWord) => {
+    const { wordId, wordData, userWord, userId } = word;
     function deleteWordFromList() {
-      dispatch({ type: WordActionType.DELETE_WORD_FROM_LIST, wordId });
+      dispatchWordAction({ type: WordActionType.DELETE_WORD_FROM_LIST, wordId });
     }
     function addHardWordLabel() {
-      dispatch({ type: WordActionType.ADD_HARD_WORD_LABEL, wordId });
+      dispatchWordAction({ type: WordActionType.ADD_HARD_WORD_LABEL, wordId });
     }
-    const currentWordCard = (
+    return (
       <WordCard
         key={`${wordId}`}
         wordData={wordData}
         userWord={userWord}
-        userId={authData?.userId}
+        userId={userId}
         addHardWordLabel={addHardWordLabel}
         deleteWordFromList={deleteWordFromList}
       />
     );
-    return [...wordsAcc, currentWordCard];
-  }, []);
+  });
 
   const onGameClick = () => {
     dispatch(setIsGameOpenFromTextBook(true));
-    // dispatch(setOriginWordsArray(cardElements));
-    // dispatch(setPlayWordsArray());
-    // dispatch(setCurrentWord());
+    dispatch(setOriginWordsArray(activeWords.map((activeWord) => activeWord.wordData)));
+    dispatch(setPlayWordsArray());
+    dispatch(setCurrentWord());
     dispatch(setIsPlaying(true));
   };
-  console.log(cardElements);
   return (
     <>
       <div className="cards">{cardElements}</div>

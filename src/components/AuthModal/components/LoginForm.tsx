@@ -1,5 +1,5 @@
 import React, { useState, useEffect, SyntheticEvent } from 'react';
-import { Badge, Button, Form } from 'react-bootstrap';
+import { Alert, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import InlineSpinner from '../../InlineSpinner';
@@ -50,7 +50,7 @@ export default function LoginForm(props: Props): JSX.Element {
     if (isLoginSuccessful) {
       setTimeout(() => {
         closeAuthModal();
-      }, 3000);
+      }, 2000);
     }
   }, [closeAuthModal, isLoginSuccessful, dispatch]);
 
@@ -58,7 +58,8 @@ export default function LoginForm(props: Props): JSX.Element {
   if (isLoginSuccessful) {
     content = (
       <div>
-        <Badge variant="success">Авторизован</Badge>
+        <br />
+        <Alert variant="success">Авторизован</Alert>
       </div>
     );
   } else {

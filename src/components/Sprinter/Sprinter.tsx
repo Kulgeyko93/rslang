@@ -50,7 +50,7 @@ const Sprinter = (): JSX.Element => {
   const [answerTrueCount, setAnswerTrueCount] = useState<number>(0);
   const [disable, setDisable] = useState<boolean>(false);
   const [playSound, setPlaySound] = useState<boolean>(false);
-  const [audioUrl, setAudioUrl] = useState<string>('https://zvukipro.com/uploads/files/2019-12/1575881866_22b1d8c783a14eb.mp3');
+  const [audioUrl, setAudioUrl] = useState<string>('https://zvukipro.com/uploads/files/2021-02/1612332181_windows-xp-logon-sound.mp3');
   const [border, setBorder] = useState(styles.borderGame);
   const [opasity, setOpasity] = useState(styles.iconNoVisible);
   const [opasityWord, setOpasityWord] = useState(true);
@@ -156,7 +156,7 @@ const Sprinter = (): JSX.Element => {
     return () => {
       document.removeEventListener('keypress', onKeypress);
     };
-  }, []);
+  }, [ruWorsIndex, playSound]);
 
   const handleMute = (mute: boolean): void => {
     muteRef.current = mute;
@@ -164,8 +164,9 @@ const Sprinter = (): JSX.Element => {
 
   const isSound = React.useMemo(() => {
     if (muteRef.current === null) return false;
+    handlePlaySong();
     return muteRef.current;
-  }, [muteRef.current]);
+  }, [muteRef.current, ruWorsIndex, answerTrueCount]);
 
   return (
     isEnd
@@ -186,7 +187,7 @@ const Sprinter = (): JSX.Element => {
               <div className={styles.score}>
                 <div className={styles.value}>{score}</div>
               </div>
-              <Progress now={18000} max={45} className={styles.visualTimer} stopGame={stopGame} />
+              <Progress now={1800} max={45} className={styles.visualTimer} stopGame={stopGame} />
             </div>
             <div ref={contentRef} className={styles.content}>
               <div className={`${styles.word}`}>

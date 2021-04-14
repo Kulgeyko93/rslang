@@ -33,7 +33,7 @@ const PreStartInfo = (): JSX.Element => {
   const isGameOpenFromBook = useSelector(isGameOpenFromTextBook);
   // console.log('level:' + currentGameLevel);
   const gameNameReverse = currentGameName.split('').reverse().join('');
-
+  // console.log(isGameOpenFromBook);
   const [indexGame, setIndexGame] = React.useState<number>(0);
 
   React.useEffect(() => {
@@ -55,7 +55,7 @@ const PreStartInfo = (): JSX.Element => {
         break;
       }
       default: {
-        throw new Error('don\'t have game');
+        console.error('don\'t have game');
       }
     }
   }, [currentGameName]);
@@ -109,7 +109,6 @@ const PreStartInfo = (): JSX.Element => {
               }}
             >
               <Container fluid>
-
                 <div className={styles.gameName}>
                   <h2>{gameNameReverse.toUpperCase()}</h2>
                   <h2>{currentGameName.toUpperCase()}</h2>
@@ -119,24 +118,18 @@ const PreStartInfo = (): JSX.Element => {
                   <span dangerouslySetInnerHTML={{ __html: games[indexGame].description }} />
                 </div>
                 <NavLink to="/">
-                  <Button className={styles.startBtn}>
-                    В меню
-                  </Button>
+                  <Button className={styles.startBtn}>В меню</Button>
                 </NavLink>
 
                 <Button className={styles.startBtn} onClick={() => onPlayBtnClick(currentGameName)}>
                   Начать игру
                 </Button>
-
               </Container>
             </div>
-          )
-          }
+          )}
         </>
       )}
-
     </>
-
   );
 };
 

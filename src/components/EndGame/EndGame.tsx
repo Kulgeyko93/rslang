@@ -179,7 +179,16 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
                 }
               })
               // eslint-disable-next-line no-console
-              .catch((error) => console.log(error));
+              .catch((error) => {
+                console.log(error);
+                const newData = {
+                  learnedWords: learnedWords.length,
+                  optional: {
+                    data: { [today]: learnedWords.length },
+                  },
+                };
+                axios.put(`/users/${userId}/statistics`, newData);
+              });
           }
         } catch (e) {
           /* eslint-disable-next-line no-console */

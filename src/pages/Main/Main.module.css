@@ -8,8 +8,3 @@
 .margin {
   margin: 3rem auto;
 }
-@media (max-width: 768px) {
-  .mainScreenImg {
-    max-width: 100vw;
-  }
-}

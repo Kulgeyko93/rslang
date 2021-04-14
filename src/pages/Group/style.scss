@@ -8,6 +8,16 @@
     justify-content: center;
   }
 
+  .game {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 2rem auto;
+    cursor: pointer;
+  }
+  .game:hover {
+    text-decoration: underline;
+  }
+
   h3 {
     font-size: 18px;
     line-height: 66px;

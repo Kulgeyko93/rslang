@@ -1,7 +1,18 @@
 import React, { useEffect, useReducer } from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { Difficulty, UserAggregatedWord, Word } from '../../../types';
 import { AuthState } from '../../../features/auth/authSlice';
 import WordCard from './WordCard';
+import { games } from '../../../const/games';
+import {
+  // setCurrentWord,
+  setIsGameOpenFromTextBook,
+  setIsPlaying,
+  // setOriginWordsArray,
+  // setPlayWordsArray,
+} from '../../../features/game/gameSlice';
 
 interface Props {
   wordsData: Word[];
@@ -102,5 +113,34 @@ export default function WordCards(props: Props): JSX.Element {
     );
     return [...wordsAcc, currentWordCard];
   }, []);
-  return <div className="cards">{cardElements}</div>;
+
+  const onGameClick = () => {
+    dispatch(setIsGameOpenFromTextBook(true));
+    // dispatch(setOriginWordsArray(cardElements));
+    // dispatch(setPlayWordsArray());
+    // dispatch(setCurrentWord());
+    dispatch(setIsPlaying(true));
+  };
+  console.log(cardElements);
+  return (
+    <>
+      <div className="cards">{cardElements}</div>
+      <Container>
+        {cardElements.length > 10 && (
+          <Row>
+            {games.map((game) => (
+              <Col key={game.name} sm={3} xs={6} className="game" onClick={onGameClick}>
+                {game.nameRU}
+              </Col>
+            ))}
+          </Row>
+        )}
+        {cardElements.length < 10 && (
+          <Row>
+            <p>Для игр недостаточно слов.</p>
+          </Row>
+        )}
+      </Container>
+    </>
+  );
 }

@@ -11,9 +11,12 @@ import { Button, Card } from 'react-bootstrap';
 import { games } from '../../const/games';
 import GameOptions from '../../components/GameOptions/GameOptions';
 import styles from './Games.module.css';
-import {
-  setCurrentGame,
-} from '../../features/game/gameSlice';
+import { setCurrentGame } from '../../features/game/gameSlice';
+
+const imgStyle = {
+  height: '280px',
+  objectFit: 'cover',
+} as React.CSSProperties;
 
 const Games = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -28,12 +31,12 @@ const Games = (): JSX.Element => {
       <Row>
         {games &&
           games.map((game) => (
-            <Col key={game.color} lg={6} md={6} sm={6} className={styles.item}>
+            <Col key={game.color} lg={6} md={12} sm={12} className={styles.item}>
               <Container fluid>
                 {/* <Container fluid className={styles[game.color]}> */}
                 <Card className={styles.card}>
                   <Card.Header>{game.name.toUpperCase()}</Card.Header>
-                  <Card.Img variant="top" src={`${game.img}`} />
+                  <Card.Img variant="top" src={`${game.img}`} style={imgStyle} />
                   <Card.Body>
                     <Card.Title>
                       <GameOptions gameName={game.name} />

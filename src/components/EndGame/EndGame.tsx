@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,18 +14,22 @@ import GameResults from '../GameResults/GameResults';
 import { getDayAndMonth } from '../../utils/getDayAndMonth';
 import { getUniqueArray } from '../../utils/getUniqueArray';
 import { Data, DataItem } from '../../features/statistics/statisticsSlice';
-import { StorageKey } from '../../types';
+import { Status, StorageKey } from '../../types';
+import { selectAuthData, selectAuthStatus } from '../../features/auth/authSlice';
 
 type PropsType = {
   color: string;
 };
 
 const EndGame = ({ color }: PropsType): JSX.Element => {
+  const [isDataPutInLocalStorage, setIsDataPutInLocalStorage] = React.useState(false);
   const dispatch = useDispatch();
+  const authData = useSelector(selectAuthData);
+  const authStatus = useSelector(selectAuthStatus);
   const wrongAnswersArray = useSelector(wrongAnswers);
   const correctAnswersArray = useSelector(correctAnswers);
   const currentGameNameEng = useSelector(currentGame);
-  const learnedWords = ['ahead', 'top', 'end', 'spring', 'hello'];
+  const learnedWordsFromGame = ['ahead', 'top', 'end', 'spring', 'hello', 'yes'];
   const isGameOpenFromTextBook = true;
   const [isShowResult, setIsShowResult] = React.useState(false);
 
@@ -42,7 +47,7 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
       // сначала надо сформировать массив данных для хранения в localStorage
       const gameData = {
         name: currentGameName,
-        words: learnedWords,
+        words: learnedWordsFromGame,
         countCorrectAnswers: correctAnswersArray.length,
         longestSeriesCorrectAnswers: correctAnswersArray.length,
       };
@@ -60,7 +65,7 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
             if (game) {
               // если такая игра есть
               // добавляем изученные слова, если они отличаются
-              const allThisGameLearnedWords = getUniqueArray([...game.words, ...learnedWords]);
+              const allThisGameLearnedWords = getUniqueArray([...game.words, ...learnedWordsFromGame]);
               // проверяем, какая серия правильных ответов длиннее
               // eslint-disable-next-line max-len
               const longest =
@@ -89,6 +94,7 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
             }
             // добавляем данные в localStorage
             localStorage.setItem(StorageKey.Statistics, JSON.stringify(statistics));
+            setIsDataPutInLocalStorage(true);
           } else {
             // если прошедший день, то удаляем данные
             localStorage.removeItem(StorageKey.Statistics);
@@ -104,9 +110,74 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
           data: [gameData],
         };
         localStorage.setItem(StorageKey.Statistics, JSON.stringify(data));
+        setIsDataPutInLocalStorage(true);
       }
     }
   }, []);
+
+  React.useEffect(() => {
+    if (isGameOpenFromTextBook && authStatus === Status.Authorized && authData && isDataPutInLocalStorage) {
+      const today = getDayAndMonth();
+      const serializedStatistics = localStorage.getItem(StorageKey.Statistics);
+      setIsDataPutInLocalStorage(false);
+      if (serializedStatistics) {
+        try {
+          const statistics: Data = JSON.parse(serializedStatistics);
+          if (statistics.date === today) {
+            // надо отправить данные в базу данных
+            // достаем из localStorage все выученные в играх слова
+            const allLearnedWords = statistics.data.map((item) => item.words).flat();
+            // получаем все уникальные выученные слова
+            const learnedWords = getUniqueArray(allLearnedWords);
+            // получаем id пользователя
+            const { userId } = authData;
+
+            axios
+              .get(`/users/${userId}/statistics`)
+              .then((response) => {
+                if (response.status === 200) {
+                  // если есть данные в optional, то используем их, иначе используем пустой объект
+                  // eslint-disable-next-line no-console
+                  console.log(response.data);
+                  const oldData = response.data.optional ? response.data.optional.data : {};
+                  oldData[today] = learnedWords.length;
+                  const newData = {
+                    learnedWords: learnedWords.length,
+                    optional: {
+                      data: oldData,
+                    },
+                  };
+                  // //////////////обнулить данные
+                  // const newData = {
+                  //   learnedWords: learnedWords.length,
+                  //   optional: {},
+                  // };
+                  // //////////////добавить старые данные
+                  // const newData = {
+                  //   learnedWords: learnedWords.length,
+                  //   optional: {
+                  //     data: { '10 апреля': 5, '11 апреля': 15 },
+                  //   },
+                  // };
+                  // //////////////
+                  axios
+                    .put(`/users/${userId}/statistics`, newData)
+                    // eslint-disable-next-line no-console
+                    .then((response2) => console.log(response2.data))
+                    // eslint-disable-next-line no-console
+                    .catch((error) => console.log(error));
+                }
+              })
+              // eslint-disable-next-line no-console
+              .catch((error) => console.log(error));
+          }
+        } catch (e) {
+          /* eslint-disable-next-line no-console */
+          console.error(e);
+        }
+      }
+    }
+  }, [isDataPutInLocalStorage]);
 
   const onResultBtnClick = () => {
     setIsShowResult(true);

@@ -5,6 +5,7 @@ import authReducer from '../features/auth/authSlice';
 import gamesReducer from '../features/games/gamesSlice';
 import gameReducer from '../features/game/gameSlice';
 import statisticsReducer from '../features/statistics/statisticsSlice';
+import settingsReducer from '../features/settings/settingsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     games: gamesReducer,
     game: gameReducer,
     statistics: statisticsReducer,
+    settings: settingsReducer,
   },
 });
 

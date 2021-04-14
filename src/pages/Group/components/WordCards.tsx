@@ -4,22 +4,17 @@ import { useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Difficulty, UserAggregatedWord, UserWord, Word } from '../../../types';
+import { DictionaryType, Difficulty, UserAggregatedWord, UserWord, Word } from '../../../types';
 import { AuthState } from '../../../features/auth/authSlice';
 import WordCard from './WordCard';
 import { games } from '../../../const/games';
-import {
-  // setCurrentWord,
-  setIsGameOpenFromTextBook,
-  setOriginWordsArray,
-  // setPlayWordsArray,
-  setCurrentGame,
-} from '../../../features/game/gameSlice';
+import { setCurrentGame, setIsGameOpenFromTextBook, setOriginWordsArray } from '../../../features/game/gameSlice';
 
 interface Props {
   wordsData: Word[];
   userAggregatedWordsData: UserAggregatedWord[] | null;
   authData: AuthState['data'];
+  dictionaryType: DictionaryType | undefined;
 }
 
 enum WordActionType {
@@ -61,7 +56,7 @@ function aggregatedWordsReducer(state: UserAggregatedWord[] | null, action: Acti
         ...foundWord,
         userWord: {
           ...(foundWord.userWord || {}),
-          optional: { ...(foundWord.userWord?.optional || {}), isDeleted: true },
+          optional: { ...(foundWord.userWord?.optional || {}), isDeleted: true, isRestored: true },
         },
       };
       return [...state.slice(0, indexToDelete), deletedWord, ...state.slice(indexToDelete + 1)];
@@ -89,7 +84,7 @@ function aggregatedWordsReducer(state: UserAggregatedWord[] | null, action: Acti
 }
 
 export default function WordCards(props: Props): JSX.Element {
-  const { wordsData, userAggregatedWordsData, authData } = props;
+  const { wordsData, userAggregatedWordsData, authData, dictionaryType } = props;
   const dispatch = useDispatch();
   const [aggregatedWords, dispatchWordAction] = useReducer(aggregatedWordsReducer, userAggregatedWordsData || []);
   useEffect(() => {
@@ -103,7 +98,13 @@ export default function WordCards(props: Props): JSX.Element {
       (userAggregatedWord: UserAggregatedWord) => userAggregatedWord._id === wordId,
     )?.userWord;
     if (userWord?.optional?.isDeleted) {
-      return wordsAcc;
+      if (dictionaryType === DictionaryType.Deleted) {
+        if (userWord.optional.isRestored) {
+          return wordsAcc;
+        }
+      } else {
+        return wordsAcc;
+      }
     }
     const currentWord = {
       wordId,
@@ -130,6 +131,7 @@ export default function WordCards(props: Props): JSX.Element {
         userId={userId}
         addHardWordLabel={addHardWordLabel}
         deleteWordFromList={deleteWordFromList}
+        dictionaryType={dictionaryType}
       />
     );
   });

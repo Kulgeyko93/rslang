@@ -6,8 +6,6 @@ import { AppThunk, RootState } from '../../app/store';
 import { getRandom } from '../../utils/getRandom';
 import { Word } from '../../types';
 import { countPagesInGroup, wordsPerPage } from '../../const/games';
-// import { selectWordsData } from '../words/wordsSlice';
-// import { countPagesInGroup, wordsPerPage } from '../../const/games';
 
 interface GameState {
   isGameOpenFromTextBook: boolean;
@@ -141,6 +139,9 @@ export const gameSlice = createSlice({
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    setIsGameOpenFromTextBook: (state, action: PayloadAction<boolean>) => {
+      state.isGameOpenFromTextBook = action.payload;
+    },
     setCurrentLevel: (state, action: PayloadAction<string>) => {
       state.currentLevel = action.payload;
     },
@@ -163,6 +164,7 @@ export const {
   setIsLoading,
   setCurrentLevel,
   setCurrentGame,
+  setIsGameOpenFromTextBook,
 } = gameSlice.actions;
 
 export const fetchWords = (group: string): AppThunk => async (dispatch) => {
@@ -170,9 +172,8 @@ export const fetchWords = (group: string): AppThunk => async (dispatch) => {
   const randomPage = getRandom(countPagesInGroup);
   try {
     const { data } = await axios.get(`words?group=${group}&page=${randomPage}`);
-    // const data = wordsFromServer;
     // eslint-disable-next-line no-console
-    console.log(group, randomPage);
+    dispatch(setIsGameOpenFromTextBook(false));
     dispatch(setOriginWordsArray(data));
     dispatch(setPlayWordsArray());
     dispatch(setCurrentWord());

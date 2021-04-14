@@ -6,13 +6,13 @@ import { Difficulty, UserAggregatedWord, Word } from '../../../types';
 import { AuthState } from '../../../features/auth/authSlice';
 import WordCard from './WordCard';
 import { games } from '../../../const/games';
-import {
-  // setCurrentWord,
-  setIsGameOpenFromTextBook,
-  setIsPlaying,
-  // setOriginWordsArray,
-  // setPlayWordsArray,
-} from '../../../features/game/gameSlice';
+// import {
+//   // setCurrentWord,
+//   setIsGameOpenFromTextBook,
+//   setIsPlaying,
+//   // setOriginWordsArray,
+//   // setPlayWordsArray,
+// } from '../../../features/game/gameSlice';
 
 interface Props {
   wordsData: Word[];
@@ -113,15 +113,14 @@ export default function WordCards(props: Props): JSX.Element {
     );
     return [...wordsAcc, currentWordCard];
   }, []);
-
   const onGameClick = () => {
-    dispatch(setIsGameOpenFromTextBook(true));
+    // dispatch(setIsGameOpenFromTextBook(true));
     // dispatch(setOriginWordsArray(cardElements));
     // dispatch(setPlayWordsArray());
     // dispatch(setCurrentWord());
-    dispatch(setIsPlaying(true));
+    // dispatch(setIsPlaying(true));
   };
-  console.log(cardElements);
+  // console.log(cardElements);
   return (
     <>
       <div className="cards">{cardElements}</div>

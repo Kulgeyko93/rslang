@@ -9,7 +9,14 @@ import Button from 'react-bootstrap/Button';
 import closeImg from '../../assets/icons/close.svg';
 import { endGame, games } from '../../const/games';
 import styles from './endGame.module.css';
-import { correctAnswers, currentGame, setInitSettings, wrongAnswers } from '../../features/game/gameSlice';
+import {
+  correctAnswers,
+  currentGame,
+  gameLearnedWords,
+  isGameOpenFromTextBook,
+  setInitSettings,
+  wrongAnswers,
+} from '../../features/game/gameSlice';
 import GameResults from '../GameResults/GameResults';
 import { getDayAndMonth } from '../../utils/getDayAndMonth';
 import { getUniqueArray } from '../../utils/getUniqueArray';
@@ -29,12 +36,14 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
   const wrongAnswersArray = useSelector(wrongAnswers);
   const correctAnswersArray = useSelector(correctAnswers);
   const currentGameNameEng = useSelector(currentGame);
-  const learnedWordsFromGame = ['ahead', 'top', 'end', 'spring', 'hello', 'yes'];
-  const isGameOpenFromTextBook = true;
+  const learnedWordsFromGame = useSelector(gameLearnedWords);
+  // const learnedWordsFromGame = ['ahead', 'top', 'end', 'spring', 'hello', 'yes'];
+  // const isGameOpenFromBook = true;
+  const isGameOpenFromBook = useSelector(isGameOpenFromTextBook);
   const [isShowResult, setIsShowResult] = React.useState(false);
 
   React.useEffect(() => {
-    if (isGameOpenFromTextBook) {
+    if (isGameOpenFromBook) {
       // переводим имя игры на русский
       const currentGameName = games.reduce((res, game) => {
         if (game.name === currentGameNameEng) {
@@ -116,7 +125,7 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
   }, []);
 
   React.useEffect(() => {
-    if (isGameOpenFromTextBook && authStatus === Status.Authorized && authData && isDataPutInLocalStorage) {
+    if (isGameOpenFromBook && authStatus === Status.Authorized && authData && isDataPutInLocalStorage) {
       const today = getDayAndMonth();
       const serializedStatistics = localStorage.getItem(StorageKey.Statistics);
       setIsDataPutInLocalStorage(false);

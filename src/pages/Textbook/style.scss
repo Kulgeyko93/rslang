@@ -1,0 +1,32 @@
+.textbook {
+  .groups {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 350px);
+    grid-gap: 60px;
+    justify-content: center;
+  }
+
+  .group-card {
+    width: 350px;
+    height: 220px;
+    text-decoration: none;
+    outline: none;
+    color: #000;
+
+    .group-title {
+      font-size: 18px;
+      line-height: 21px;
+      text-align: left;
+      margin-top: 10px;
+      margin-left: 15px;
+      margin-bottom: 2px;
+      user-select: none;
+    }
+
+    .group-img {
+      float: right;
+    }
+  }
+}

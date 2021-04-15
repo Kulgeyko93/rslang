@@ -1,0 +1,63 @@
+.group-page {
+  .cards {
+    text-align: left;
+    margin: 70px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 425px);
+    grid-gap: 70px 150px;
+    justify-content: center;
+  }
+
+  .game {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 2rem auto;
+    cursor: pointer;
+    color: #000;
+  }
+  .game:hover {
+    text-decoration: underline;
+  }
+
+  h3 {
+    font-size: 18px;
+    line-height: 66px;
+  }
+
+  .card {
+    width: 425px;
+    height: 460px;
+  }
+
+  .card-img {
+    width: 170px;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .btn {
+    white-space: nowrap;
+    font-size: 14px;
+  }
+
+  .row {
+    margin-bottom: 10px;
+  }
+
+  .row.middle {
+    height: 240px;
+
+    .col {
+      align-items: center;
+    }
+  }
+
+  .page-number {
+    font-size: 18px;
+    line-height: 21px;
+    margin-bottom: 40px;
+    user-select: none;
+  }
+}

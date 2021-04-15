@@ -1,0 +1,10 @@
+.mainScreenImg {
+  max-width: 95vw;
+}
+.color {
+  background-color: rgb(190, 190, 190);
+  margin-top: 0;
+}
+.margin {
+  margin: 3rem auto;
+}

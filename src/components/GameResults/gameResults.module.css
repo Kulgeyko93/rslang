@@ -1,0 +1,27 @@
+.container {
+  top: 30%;
+  padding: 2rem;
+  position: relative;
+}
+.closeImg {
+  position: absolute;
+  top: -1rem;
+  right: 1rem;
+  cursor: pointer;
+}
+.closeImg:hover,
+.closeImg:active,
+.closeImg:focus {
+  transform: scale(1.1);
+  outline: none;
+}
+.correct {
+  color: rgb(7, 153, 39);
+}
+.wrong {
+  color: rgb(189, 4, 4);
+}
+.correct,
+.wrong {
+  font-weight: 900;
+}

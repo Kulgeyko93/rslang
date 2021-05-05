@@ -18,7 +18,7 @@ import {
 } from '../../features/game/gameSlice';
 import { soundsVolume } from '../../features/games/gamesSlice';
 import { sound } from '../../utils/sound';
-import { ARROW_CODE, ENTER_CODE, games, PLUS_CODE, volume } from '../../const/games';
+import { ARROW_CODE, ENTER_CODE, games, PLUS_CODE, volume } from '../../constants/games';
 import GameHeader from '../GameHeader/GameHeader';
 import GameDescription from '../GameDescription/GameDescription';
 import EndGame from '../EndGame/EndGame';
@@ -34,11 +34,9 @@ const text = {
   fontWeight: 600,
 };
 const gameField = {
+  backgroundColor: '#fdff95',
   cursor: 'default',
-  color: '#000',
-  backgroundImage: `url('${games[0].img}')`,
-  backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
+  minHeight: '100vh',
 };
 const root = {
   padding: 0,
@@ -125,14 +123,8 @@ const AudioCallGame = (): JSX.Element => {
           style={gameField}
           onFocus={handlerOnFocus}
           onBlur={handlerOnBlur}
-          // style={gameBorder}
         >
-          <GameHeader
-            color="none"
-            soundVolume={soundVolume}
-            gameRef={gameRef}
-            isKeyboardActive={isKeyboardActive}
-          />
+          <GameHeader color="none" soundVolume={soundVolume} gameRef={gameRef} isKeyboardActive={isKeyboardActive} />
           <Container fluid className={styles.container}>
             {!isShowAnswer && (
               <Row className={styles.heightWordImg}>

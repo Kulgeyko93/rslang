@@ -19,7 +19,7 @@ import {
 } from '../../features/game/gameSlice';
 import { soundsVolume } from '../../features/games/gamesSlice';
 import { sound } from '../../utils/sound';
-import { ARROW_CODE, ENTER_CODE, games, PLUS_CODE, volume } from '../../const/games';
+import { ARROW_CODE, ENTER_CODE, games, PLUS_CODE, volume } from '../../constants/games';
 import GameHeader from '../GameHeader/GameHeader';
 import GameDescription from '../GameDescription/GameDescription';
 import EndGame from '../EndGame/EndGame';
@@ -35,10 +35,9 @@ const text = {
   fontWeight: 600,
 };
 const gameField = {
+  backgroundColor: '#ffb5d8',
   cursor: 'default',
-  backgroundImage: `url('${games[2].img}')`,
-  backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
+  minHeight: '100vh',
 };
 const root = {
   padding: 0,
@@ -119,12 +118,7 @@ const Savannah = (): JSX.Element => {
           onFocus={handlerOnFocus}
           onBlur={handlerOnBlur}
         >
-          <GameHeader
-            color="none"
-            soundVolume={soundVolume}
-            gameRef={gameRef}
-            isKeyboardActive={isKeyboardActive}
-          />
+          <GameHeader color="none" soundVolume={soundVolume} gameRef={gameRef} isKeyboardActive={isKeyboardActive} />
           <Container fluid className={styles.container}>
             {!isShowAnswer && currentWord && (
               <Row className={styles.heightWordImg}>

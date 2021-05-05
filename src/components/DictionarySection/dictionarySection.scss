@@ -1,0 +1,81 @@
+.margin {
+  margin: 3rem auto 1rem;
+}
+.groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 350px);
+  grid-gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.groupCard {
+  color: #000;
+}
+.groupCard:hover {
+  text-decoration: none;
+  outline: none;
+  color: #000;
+}
+.yellow {
+  background-color: #fdffa5;
+  &:hover {
+    background-color: #fafd59;
+  }
+}
+.green {
+  background-color: #bdffbc;
+  &:hover {
+    background-color: #83ec82;
+  }
+}
+.blue {
+  background-color: #b1fff6;
+  &:hover {
+    background-color: #3affe8;
+  }
+}
+.red {
+  background-color: #ffc7ad;
+  &:hover {
+    background-color: #ff9b6c;
+  }
+}
+.purple {
+  background-color: #ffcfe5;
+  &:hover {
+    background-color: #ff8ac0;
+  }
+}
+.violet {
+  background-color: #caa1f1;
+  &:hover {
+    background-color: #9869c5;
+  }
+}
+.yellow,
+.green,
+.red,
+.purple,
+.blue,
+.violet {
+  outline: none;
+  color: #000;
+  border: 1px solid #000;
+  transition: all 0.3s ease;
+  &:hover {
+    text-decoration: none;
+  }
+}
+.groupTitle {
+  font-size: 1rem;
+  line-height: 21px;
+  text-align: center;
+  margin: 1rem auto;
+  user-select: none;
+  color: #000;
+}
+@media (max-width: 550px) {
+  .margin {
+    margin: 2rem auto 1rem;
+  }
+}

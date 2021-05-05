@@ -29,31 +29,28 @@
   }
 }
 
-.menuItems{
+.menuItems {
   color: #000 !important;
-  /* transform: scale(1.2); */
-  transition: all 0.5s;
   margin: 0 !important;
-  /* padding: 5px; */
+  padding: 5px;
 }
 
-.menuItems:hover{
-  transform: scale(1.1);
-  transition: all 0.5s;
+.menuItems:hover {
+  text-decoration: underline;
 }
 
-.header_menu{
+.header_menu {
   width: 100%;
 }
 
-.nav-item{
+.nav-item {
   display: flex !important;
   align-items: center !important;
 }
 
-.ok{
+.ok {
   color: rgb(1, 255, 1);
 }
-.no{
+.no {
   color: rgb(252, 0, 0);
 }

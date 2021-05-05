@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { volume } from '../../const/games';
+import { volume } from '../../constants/games';
 
 interface GamesState {
   soundsVolume: number;

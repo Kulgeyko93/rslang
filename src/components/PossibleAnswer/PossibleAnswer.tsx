@@ -6,7 +6,7 @@ import noImg from '../../assets/icons/no.svg';
 import { pushWrongAnswers, pushCorrectAnswers } from '../../features/game/gameSlice';
 import { sound } from '../../utils/sound';
 import { Word } from '../../types';
-import { GAME_ANSWERS_CODES } from '../../const/games';
+import { GAME_ANSWERS_CODES } from '../../constants/games';
 import styles from './possibleAnswer.module.css';
 
 const correctSound = 'assets/sounds/correct.mp3';

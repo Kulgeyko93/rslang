@@ -2,7 +2,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { AUTHORS } from '../../const/authors';
+import { AUTHORS } from '../../constants/authors';
 import rs_school from '../../assets/icons/rs_school_js.svg';
 import styles from './Footer.module.css';
 

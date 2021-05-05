@@ -19,7 +19,7 @@ const Main = (): JSX.Element => (
       <hr className={styles.color} />
       {/* <h5 className={styles.margin}>Посмотри видео, чтобы узнать, как работает приложение</h5>
       <Video /> */}
-      <h5 className={styles.margin}>Учи английский с RS LANG</h5>
+      <h4 className={styles.margin}>Учи английский с RS LANG</h4>
       <Container>
         <Row>
           <Col lg={3} md={6} sm={6} xs={6}>
@@ -36,7 +36,7 @@ const Main = (): JSX.Element => (
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col className={styles.games}>
             <Games />
           </Col>
         </Row>

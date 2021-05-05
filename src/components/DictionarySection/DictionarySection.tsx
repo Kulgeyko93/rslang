@@ -1,8 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
-import { GROUP_COLORS } from '../../constants';
-import styles from './dictionarySection.module.css';
+import { COLORS } from '../../constants/textbook';
+
+import './dictionarySection.scss';
 
 type PropsType = {
   url: string;
@@ -10,21 +11,17 @@ type PropsType = {
 };
 
 const DictionarySection = ({ url, text }: PropsType): JSX.Element => {
-  const groups = Array.from(Array(6).keys());
-  const groupCards = groups.map((i) => {
-    const backgroundColor = `rgba(${[...GROUP_COLORS[i], 0.5].join(', ')})`;
-    return (
-      <NavLink to={`/dictionary/${url}/groups/${i}`} className={styles.groupCard} key={i} style={{ backgroundColor }}>
-        <h3 className={styles.groupTitle}>Уровень сложности {i}</h3>
-      </NavLink>
-    );
-  });
+  const groupCards = COLORS.map((color, index) => (
+    <NavLink to={`/dictionary/${url}/groups/${index}`} className={color} key={color}>
+      <h3 className="groupTitle">Уровень сложности {index}</h3>
+    </NavLink>
+  ));
 
   return (
     <div>
-      <h5 className={styles.margin}>{text}</h5>
+      <h5 className="margin">{text}</h5>
       <Container>
-        <div className={styles.groups}>{groupCards}</div>
+        <div className="groups">{groupCards}</div>
       </Container>
     </div>
   );

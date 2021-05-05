@@ -3,7 +3,7 @@ import React from 'react';
 import { Container, Button, Spinner } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { games, volume } from '../../const/games';
+import { games, volume } from '../../constants/games';
 import {
   setPlayWordsArray,
   setCurrentWord,
@@ -108,15 +108,9 @@ const PreStartInfo = (): JSX.Element => {
           {isGamePlaying && currentGameName === games[3].name && <OurGame />}
 
           {!isGamePlaying && (
-            <div
-              className={styles.container}
-              style={{
-                backgroundImage: `url('${games[indexGame].img}')`,
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-              }}
-            >
-              <Container fluid>
+            <div>
+              <img src={`${games[indexGame].img}`} alt="лес и горы" className={styles.background} />
+              <Container fluid className={styles.container}>
                 <div className={styles.gameName}>
                   <h2>{gameNameReverse.toUpperCase()}</h2>
                   <h2>{currentGameName.toUpperCase()}</h2>

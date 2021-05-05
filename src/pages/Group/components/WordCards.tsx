@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import { DictionaryType, Difficulty, UserAggregatedWord, UserWord, Word } from '../../../types';
 import { AuthState } from '../../../features/auth/authSlice';
 import WordCard from './WordCard';
-import { games } from '../../../const/games';
+import { games } from '../../../constants/games';
 import { setCurrentGame, setIsGameOpenFromTextBook, setOriginWordsArray } from '../../../features/game/gameSlice';
 
 interface Props {
@@ -140,12 +140,9 @@ export default function WordCards(props: Props): JSX.Element {
     dispatch(setIsGameOpenFromTextBook(true));
     dispatch(setCurrentGame(gameName));
     dispatch(setOriginWordsArray(activeWords.map((activeWord) => activeWord.wordData)));
-    // dispatch(setPlayWordsArray());
-    // dispatch(setCurrentWord());
   };
   return (
-    <>
-      <div className="cards">{cardElements}</div>
+    <Container fluid>
       <Container>
         {cardElements.length >= 10 && (
           <Row>
@@ -170,6 +167,7 @@ export default function WordCards(props: Props): JSX.Element {
           </Row>
         )}
       </Container>
-    </>
+      <div className="cards">{cardElements}</div>
+    </Container>
   );
 }

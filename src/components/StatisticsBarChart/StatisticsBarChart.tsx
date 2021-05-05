@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, Cell, ResponsiveContainer, LabelList } from 'recharts';
-import { games } from '../../const/games';
+import { games } from '../../constants/games';
 import { BarChartDataItem } from '../../features/statistics/statisticsSlice';
 
 const barColors = {

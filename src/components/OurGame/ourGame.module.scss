@@ -7,12 +7,12 @@
   height: 100vh;
 }
 
-.game{
+.game {
   width: 100vw;
   height: 100vh;
 }
 
-.gameField{
+.gameField {
   width: 100%;
   height: 100vh;
 }
@@ -25,8 +25,8 @@
   justify-content: space-around;
 }
 
-.currentWord{
-  color:rgb(219, 219, 219);
+.currentWord {
+  color: #000;
   font-size: 25px;
   font-weight: 700;
 }
@@ -36,14 +36,14 @@
   display: flex;
   justify-content: center;
   margin-top: 25px;
-  // height: 150px;
+  height: 150px;
 }
 .heightImg {
   width: 100%;
   display: flex;
   justify-content: center;
   margin-top: 15px;
-  // height: 150px;
+  height: 150px;
 }
 .flex {
   display: flex;
@@ -54,7 +54,6 @@
 }
 .right {
   width: 100%;
-
 }
 .left {
   text-align: end;
@@ -62,12 +61,11 @@
 }
 .words {
   margin: 2rem auto;
-  // min-width: 450px;
   max-width: 80%;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  color:rgb(233, 233, 233);
+  color: #000;
   font-size: 20px;
   font-weight: 700;
 }
@@ -78,17 +76,17 @@
   transform: scale(1.05);
 }
 
-.description{
+.description {
   width: 70%;
   opacity: 0.6;
   transition: all 0.5s;
-  &:hover{
+  &:hover {
     opacity: 1;
     transition: all 0.5s;
   }
 }
 
-.currentWord{
+.currentWord {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -109,7 +107,7 @@
   .words {
     margin: 1rem 0;
   }
-  .description{
+  .description {
     width: 100%;
   }
 }
@@ -128,15 +126,14 @@
   }
 }
 
-.wordCorrectly{
+.wordCorrectly {
   color: black;
   // text-shadow: 0 0 20px rgba(0, 0, 0);
   transition: all 0.7s;
 }
 
-.wordNoCorrectly{
+.wordNoCorrectly {
   color: transparent;
   text-shadow: 0 0 20px rgb(0, 0, 0);
   transition: all 0.1s;
 }
-

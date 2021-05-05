@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import Header from './components/Header/Header';
@@ -14,10 +14,10 @@ import { Counter } from './features/counter/Counter';
 import { Words } from './features/words/Words';
 import './App.css';
 import { selectAuthData, selectAuthStatus, setAuthData, setAuthorizedStatus } from './features/auth/authSlice';
-import { TOKEN_EXPIRE_TIME } from './constants';
+import { TOKEN_EXPIRE_TIME } from './constants/tokenExpireTime';
 import { StorageKey, Status } from './types';
 import Games from './pages/Games/Games';
-import { isPlaying, wrongAnswers, correctAnswers } from './features/game/gameSlice';
+import { wrongAnswers, correctAnswers } from './features/game/gameSlice';
 import Statistics from './pages/Statistics/Statistics';
 import Dictionary from './pages/Dictionary/Dictionary';
 import AuthModal from './components/AuthModal';
@@ -27,7 +27,6 @@ const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const authData = useSelector(selectAuthData);
   const authStatus = useSelector(selectAuthStatus);
-  const isGamePlaying = useSelector(isPlaying);
   const [authShown, setAuthShown] = useState(false);
   const openAuthModal = () => setAuthShown(true);
   const closeAuthModal = () => setAuthShown(false);
@@ -136,6 +135,9 @@ const App = (): JSX.Element => {
     }
     run();
   }, [wronglyAnsweredWords.length]);
+
+  const { pathname } = useLocation();
+  const isGamePlaying = pathname.includes('prestart');
 
   return (
     <div className="App">

@@ -3,20 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Nav, Image, Navbar, NavDropdown, OverlayTrigger, Popover, Button } from 'react-bootstrap';
-import {
-  // BoxArrowLeft,
-  BookmarkXFill,
-  BookmarkCheckFill,
-  BoxArrowInRight,
-  PersonCheck,
-  ArrowRepeat,
-} from 'react-bootstrap-icons';
+import { BookmarkXFill, BookmarkCheckFill, BoxArrowInRight, PersonCheck, ArrowRepeat } from 'react-bootstrap-icons';
 import axios from 'axios';
 import logoImg from '../../assets/icons/logo.svg';
-// import menuImg from '../../assets/icons/menu.svg';
-// import settingsImg from '../../assets/icons/settings.svg';
-// import menuImg from '../../assets/icons/menu.svg';
-// import settingsImg from '../../assets/icons/settings.svg';
 import { selectAuthData, selectAuthStatus, setAuthData } from '../../features/auth/authSlice';
 import InlineSpinner from '../InlineSpinner';
 import { Status, StorageKey } from '../../types';
@@ -184,13 +173,15 @@ const Header = (props: Props): JSX.Element => {
                 </div>
               </NavLink>
             </Nav.Item>
-            <Nav.Item>
-              <NavLink to="/dictionary">
-                <div className={styles.menuItems} onClick={() => setIsSettings(false)}>
-                  Словарь
-                </div>
-              </NavLink>
-            </Nav.Item>
+            {authStatus === Status.Authorized && (
+              <Nav.Item>
+                <NavLink to="/dictionary">
+                  <div className={styles.menuItems} onClick={() => setIsSettings(false)}>
+                    Словарь
+                  </div>
+                </NavLink>
+              </Nav.Item>
+            )}
             <Nav.Item>
               <NavLink to="/Games">
                 <div className={styles.menuItems} onClick={() => setIsSettings(false)}>

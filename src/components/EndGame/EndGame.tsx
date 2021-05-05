@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import closeImg from '../../assets/icons/close.svg';
-import { endGame, games } from '../../const/games';
+import { endGame, games } from '../../constants/games';
 import styles from './endGame.module.css';
 import {
   correctAnswers,
@@ -34,8 +34,8 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
   const authData = useSelector(selectAuthData);
   const authStatus = useSelector(selectAuthStatus);
-  const wrongAnswersArray = useSelector(wrongAnswers);
-  const correctAnswersArray = useSelector(correctAnswers);
+  const wrongAnswersArr = useSelector(wrongAnswers);
+  const correctAnswersArr = useSelector(correctAnswers);
   const currentGameNameEng = useSelector(currentGame);
   const learnedWordsFromGame = useSelector(gameLearnedWords);
   // const learnedWordsFromGame = ['ahead', 'top', 'end', 'spring', 'hello', 'yes'];
@@ -58,8 +58,8 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
       const gameData = {
         name: currentGameName,
         words: learnedWordsFromGame,
-        countCorrectAnswers: correctAnswersArray.length,
-        longestSeriesCorrectAnswers: correctAnswersArray.length,
+        countCorrectAnswers: correctAnswersArr.length,
+        longestSeriesCorrectAnswers: correctAnswersArr.length,
       };
 
       const serializedStatistics = localStorage.getItem(StorageKey.Statistics);
@@ -147,8 +147,6 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
               .then((response) => {
                 if (response.status === 200) {
                   // если есть данные в optional, то используем их, иначе используем пустой объект
-                  // eslint-disable-next-line no-console
-                  console.log(response.data);
                   const oldData = response.data.optional ? response.data.optional.data : {};
                   oldData[today] = learnedWords.length;
                   const newData = {
@@ -178,8 +176,8 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
                     .catch((error) => console.log(error));
                 }
               })
-              // eslint-disable-next-line no-console
               .catch((error) => {
+                // eslint-disable-next-line no-console
                 console.log(error);
                 const newData = {
                   learnedWords: learnedWords.length,
@@ -223,13 +221,13 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
             </Row>
             <Row>
               <Col>
-                <p>{wrongAnswersArray.length === 0 ? endGame.messageIfNoErrors : endGame.messageIfErrors}</p>
+                <p>{wrongAnswersArr.length === 0 ? endGame.messageIfNoErrors : endGame.messageIfErrors}</p>
               </Col>
             </Row>
             <Row>
               <Col>
                 <p>
-                  правильно: {correctAnswersArray.length}, ошибок: {wrongAnswersArray.length}
+                  правильно: {correctAnswersArr.length}, ошибок: {wrongAnswersArr.length}
                 </p>
               </Col>
             </Row>
@@ -243,7 +241,7 @@ const EndGame = ({ color }: PropsType): JSX.Element => {
           </Container>
         </Container>
       )}
-      {isShowResult && <GameResults correctAnswersArray={correctAnswersArray} wrongAnswersArray={wrongAnswersArray} />}
+      {isShowResult && <GameResults color={color} correctAnswers={correctAnswersArr} wrongAnswers={wrongAnswersArr} />}
     </>
   );
 };

@@ -2,10 +2,6 @@
   outline: none;
   cursor: default;
 }
-.gameField:fullscreen {
-  width: 100vw;
-  height: 100vh;
-}
 .container {
   padding: 0 3rem 3rem;
 }
@@ -39,13 +35,13 @@
 .img:hover {
   transform: scale(1.05);
 }
-.description{
+.description {
   width: 100%;
   opacity: 0.6;
   transition: all 0.5s;
 }
 
-.description:hover{
+.description:hover {
   opacity: 1;
   transition: all 0.5s;
 }

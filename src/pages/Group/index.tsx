@@ -1,15 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import './style.scss';
 import { DictionaryType, Status, StorageKey, UserAggregatedWord, Word } from '../../types';
 import { usePagination, useRequest } from '../../hooks';
 import { fetchUserAggregatedWords, fetchWords } from '../../api';
 import { selectAuthData, selectAuthStatus } from '../../features/auth/authSlice';
 import WordCards from './components/WordCards';
 import Pagination from './components/Pagination';
-import getColorFromRgbArray from '../../utils/getColorFromRgbArray';
-import { GROUP_COLORS } from '../../constants';
+import { COLORS } from '../../constants/textbook';
+
+import './style.scss';
 
 interface MatchParams {
   groupId: string;
@@ -97,6 +97,18 @@ export default function Group(props: Props): JSX.Element {
           <Pagination currentPage={currentPage} onPreviousClick={openPreviousPage} onNextClick={openNextPage} />
         </div>
       );
+    } else if (wordsData && !userAggregatedWordsData) {
+      content = (
+        <div>
+          <WordCards
+            wordsData={wordsData}
+            userAggregatedWordsData={userAggregatedWordsData}
+            authData={authData}
+            dictionaryType={dictionaryType}
+          />
+          <Pagination currentPage={currentPage} onPreviousClick={openPreviousPage} onNextClick={openNextPage} />
+        </div>
+      );
     }
   } else {
     throw new Error('Unmatched case');
@@ -104,9 +116,7 @@ export default function Group(props: Props): JSX.Element {
 
   return (
     <div className="group-page">
-      <h3 style={{ backgroundColor: getColorFromRgbArray(GROUP_COLORS[Number(groupId)]) }}>
-        Уровень сложности {groupId}
-      </h3>
+      <h3 className={COLORS[Number(groupId)]}>Уровень сложности {groupId}</h3>
       {content}
     </div>
   );

@@ -17,7 +17,7 @@ import {
 } from '../../features/game/gameSlice';
 import { soundsVolume } from '../../features/games/gamesSlice';
 import { sound } from '../../utils/sound';
-import { ARROW_CODE, ENTER_CODE, games } from '../../const/games';
+import { ARROW_CODE, ENTER_CODE, games } from '../../constants/games';
 import GameHeader from '../GameHeader/GameHeader';
 import GameDescription from '../GameDescription/GameDescription';
 import EndGame from '../EndGame/EndGame';
@@ -30,14 +30,10 @@ const wrongSound = 'assets/sounds/wrong.mp3';
 
 const gameField = {
   cursor: 'default',
-  backgroundImage: `url('${games[3].img}')`,
-  backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
-  height: '100vh',
-  minHeight: '900px',
+  backgroundColor: '#a6fff5',
+  minHeight: '100vh',
   margin: 0,
   paddin: 0,
-
 };
 const root = {
   padding: 0,
@@ -45,7 +41,6 @@ const root = {
 
 const OurGame = (): JSX.Element => {
   const gameRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
-  // const currentWordRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
   const words = useSelector(playWords);
   const currentWord: Word | null = useSelector(playWord);
@@ -132,17 +127,12 @@ const OurGame = (): JSX.Element => {
           role="button"
           tabIndex={0}
           onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => handlerOnKeyDown(event)}
-          className={styles.gameFields}
+          className={styles.gameField}
           style={gameField}
           onFocus={handlerOnFocus}
           onBlur={handlerOnBlur}
         >
-          <GameHeader
-            color="none"
-            soundVolume={soundVolume}
-            gameRef={gameRef}
-            isKeyboardActive={isKeyboardActive}
-          />
+          <GameHeader color="none" soundVolume={soundVolume} gameRef={gameRef} isKeyboardActive={isKeyboardActive} />
           <Container fluid className={styles.container}>
             <Row className={styles.heightWordImg}>
               <div className={styles.currentWord}>
@@ -218,7 +208,7 @@ const OurGame = (): JSX.Element => {
           </Container>
         </div>
       )}
-      {isNewGameEnd && <EndGame color={games[0].color} />}
+      {isNewGameEnd && <EndGame color={games[3].color} />}
     </Container>
   );
 };

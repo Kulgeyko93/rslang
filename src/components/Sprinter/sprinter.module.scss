@@ -4,14 +4,12 @@
   align-items: center;
 }
 
-.sprinter{
-  // @include flex-center;
+.sprinter {
   width: 100vw;
   height: 100vh;
   position: relative;
-
 }
-.container{
+.container {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
@@ -21,35 +19,21 @@
   height: 100%;
 }
 
-.borderGame{
-  transition: all 0.5s;
-}
-.borderTrue{
-  border: 5px solid rgb(14, 197, 4);
-  transition: all 0.5s;
-}
-.borderFalse{
-  border: 5px solid rgb(255, 0, 0);
-  transition: all 0.5s;
-}
-
 .info {
   width: 100%;
   height: 30%;
-
 
   .score {
     @include flex-center;
     flex-direction: column;
     width: 100%;
     height: 90%;
-    // background-color: rgb(17, 232, 17);
     font-size: 1.7em;
     .value {
       font-size: 1.8em;
     }
   }
-  .multipilier{
+  .multipilier {
     font-size: 1.4em;
   }
 
@@ -58,35 +42,34 @@
   }
 }
 
-.content{
+.content {
   @include flex-center;
   justify-content: space-around;
   flex-direction: column;
   flex-wrap: nowrap;
   width: 100%;
   height: 70%;
-  // background-color: #b5ffb4;
 
-  .pointsWords{
+  .pointsWords {
     width: 100%;
     height: 20%;
 
-    img{
+    img {
       height: 100px;
     }
   }
 
-  .word{
+  .word {
     @include flex-center;
     flex-direction: column;
     flex-wrap: nowrap;
     width: 100%;
     height: 20%;
 
-    .enWord{
+    .enWord {
       font-size: 1.7em;
     }
-    .ruWord{
+    .ruWord {
       font-size: 1.4em;
     }
   }
@@ -98,94 +81,90 @@
   top: 5px;
 }
 
-.ruWordNoVisible{
+.ruWordNoVisible {
   opacity: 0 !important;
 }
-.ruWordVisible{
+.ruWordVisible {
   opacity: 1 !important;
   transition: all 0.5s;
 }
 
-@keyframes opacityToggle{
-  0%{
+@keyframes opacityToggle {
+  0% {
     opacity: 0;
   }
-  25%{
+  25% {
     opacity: 0.5;
   }
-  50%{
+  50% {
     opacity: 1;
   }
-  75%{
+  75% {
     opacity: 0.5;
   }
-  100%{
+  100% {
     opacity: 0;
   }
 }
 
-.iconWord{
+.iconWord {
   @include flex-center;
   height: 10%;
 
-  // animation: opacityToggle 1s ;
-  .iconTrue{
+  .iconTrue {
     width: 30px;
     height: 30px;
-    color: green
+    color: green;
   }
-  .iconFalse{
+  .iconFalse {
     width: 30px;
     height: 30px;
     color: red;
   }
-
 }
-.iconNoVisible{
+.iconNoVisible {
   opacity: 0 !important;
   transition: all 0.5s;
 }
-.iconVisible{
+.iconVisible {
   opacity: 1 !important;
   transition: all 0.5s;
 }
-.active{
-  // animation: opacityToggle 1s !important;
+.active {
   opacity: 1;
-  color: blue
+  color: blue;
 }
 
-
-.answerBtn{
+.answerBtn {
   @include flex-center;
   height: 20%;
   width: 100%;
-  position:relative;
+  position: relative;
   .button {
     width: 125px !important;
     margin: 0 25px;
   }
 }
 
-.buttonFullScreen{
-  position:absolute;
+.buttonFullScreen {
+  position: absolute;
   right: 5px;
   bottom: 5px;
   width: 25px;
   height: 25px;
 }
 
-.description{
+.description {
   width: 80%;
   opacity: 0.6;
   transition: all 0.5s;
 }
 
-.description:hover{
+.description:hover {
   opacity: 1;
   transition: all 0.5s;
 }
 
-.header{
+.header {
   width: 100%;
 }

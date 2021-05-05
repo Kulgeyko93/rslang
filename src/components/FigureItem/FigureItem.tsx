@@ -15,7 +15,7 @@ const textStyle = {
 const FigureItem = ({ img, text, name }: PropsType): JSX.Element => (
   <Figure>
     {name === '' ? (
-      <Figure.Image fluid alt="преимущество" src={img} />
+      <Figure.Image width="55px" height="55px" alt="преимущество" src={img} />
     ) : (
       <Figure.Image width="100%" height="auto" alt="разработчик" src={img} />
     )}

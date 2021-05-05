@@ -4,7 +4,7 @@
 }
 
 body{
-  background-image: url('https://i.pinimg.com/originals/2b/e8/94/2be89474c58d30d0464fa36ce4e61e5b.png');
+  /* background-image: url('https://i.pinimg.com/originals/2b/e8/94/2be89474c58d30d0464fa36ce4e61e5b.png'); */
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -12,8 +12,6 @@ body{
 .App {
   text-align: center;
   font-family: 'Roboto', sans-serif;
-  /* max-width: 1320px; */
-  /* margin: 0 auto; */
 }
 
 h3 {

@@ -1,7 +1,23 @@
-.container {
+.yellow {
+  background-color: #fdff95;
+}
+.green {
+  background-color: #b5ffb4;
+}
+.blue {
+  background-color: #a6fff5;
+}
+.red {
+  background-color: #ffb5d8;
+}
+.yellow,
+.green,
+.blue,
+.red {
   top: 30%;
   padding: 2rem;
   position: relative;
+  min-height: 100vh;
 }
 .closeImg {
   position: absolute;

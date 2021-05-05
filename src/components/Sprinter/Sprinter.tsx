@@ -13,8 +13,7 @@ import {
   setCurrentWordIndex,
   setIsGameEnd,
 } from '../../features/game/gameSlice';
-import Progress from '../Progress/Progress';
-import { games } from '../../const/games';
+import { games } from '../../constants/games';
 import GameHeaderSprinter from '../GameHeaderSprinter/GameHeaderSprinter';
 import { createRandomArrRuWords } from '../../utils/createRandomArrRuWords';
 import { createArrayEnAndRUWords } from '../../utils/createArrayEnWords';
@@ -26,9 +25,7 @@ import GameDescriptionSprinter from '../GameDescriptionSprinter/GameDescriptionS
 const gameField = {
   cursor: 'default',
   color: '#000',
-  backgroundImage: `url('${games[1].img}')`,
-  backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
+  backgroundColor: '#b5ffb4',
 };
 
 const Sprinter = (): JSX.Element => {
@@ -43,14 +40,15 @@ const Sprinter = (): JSX.Element => {
   const arrayRuWords: Array<string> = createArrayEnAndRUWords(words)[1];
 
   const [isTrueWord, setIsTrueWord] = useState<boolean>(false);
-  // const [isMute, setIsMute] = useState<boolean>(false);
   const [ruWorsIndex, setRuWordIndex] = useState<number>(0);
   const [enWorsIndex, setEnWordIndex] = useState<number>(0);
   const [score, setSetScore] = useState<string>('Поехали!!');
   const [answerTrueCount, setAnswerTrueCount] = useState<number>(0);
   const [disable, setDisable] = useState<boolean>(false);
   const [playSound, setPlaySound] = useState<boolean>(false);
-  const [audioUrl, setAudioUrl] = useState<string>('https://zvukipro.com/uploads/files/2021-02/1612332181_windows-xp-logon-sound.mp3');
+  const [audioUrl, setAudioUrl] = useState<string>(
+    'https://zvukipro.com/uploads/files/2021-02/1612332181_windows-xp-logon-sound.mp3',
+  );
   const [border, setBorder] = useState(styles.borderGame);
   const [opasity, setOpasity] = useState(styles.iconNoVisible);
   const [opasityWord, setOpasityWord] = useState(true);
@@ -61,7 +59,6 @@ const Sprinter = (): JSX.Element => {
 
   const stopGame = () => {
     setPlaySound(false);
-    // setIsEndGame(true);
     dispatch(setIsGameEnd(true));
     return false;
   };
@@ -84,7 +81,6 @@ const Sprinter = (): JSX.Element => {
     setDisable(true);
     setOpasityWord(false);
     const trueAnswer = arrayRuWords[ruWorsIndex] === randomArrayWords[ruWorsIndex];
-    // const points = 20;
     dispatch(setCurrentWordIndex());
     if (trueAnswer === answer) {
       setAudioUrl('https://zvukipro.com/uploads/files/2019-12/1575881866_22b1d8c783a14eb.mp3');
@@ -168,83 +164,70 @@ const Sprinter = (): JSX.Element => {
     return muteRef.current;
   }, [muteRef.current, ruWorsIndex, answerTrueCount]);
 
-  return (
-    isEnd
-      ? <EndGame color={games[1].color} />
-      : (
-        <div ref={gameRef} className={styles.sprinter} style={gameField}>
-          <div className={styles.header}>
-            <GameHeaderSprinter
-              color="none"
-              gameRef={gameRef}
-              isMuteSound={muteRef.current}
-              setIsMuteSound={handleMute}
-              // muteRef={muteRef}
-            />
-          </div>
-          <div className={`${border} ${styles.container}`}>
-            <div className={styles.info}>
-              <div className={styles.score}>
-                <div className={styles.value}>{score}</div>
-              </div>
-              <Progress now={1800} max={45} className={styles.visualTimer} stopGame={stopGame} />
-            </div>
-            <div ref={contentRef} className={styles.content}>
-              <div className={`${styles.word}`}>
-                <div className={styles.enWord}>{arrayEnWords[enWorsIndex]}</div>
-                <div className={opasityWord ? `${styles.ruWord} ${styles.ruWordVisible}` : `${styles.ruWord} ${styles.ruWordNoVisible}`}>{randomArrayWords[ruWorsIndex]}</div>
-              </div>
-              <div ref={iconRef} className={`${styles.iconWord} ${opasity}`}>
-                {
-                  isTrueWord
-                    ? <Icon.CheckCircleFill className={styles.iconTrue} />
-                    : <Icon.XCircleFill className={styles.iconFalse} />
-                }
-              </div>
-              <div className={styles.description}>
-                <GameDescriptionSprinter />
-              </div>
-              <div className={styles.answerBtn}>
-                <Button
-                  className={styles.button}
-                  variant="danger"
-                  disabled={ruWorsIndex === randomArrayWords.length || disable}
-                  onClick={() => {
-                    compareResults(false);
-                    handlePlaySong();
-                  }}
-                >
-                  <AudioPlayer
-                    link={audioUrl}
-                    playing={playSound}
-                    format={['.mp3']}
-                    loop={false}
-                    mute={isSound}
-                  />
-                  Не верно
-                </Button>
-                <Button
-                  className={styles.button}
-                  variant="success"
-                  disabled={ruWorsIndex === randomArrayWords.length || disable}
-                  onClick={() => {
-                    compareResults(true);
-                    handlePlaySong();
-                  }}
-                >
-                  Верно
-                </Button>
-
-                <Icon.FullscreenExit
-                  className={styles.buttonFullScreen}
-                />
-              </div>
-            </div>
-
+  return isEnd ? (
+    <EndGame color={games[1].color} />
+  ) : (
+    <div ref={gameRef} className={styles.sprinter} style={gameField}>
+      <div className={styles.header}>
+        <GameHeaderSprinter color="none" gameRef={gameRef} isMuteSound={muteRef.current} setIsMuteSound={handleMute} />
+      </div>
+      <div className={`${border} ${styles.container}`}>
+        <div className={styles.info}>
+          <div className={styles.score}>
+            <div className={styles.value}>{score}</div>
           </div>
         </div>
-      )
+        <div ref={contentRef} className={styles.content}>
+          <div className={`${styles.word}`}>
+            <div className={styles.enWord}>{arrayEnWords[enWorsIndex]}</div>
+            <div
+              className={
+                opasityWord ? `${styles.ruWord} ${styles.ruWordVisible}` : `${styles.ruWord} ${styles.ruWordNoVisible}`
+              }
+            >
+              {randomArrayWords[ruWorsIndex]}
+            </div>
+          </div>
+          <div ref={iconRef} className={`${styles.iconWord} ${opasity}`}>
+            {isTrueWord ? (
+              <Icon.CheckCircleFill className={styles.iconTrue} />
+            ) : (
+              <Icon.XCircleFill className={styles.iconFalse} />
+            )}
+          </div>
+          <div className={styles.description}>
+            <GameDescriptionSprinter />
+          </div>
+          <div className={styles.answerBtn}>
+            <Button
+              className={styles.button}
+              variant="danger"
+              disabled={ruWorsIndex === randomArrayWords.length || disable}
+              onClick={() => {
+                compareResults(false);
+                handlePlaySong();
+              }}
+            >
+              <AudioPlayer link={audioUrl} playing={playSound} format={['.mp3']} loop={false} mute={isSound} />
+              Не верно
+            </Button>
+            <Button
+              className={styles.button}
+              variant="success"
+              disabled={ruWorsIndex === randomArrayWords.length || disable}
+              onClick={() => {
+                compareResults(true);
+                handlePlaySong();
+              }}
+            >
+              Верно
+            </Button>
 
+            <Icon.FullscreenExit className={styles.buttonFullScreen} />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

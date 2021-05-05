@@ -5,7 +5,7 @@ import { createWordsArray, createGameArray } from '../../utils/createWordsArray'
 import { AppThunk, RootState } from '../../app/store';
 import { getRandom } from '../../utils/getRandom';
 import { Word } from '../../types';
-import { countPagesInGroup, wordsPerPage } from '../../const/games';
+import { countPagesInGroup, wordsPerPage } from '../../constants/games';
 
 interface GameState {
   isGameOpenFromTextBook: boolean;
@@ -83,7 +83,7 @@ export const gameSlice = createSlice({
           }
           break;
         }
-        case 'newgame': {
+        case 'riddle': {
           if (state.currentWordIndex < state.originWordsArray.length && state.wrongAnswers.length < 5) {
             const data = state.originWordsArray;
             const newArrayOfIndices = getRandomArray(data.length, wordsPerPage);
@@ -95,7 +95,7 @@ export const gameSlice = createSlice({
           break;
         }
         default: {
-          state.isGameEnd = true;
+          state.isGameEnd = false;
         }
       }
     },
@@ -124,7 +124,6 @@ export const gameSlice = createSlice({
       state.isGameEnd = action.payload;
     },
     setInitSettings: (state) => {
-      // state.isGameOpenFromTextBook = false;
       state.currentLevel = '0';
       state.originWordsArray = [];
       state.currentWordIndex = 0;
@@ -136,13 +135,10 @@ export const gameSlice = createSlice({
       state.isGameEnd = false;
       state.isLoading = false;
       state.attempts = [1, 2, 3, 4, 5];
-      // state.currentGame = '';
       state.gameLearnedWords = [];
     },
     setInitSettingsFromBook: (state) => {
-      // state.isGameOpenFromTextBook = false;
       state.currentLevel = '0';
-      // state.originWordsArray = [];
       state.currentWordIndex = 0;
       state.currentWord = null;
       state.playWordsArray = [];
@@ -152,7 +148,6 @@ export const gameSlice = createSlice({
       state.isGameEnd = false;
       state.isLoading = false;
       state.attempts = [1, 2, 3, 4, 5];
-      // state.currentGame = '';
       state.gameLearnedWords = [];
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {

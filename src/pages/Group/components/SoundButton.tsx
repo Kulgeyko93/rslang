@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { VolumeUpFill } from 'react-bootstrap-icons';
 import { sound } from '../../../utils/sound';
-import { volume } from '../../../const/games';
+import { volume } from '../../../constants/games';
 
 interface Props {
   iconSize: number;

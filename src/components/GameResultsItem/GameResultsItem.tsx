@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'react-bootstrap/Image';
 import volumeImg from '../../assets/icons/volume.svg';
-import { volume } from '../../const/games';
+import { volume } from '../../constants/games';
 import { Word } from '../../types';
 import { sound } from '../../utils/sound';
 import styles from './gameResultsItem.module.css';

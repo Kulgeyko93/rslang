@@ -11,11 +11,12 @@ import GameResultsItem from '../GameResultsItem/GameResultsItem';
 import styles from './gameResults.module.css';
 
 type PropsType = {
-  correctAnswersArray: Array<Word>;
-  wrongAnswersArray: Array<Word>;
+  correctAnswers: Array<Word>;
+  wrongAnswers: Array<Word>;
+  color: string;
 };
 
-const GameResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType): JSX.Element => {
+const GameResults = ({ correctAnswers, wrongAnswers, color }: PropsType): JSX.Element => {
   const dispatch = useDispatch();
   const isGameOpenFromBook = useSelector(isGameOpenFromTextBook);
 
@@ -28,7 +29,7 @@ const GameResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType): JSX
   };
 
   return (
-    <Container fluid className={styles.container}>
+    <Container fluid className={styles[color]}>
       <Row>
         <Col>
           <div onClick={onCloseBtnClick} className={styles.closeImg} role="button" tabIndex={0}>
@@ -40,27 +41,27 @@ const GameResults = ({ correctAnswersArray, wrongAnswersArray }: PropsType): JSX
         <Row>
           <Col>
             <p>
-              Ошибок <span className={styles.wrong}>{wrongAnswersArray.length}</span>
+              Ошибок <span className={styles.wrong}>{wrongAnswers.length}</span>
             </p>
           </Col>
         </Row>
         <Row>
           <Col>
-            {wrongAnswersArray.length !== 0 &&
-              wrongAnswersArray.map((answer) => <GameResultsItem key={answer.id} answer={answer} />)}
+            {wrongAnswers.length !== 0 &&
+              wrongAnswers.map((answer) => <GameResultsItem key={answer.id} answer={answer} />)}
           </Col>
         </Row>
         <Row>
           <Col>
             <p>
-              Правильно <span className={styles.correct}>{correctAnswersArray.length}</span>
+              Правильно <span className={styles.correct}>{correctAnswers.length}</span>
             </p>
           </Col>
         </Row>
         <Row>
           <Col>
-            {correctAnswersArray.length !== 0 &&
-              correctAnswersArray.map((answer) => <GameResultsItem key={answer.id} answer={answer} />)}
+            {correctAnswers.length !== 0 &&
+              correctAnswers.map((answer) => <GameResultsItem key={answer.id} answer={answer} />)}
           </Col>
         </Row>
       </Container>

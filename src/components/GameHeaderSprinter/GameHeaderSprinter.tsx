@@ -6,10 +6,6 @@ import { NavLink } from 'react-router-dom';
 import * as Icon from 'react-bootstrap-icons';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import Image from 'react-bootstrap/Image';
-// import fullscreenImg from '../../assets/icons/fullscreen.svg';
-// import notfullscreenImg from '../../assets/icons/notfullscreen.svg';
-// import closeImg from '../../assets/icons/close.svg';
 import styles from './GameHeader.module.css';
 import { setInitSettings } from '../../features/game/gameSlice';
 
@@ -23,16 +19,13 @@ type PropsType = {
 const gameHeaderStyle = {
   imgStyle: {
     marginRight: '30px',
-    color: '#fff',
+    color: '#000',
   },
   heartStyle: {
     margin: '0 10px 0 0',
-    color: '#fff',
+    color: '#000',
   },
 };
-
-// isMuteSound={isMute}
-// setIsMuteSound={setIsMute}
 
 const GameHeaderSprinter = ({ color, gameRef, isMuteSound, setIsMuteSound }: PropsType): JSX.Element => {
   const [isFullScreen, setIsFullScreen] = React.useState(false);

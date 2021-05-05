@@ -2,10 +2,6 @@
   outline: none;
   cursor: default;
 }
-.gameField:fullscreen {
-  width: 100vw;
-  height: 100vh;
-}
 .container {
   padding: 0 3rem 3rem;
 }

@@ -83,13 +83,17 @@ const Statistics = (): JSX.Element => {
           </>
         )}
         {learnedWordsData.length === 0 && (
-          <h5 className={styles.margin}>Пока не сыграешь в игру, статистика не отобразится :)</h5>
+          <>
+            <h5 className={styles.margin}>Пока не сыграешь в игру, статистика не отобразится :). </h5>
+            <h5>PS: Статистика ведётся, только если игра была открыта из учебника. </h5>
+            <h5>PSS: Долгосрочную статистику могут видеть только зарегистрированные пользователи. </h5>
+          </>
         )}
-        <hr className={styles.color} />
         {!isDataLoading && (
           <>
             {allLearnedWords.length > 0 && (
               <>
+                <hr className={styles.color} />
                 <h5 className={styles.margin}>Количество изученных слов за весь период обучения по дням</h5>
                 <div className={styles.container}>
                   <StatisticsLineChart chartData={allLearnedWords} />
